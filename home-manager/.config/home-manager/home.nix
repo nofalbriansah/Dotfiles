@@ -15,18 +15,17 @@
     "$HOME/.local/bin"
     "$HOME/bin"
     "$HOME/.pub-cache/bin"
-    "$HOME/dev/Android/Sdk/platform-tools"
-    "$HOME/dev/Android/Sdk/ndk-build"
-    "$HOME/dev/flutter/bin"
+    "$HOME/Development/Android/Sdk/platform-tools"
+    "$HOME/Development/Android/Sdk/ndk-build"
+    "$HOME/Development/flutter/bin"
   ];
 
   # Environment Variables
   home.sessionVariables = {
     JAVA_HOME = "${pkgs.openjdk21}/lib/openjdk";
-    ANDROID_HOME = "/home/nbs/dev/Android/Sdk";
-    FLUTTER_HOME = "/home/nbs/dev/flutter/bin";
+    ANDROID_HOME = "/home/nbs/Development/Android/Sdk";
+    FLUTTER_HOME = "/home/nbs/Development/flutter/bin";
     NODE_PATH = "${pkgs.nodePackages_latest.nodejs}/lib/node_modules";
-    CHROME_EXECUTABLE = "/usr/bin/google-chrome-stable";
     # GOROOT = "${pkgs.go}/lib/go";
   };
 
@@ -36,7 +35,7 @@
   # Home Packages
   home.packages = with pkgs; [
     corefonts
-    inter
+    adwaita-fonts
     nerd-fonts.fira-code
     nerd-fonts.jetbrains-mono
 
@@ -131,12 +130,13 @@
       rmt = "rmtrash";
       ff = "fastfetch";
       treed = "tree -L 5 -a";
-      dot = "cd /home/nbs/dev/dotfiles";
-      dev = "cd /mnt/Data/development/coding";
+      dot = "cd /home/nbs/Dotfiles";
+      dev = "cd /mnt/Data/development";
+      up = "git commit -a -m 'up'";
 
       # Pacman aliases
-      pu = "sudo pacman -Syu";
-      pd = "sudo pacman -Rs $(pacman -Qdtq)";
+      du = "sudo dnf update && sudo dnf upgrade";
+      dd = "sudo dnf autoremove";
       fu = "flatpak update";
 
       # Nix aliases
