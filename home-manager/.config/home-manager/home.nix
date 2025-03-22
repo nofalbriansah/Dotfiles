@@ -132,6 +132,7 @@
       treed = "tree -L 5 -a";
       dot = "cd /home/nbs/Dotfiles";
       dev = "cd /mnt/Data/development";
+      obs = "cd /mnt/Data/development/research/obsidian";
       up = "git commit -a -m 'up'";
 
       # Pacman aliases
@@ -140,12 +141,11 @@
       fu = "flatpak update";
 
       # Nix aliases
-      hmf = "nixpkgs-fmt /home/nbs/.config/home-manager/home.nix";
       hmu = "nix-channel --update";
       hmd = "nix-collect-garbage -d";
       hms = "home-manager switch";
       hmg = "home manager generation";
-      hmc = "nano /home/nbs/.config/home-manager/home.nix";
+      hmc = "nano /home/nbs/Dotfiles/.config/home-manager/home.nix";
     };
   };
 
