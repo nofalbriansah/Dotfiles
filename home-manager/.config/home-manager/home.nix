@@ -136,7 +136,7 @@
       up = "git commit -a -m 'up'";
       push = "git push";
 
-      # Pacman aliases
+      # DNF aliases
       du = "sudo dnf update && sudo dnf upgrade";
       dd = "sudo dnf autoremove";
       fu = "flatpak update";
