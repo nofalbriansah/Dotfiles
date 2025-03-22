@@ -134,6 +134,7 @@
       dev = "cd /mnt/Data/development";
       obs = "cd /mnt/Data/development/research/obsidian";
       up = "git commit -a -m 'up'";
+      push = "git push";
 
       # Pacman aliases
       du = "sudo dnf update && sudo dnf upgrade";
