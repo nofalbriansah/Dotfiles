@@ -16,7 +16,12 @@ nix-shell '<home-manager>' -A install
 │   └── .config
 │       └── home-manager
 │           └── home.nix
-├── README.md
+├── README.mdss
+├── terminal
+│   └── .config
+│       ├── ghostty
+│       │   └── config
+│       └── kitty
 └── themes
     └── .local
         └── share
