@@ -1,0 +1,13 @@
+# ghostty +list-themes
+
+command = /home/nbs/.nix-profile/bin/fish
+shell-integration = fish
+copy-on-select = true
+window-theme = system
+theme = Adventure
+cursor-style = bar
+font-family = JetBrainsMono Nerd Font
+font-size = 13
+title = " "
+gtk-titlebar = true
+gtk-wide-tabs = false
