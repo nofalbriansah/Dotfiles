@@ -132,7 +132,7 @@
       treed = "tree -L 5 -a";
       dot = "cd /home/nbs/Dotfiles";
       dev = "cd /mnt/Data/development";
-      obs = "cd /mnt/Data/development/research/obsidian";
+      obsidian = "cd /mnt/Data/development/research/obsidian";
       up = "git commit -a -m 'up'";
       push = "git push";
 
