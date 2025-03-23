@@ -146,7 +146,7 @@
       hmd = "nix-collect-garbage -d";
       hms = "home-manager switch";
       hmg = "home manager generation";
-      hmc = "nano /home/nbs/Dotfiles/.config/home-manager/home.nix";
+      hmc = "nano ~/Dotfiles/.config/home-manager/home.nix";
     };
   };
 
