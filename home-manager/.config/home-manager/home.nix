@@ -26,7 +26,6 @@
     ANDROID_HOME = "/home/nbs/Development/Android/Sdk";
     FLUTTER_HOME = "/home/nbs/Development/flutter/bin";
     NODE_PATH = "${pkgs.nodePackages_latest.nodejs}/lib/node_modules";
-    # GOROOT = "${pkgs.go}/lib/go";
   };
 
   # Enable font configuration
@@ -123,8 +122,9 @@
       dot = "cd /home/nbs/Dotfiles";
       dev = "cd /mnt/Data/development";
       obsidian = "cd /mnt/Data/development/research/obsidian";
-      up = "git commit -a -m 'up'";
-      push = "git push";
+      gc = "git commit -a -m 'up'";
+      gp = "git push";
+      gs = "git status";
 
       # DNF aliases
       du = "sudo dnf update && sudo dnf upgrade";
