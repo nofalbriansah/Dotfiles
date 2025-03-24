@@ -91,10 +91,27 @@
     viAlias = true;
     vimAlias = true;
     plugins = with pkgs.vimPlugins; [
+      dashboard-nvim
+      gruvbox-nvim
+      lualine-nvim
+      indent-blankline-nvim
+      nvim-web-devicons
+      nvim-cursorline
       nvim-lspconfig
+      nvim-treesitter
+      nvim-tree-lua 
+      nvim-dap
+      nvim-dap-ui
+      nvim-dap-python
+      cmp-nvim-lsp
+      telescope-nvim
+      dressing-nvim
+      plenary-nvim
+      dart-vim-plugin
+      flutter-tools-nvim
     ];
   };
-
+          
   # Enable Starship prompt
   programs.starship = {
     enable = true;
