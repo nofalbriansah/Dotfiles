@@ -26,12 +26,14 @@ nix-shell '<home-manager>' -A install
     └── .local
         └── share
             ├── backgrounds
-            │   ├── 2024-12-27-08-29-36-forest.png
-            │   ├── 2024-12-27-08-31-47-planets.png
-            │   └── 2025-01-02-03-10-16-robot.jpg
+            │   ├── forest.png
+            │   ├── planets.png
+            │   ├── robot.jpg
+            │   ├── lanterns_festival.jpg
+            │   └── wanna_join_our_party.jpg
             ├── icons
-            │   ├── cursor-Kobo-Kanaeru
-            │   ├── cursor-Megumin
+            │   ├── Cursor-Kobo-Kanaeru
+            │   ├── Cursor-Megumin
             │   ├── icon-Colloid-Dark
             │   ├── icon-Colloid-Light
             │   └── icon-elementary
