@@ -12,8 +12,6 @@
   # Path Bash and Fish
   home.sessionPath = [
     "$HOME/.nix-profile/bin"
-    "$HOME/.local/bin"
-    "$HOME/bin"
     "$HOME/.pub-cache/bin"
     "$HOME/Development/Android/Sdk/platform-tools"
     "$HOME/Development/Android/Sdk/ndk-build"
@@ -33,8 +31,6 @@
 
   # Home Packages
   home.packages = with pkgs; [
-    corefonts
-    adwaita-fonts
     nerd-fonts.fira-code
     nerd-fonts.jetbrains-mono
 
@@ -53,13 +49,13 @@
     eza #ls
     zoxide #cd
 
-    clang
-    cmake
-    ninja
+    #clang
+    #cmake
+    #ninja
     firebase-tools
     android-tools
-    scrcpy
-    nodePackages_latest.nodejs
+    #scrcpy
+    #nodePackages_latest.nodejs
     bun
     gitui
     go

@@ -27,11 +27,12 @@ nix-shell '<home-manager>' -A install
         └── share
             ├── backgrounds
             │   ├── forest.png
+            │   ├── lanterns_festival.jpg
             │   ├── planets.png
             │   ├── robot.jpg
-            │   ├── lanterns_festival.jpg
             │   └── wanna_join_our_party.jpg
             ├── icons
+            │   ├── Cursor-Kitty
             │   ├── Cursor-Kobo-Kanaeru
             │   ├── Cursor-Megumin
             │   ├── icon-Colloid-Dark
