@@ -122,6 +122,7 @@
       gc = "git commit -a -m 'up'";
       gp = "git push";
       gs = "git status";
+      magic = "magic-crop";
 
       # DNF aliases
       du = "sudo dnf update && sudo dnf upgrade";
