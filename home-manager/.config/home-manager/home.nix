@@ -60,6 +60,7 @@
     gitui
     go
     hugo
+    imagemagick
 
     #libgtk-3-dev
   ];
@@ -132,7 +133,7 @@
       hmd = "nix-collect-garbage -d";
       hms = "home-manager switch";
       hmg = "home manager generation";
-      hmc = "nano ~/Dotfiles/home-manager/.config/home-manager/home.nix";
+      hmc = "home-manager edit";
     };
   };
 
