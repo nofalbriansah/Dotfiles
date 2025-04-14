@@ -55,7 +55,8 @@
     firebase-tools
     android-tools
     #scrcpy
-    #nodePackages_latest.nodejs
+    nodePackages_latest.nodejs
+    neovim-unwrapped
     bun
     gitui
     go
@@ -115,6 +116,7 @@
       ll = "eza -l";
       rmt = "rmtrash";
       ff = "fastfetch";
+      vim = "nvim";
       treed = "tree -L 5 -a";
       dot = "cd /home/nbs/Dotfiles";
       dev = "cd /mnt/Data/development";
