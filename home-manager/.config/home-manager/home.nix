@@ -59,7 +59,7 @@
     neovim-unwrapped
     bun
     gitui
-    go
+    go delve
     hugo
     imagemagick
 
