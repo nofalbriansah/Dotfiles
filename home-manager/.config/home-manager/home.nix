@@ -49,12 +49,12 @@
     eza #ls
     zoxide #cd
 
-    #clang
-    #cmake
-    #ninja
+    clang
+    cmake
+    ninja
     firebase-tools
     android-tools
-    #scrcpy
+    scrcpy
     nodePackages_latest.nodejs
     neovim-unwrapped
     bun
@@ -62,8 +62,6 @@
     go delve
     hugo
     imagemagick
-
-    #libgtk-3-dev
   ];
 
   # Enable Home Manager
@@ -86,7 +84,6 @@
   programs.starship = {
     enable = true;
     settings = {
-      # git_status.command_timeout = 2000; # (default 500)
       username = {
         show_always = true;
         style_user = "bold green";
@@ -101,7 +98,7 @@
   };
 
   # Bash Configuration
-  programs.bash.enable = false;
+  programs.bash.enable = true;
 
   # Fish configuration
   programs.fish = {
@@ -124,11 +121,10 @@
       gc = "git commit -a -m 'up'";
       gp = "git push";
       gs = "git status";
-      magic = "magic-crop";
 
-      # DNF aliases
-      du = "sudo dnf update && sudo dnf upgrade";
-      dd = "sudo dnf autoremove";
+      # APT aliases
+      au = "sudo nala update";
+      ad = "sudo apt autoremove";
       fu = "flatpak update";
 
       # Nix aliases
