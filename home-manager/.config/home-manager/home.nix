@@ -13,16 +13,16 @@
   home.sessionPath = [
     "$HOME/.nix-profile/bin"
     "$HOME/.pub-cache/bin"
-    "$HOME/Development/Android/Sdk/platform-tools"
-    "$HOME/Development/Android/Sdk/ndk-build"
-    "$HOME/Development/flutter/bin"
+    "$HOME/Developments/Android/Sdk/platform-tools"
+    "$HOME/Developments/Android/Sdk/ndk-build"
+    "$HOME/Developments/flutter/bin"
   ];
 
   # Environment Variables
   home.sessionVariables = {
     JAVA_HOME = "${pkgs.openjdk21}/lib/openjdk";
-    ANDROID_HOME = "/home/nbs/Development/Android/Sdk";
-    FLUTTER_HOME = "/home/nbs/Development/flutter/bin";
+    ANDROID_HOME = "/home/nbs/Developments/Android/Sdk";
+    FLUTTER_HOME = "/home/nbs/Developments/flutter/bin";
     NODE_PATH = "${pkgs.nodePackages_latest.nodejs}/lib/node_modules";
   };
 
@@ -51,6 +51,8 @@
 
     clang
     cmake
+    gnumake
+    cargo
     ninja
     firebase-tools
     android-tools
@@ -60,6 +62,7 @@
     bun
     gitui
     go delve
+    dotnet-sdk_9 dotnet-runtime_9
     hugo
     imagemagick
   ];
@@ -97,9 +100,6 @@
     };
   };
 
-  # Bash Configuration
-  programs.bash.enable = true;
-
   # Fish configuration
   programs.fish = {
     enable = true;
@@ -122,9 +122,9 @@
       gp = "git push";
       gs = "git status";
 
-      # APT aliases
-      au = "sudo nala update";
-      ad = "sudo apt autoremove";
+      # DNF aliases
+      du = "sudo dnf update";
+      dd = "sudo dnf autoremove";
       fu = "flatpak update";
 
       # Nix aliases
