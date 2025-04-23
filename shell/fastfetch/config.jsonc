@@ -1,0 +1,44 @@
+{
+  "display": {
+    "size": {
+      "maxPrefix": "MB",
+      "ndigits": 0
+    }
+  },
+  "modules": [
+    "title",
+    "separator",
+    "os",
+    "host",
+    "kernel",
+    "uptime",
+    "packages",
+    "shell",
+    {
+      "compactType": "original",
+      "key": "Resolution",
+      "type": "display"
+    },
+    "de",
+    "wm",
+    "wmtheme",
+    "theme",
+    "icons",
+    "terminal",
+    {
+      "format": "{/2}{-}{/}{2}{?3} {3}{?}",
+      "type": "terminalfont"
+    },
+    "cpu",
+    {
+      "key": "GPU",
+      "type": "gpu"
+    },
+    {
+      "format": "{/1}{-}{/}{/2}{-}{/}{} / {}",
+      "type": "memory"
+    },
+    "break",
+    "colors"
+  ]
+}

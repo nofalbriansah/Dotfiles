@@ -8,6 +8,7 @@
   home.username = "nbs";
   home.homeDirectory = "/home/nbs";
   home.stateVersion = "24.11";
+  systemd.user.startServices = true;
 
   # Path Bash and Fish
   home.sessionPath = [
@@ -16,11 +17,16 @@
     "$HOME/Developments/Android/Sdk/platform-tools"
     "$HOME/Developments/Android/Sdk/ndk-build"
     "$HOME/Developments/flutter/bin"
+    "${pkgs.dotnet-sdk_8}/share/dotnet"
+    "${pkgs.dotnet-sdk_8}/bin"
+    "${pkgs.mono}/bin"
   ];
 
   # Environment Variables
   home.sessionVariables = {
     JAVA_HOME = "${pkgs.openjdk21}/lib/openjdk";
+    DOTNET_ROOT = "${pkgs.dotnet-sdk_8}/share/dotnet";
+    MONO_HOME = "${pkgs.mono}/lib/mono";
     ANDROID_HOME = "/home/nbs/Developments/Android/Sdk";
     FLUTTER_HOME = "/home/nbs/Developments/flutter/bin";
     NODE_PATH = "${pkgs.nodePackages_latest.nodejs}/lib/node_modules";
@@ -62,7 +68,7 @@
     bun
     gitui
     go delve
-    dotnet-sdk_9 dotnet-runtime_9
+    dotnet-sdk_8 dotnet-runtime_8 mono
     hugo
     imagemagick
   ];
