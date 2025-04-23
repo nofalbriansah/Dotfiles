@@ -1,0 +1,48 @@
+FROM fedora:42
+LABEL name="dev"
+WORKDIR "$HOME/Developments"
+RUN mkdir -p "$HOME/Developments"
+
+# Install dnf-plugins-core so we can use 'dnf copr'
+RUN dnf install -y dnf-plugins-core && \
+    dnf copr enable -y atim/starship && \
+    dnf copr enable -y pgdev/ghostty && \
+    dnf copr enable -y zeno/scrcpy
+
+# Install all your requested packages
+RUN dnf install -y \
+    #wget \
+    #curl \
+    #libtrash \
+    #zip \
+    #unzip \
+    #unrar \
+    #btop \
+    #nano \
+    #tree \
+    #stow \
+    #bat \
+    #zoxide \
+    #clang \
+    #cmake \
+    #cargo \
+    #ninja-build \
+    #android-tools \
+    #nodejs \
+    #neovim \
+    #gitui \
+    #go \
+    #delve \
+    #dotnet-sdk-8.0 \
+    #dotnet-runtime-8.0 \
+    #mono-devel \
+    #hugo \
+    #java-21-openjdk \
+    #fish \
+    fastfetch \
+    starship \
+    ghostty \
+    scrcpy \
+    && dnf clean all
+
+CMD ["/bin/bash"]
