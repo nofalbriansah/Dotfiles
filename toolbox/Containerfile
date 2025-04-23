@@ -11,37 +11,36 @@ RUN dnf install -y dnf-plugins-core && \
 
 # Install all your requested packages
 RUN dnf install -y \
-    #wget \
-    #curl \
-    #libtrash \
-    #zip \
-    #unzip \
-    #unrar \
-    #btop \
-    #nano \
-    #tree \
-    #stow \
-    #bat \
-    #zoxide \
-    #clang \
-    #cmake \
-    #cargo \
-    #ninja-build \
-    #android-tools \
-    #nodejs \
-    #neovim \
-    #gitui \
-    #go \
-    #delve \
-    #dotnet-sdk-8.0 \
-    #dotnet-runtime-8.0 \
-    #mono-devel \
-    #hugo \
-    #java-21-openjdk \
-    #fish \
+    wget \
+    curl \
+    libtrash \
+    zip \
+    unzip \
+    unrar \
+    btop \
+    nano \
+    tree \
+    stow \
+    bat \
+    zoxide \
+    clang \
+    cmake \
+    cargo \
+    ninja-build \
+    android-tools \
+    nodejs \
+    neovim \
+    gitui \
+    go \
+    delve \
+    dotnet-sdk-8.0 \
+    dotnet-runtime-8.0 \
+    mono-devel \
+    hugo \
+    java-21-openjdk \
+    fish \
     fastfetch \
     starship \
-    ghostty \
     scrcpy \
     && dnf clean all
 

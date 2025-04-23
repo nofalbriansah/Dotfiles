@@ -1,6 +1,6 @@
 # ghostty +list-themes
 
-command = /home/nbs/.nix-profile/bin/fish
+command = fish
 shell-integration = fish
 copy-on-select = true
 window-theme = system
