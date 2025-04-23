@@ -3,8 +3,6 @@
 # Universal PATH and environment variables config
 
 # PATH
-export PATH="$HOME/.nix-profile/bin:$PATH"
-export PATH="$HOME/.pub-cache/bin:$PATH"
 export PATH="$HOME/Developments/Android/Sdk/platform-tools:$PATH"
 export PATH="$HOME/Developments/Android/Sdk/ndk-build:$PATH"
 export PATH="$HOME/Developments/flutter/bin:$PATH"
