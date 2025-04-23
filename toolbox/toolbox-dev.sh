@@ -5,7 +5,6 @@ HOST_DEVELOPMENTS_DIR="$HOME/Developments"
 
 COPR_REPOS=(
   atim/starship
-  pgdev/ghostty
   zeno/scrcpy
 )
 
@@ -37,11 +36,13 @@ PACKAGES=(
   dotnet-runtime-8.0
   mono-devel
   hugo
+  gtk3-devel
+  lzma-sdk-devel
+  pkgconf-pkg-config
   java-21-openjdk
   fish
   fastfetch
   starship
-  ghostty
   scrcpy
   # bun
   # eza

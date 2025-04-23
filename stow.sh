@@ -1,9 +1,13 @@
 #!/bin/bash
 
-# Ensure we are in the dotfiles directory
+# Path to the dotfiles directory
 DOTFILES_DIR=$(pwd)
 
-# Folders to stow
+# Run apps.sh first
+echo "Installing required applications..."
+bash "$DOTFILES_DIR/apps.sh"
+
+# List of folders to stow
 FOLDERS=(
     "git"
     "shell/env"
@@ -13,24 +17,29 @@ FOLDERS=(
     "shell/bash"
     "terminal"
     "themes"
-    # "toolbox"
 )
 
-# Function to stow a directory
+# Check if GNU Stow is installed
+if ! command -v stow &> /dev/null; then
+    echo "Error: GNU Stow is not installed. Install it via apps.sh or manually, then try again."
+    exit 1
+fi
+
+# Function to stow a folder
 stow_directory() {
-    local dir=$1
+    local dir="$1"
     echo "Stowing $dir..."
-    stow $dir -v --dir=$DOTFILES_DIR
-    if [ $? -eq 0 ]; then
+    if stow "$dir" -v --dir="$DOTFILES_DIR"; then
         echo "$dir stowed successfully."
     else
         echo "Error stowing $dir."
     fi
 }
 
-# Loop through and stow the listed directories
+# Loop through each folder and stow it
 for folder in "${FOLDERS[@]}"; do
     stow_directory "$folder"
 done
 
 echo "Dotfiles stowing complete!"
+
