@@ -1,7 +1,6 @@
 # ghostty +list-themes
 
 command = fish
-command = TERM=xterm-256color /usr/bin/fish
 shell-integration = fish
 copy-on-select = true
 window-theme = system

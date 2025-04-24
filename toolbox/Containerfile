@@ -1,5 +1,6 @@
-FROM fedora:42
-LABEL name="dev"
+FROM registry.fedoraproject.org/fedora-toolbox:42
+LABEL com.github.containers.toolbox="true" \ 
+      name="dev"
 WORKDIR "$HOME/Developments"
 RUN mkdir -p "$HOME/Developments"
 
@@ -38,6 +39,7 @@ RUN dnf install -y \
     mono-devel \
     hugo \
     java-21-openjdk \
+    gtk3-devel \
     fish \
     fastfetch \
     starship \
