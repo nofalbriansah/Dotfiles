@@ -1,7 +1,5 @@
 # ghostty +list-themes
 
-command = fish
-shell-integration = fish
 copy-on-select = true
 window-theme = system
 theme = Adventure

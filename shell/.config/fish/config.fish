@@ -8,14 +8,36 @@ starship init fish | source
 # Load environment variables and PATH
 if test -f ~/.linux_paths
     for line in (cat ~/.linux_paths)
-        # Add directories to PATH
+        set line (string trim $line)
+        # Skip empty or comment lines
+        if test -z "$line"
+            continue
+        end
+        if string match -q "#*" -- $line
+            continue
+        end
+
+        # Handle PATH additions
         if string match -q "export PATH=" -- $line
             set dir (string replace "export PATH=" "" -- $line)
-            set -x PATH $dir $PATH
-            # Set environment variables
+            set dir (string replace "~" $HOME -- $dir)
+            set dir (string replace ":$PATH" "" -- $dir)
+            for d in (string split ":" $dir)
+                if test -d $d
+                    if not contains $d $PATH
+                        set -gx PATH $d $PATH
+                    end
+                end
+            end
+
+        # Handle other environment variables
         else if string match -q "export " -- $line
-            set var_value (string split "=" -- $line)
-            set -x (string trim -c ' ' $var_value[1]) $var_value[2]
+            set var_assignment (string replace "export " "" -- $line)
+            set var_name (string split "=" -- $var_assignment)[1]
+            set var_value (string split "=" -- $var_assignment)[2..-1]
+            set var_value (string join "=" $var_value)
+            set var_value (string replace "~" $HOME -- $var_value)
+            set -gx $var_name $var_value
         end
     end
 end
