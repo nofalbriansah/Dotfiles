@@ -2,7 +2,7 @@ alias gc='git commit -a -m up'
 alias gp='git push'
 alias gs='git status'
 alias ff='fastfetch'
-alias vim='neovim'
+alias nv='nvim'
 alias treed='tree -L 5 -a'
 
 alias ac='nano /home/nbs/Dotfiles/shell/.linux_abbrs'
