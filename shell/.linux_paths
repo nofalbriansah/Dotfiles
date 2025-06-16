@@ -1,8 +1,8 @@
 # PATH
-export PATH=$PATH:/home/nbs/Developments/flutter/bin:$PATH
-export PATH=$PATH:/home/nbs/Developments/android/sdk/platform-tools:$PATH
+export PATH=$PATH:/home/nbs/Development/flutter/bin:$PATH
+export PATH=$PATH:/home/nbs/Development/android/sdk/platform-tools:$PATH
 export PATH=$PATH:/usr/share/dotnet:$PATH
 
 # Environment Variables
-export ANDROID_HOME=/home/nbs/Developments/android/sdk
-export FLUTTER_HOME=/home/nbs/Developments/flutter
+export ANDROID_HOME=/home/nbs/Development/android/sdk
+export FLUTTER_HOME=/home/nbs/Development/flutter
