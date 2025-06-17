@@ -11,6 +11,3 @@
 [https]
     proxy = http://192.168.168.25:1100
 
-[http]
-    sslVerify = false
-
