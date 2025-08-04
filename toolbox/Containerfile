@@ -29,6 +29,9 @@ RUN dnf install -y \
     cargo \
     ninja-build \
     android-tools \
+    pkgconf-pkg-config \
+    gtk3-devel \
+    lzma-sdk-devel \
     nodejs \
     neovim \
     gitui \
