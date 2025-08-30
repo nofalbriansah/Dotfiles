@@ -20,17 +20,17 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/c902af65-c9e9-4f14-b8f8-8c7e0e53681e";
-    fsType = "btrfs";
-    options = [ "subvol=@" "x-gvfs-show" "x-gvfs-name=Root" ];
-  };
+  fileSystems."/" =
+    { device = "/dev/disk/by-uuid/781043bc-e1b9-467d-9da4-c658976b723f";
+      fsType = "btrfs";
+      options = [ "subvol=@" ];
+    };
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/7C0D-4001";
-    fsType  = "vfat";
-    options = [ "fmask=0077" "dmask=0077"];
-  };
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/347D-4F3D";
+      fsType = "vfat";
+      options = [ "fmask=0077" "dmask=0077" ];
+    };
 
   fileSystems."/mnt/Data" = {
     device = "/dev/disk/by-uuid/49b6342f-5010-4ec7-8f0b-11e2c191319c";
