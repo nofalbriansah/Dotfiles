@@ -31,10 +31,14 @@
 │   │               └── Orchis-Light-Compact
 │   └── toolbox
 ├── nixos
-│   ├── configuration.nix
 │   ├── flake.lock
 │   ├── flake.nix
-│   └── hardware-configuration.nix
+│   ├── home
+│   │   ├── gnome.nix
+│   │   └── home.nix
+│   └── nixos
+│       ├── configuration.nix
+│       └── hardware-configuration.nix
 └── README.md
 
 ```
