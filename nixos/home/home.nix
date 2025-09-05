@@ -158,7 +158,7 @@ in
         ga = "git add .";
         gf = "git fetch";
         gft = ''git commit -m "feat: "'';
-        gfx    = ''git commit -m "fix: "'';
+        gfx = ''git commit -m "fix: "'';
         gc = ''git commit -m "chore: "'';
         gr  = ''git commit -m "refactor: "'';
         gd  = ''git commit -m "docs: "'';
