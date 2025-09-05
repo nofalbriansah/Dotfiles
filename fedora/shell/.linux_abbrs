@@ -1,0 +1,15 @@
+alias gc='git commit -a -m up'
+alias gp='git push'
+alias gs='git status'
+alias ff='fastfetch'
+alias nv='nvim'
+alias treed='tree -L 5 -a'
+
+alias ac='nano /home/nbs/Dotfiles/shell/.linux_abbrs'
+alias pc='nano /home/nbs/Dotfiles/shell/.linux_paths'
+alias obsidian='cd /mnt/Data/development/research/obsidian'
+alias dot='cd /home/nbs/Dotfiles'
+
+alias du='sudo dnf update'
+alias fu='flatpak update'
+alias fs='fish'
