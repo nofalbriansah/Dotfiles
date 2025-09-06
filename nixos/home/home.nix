@@ -99,6 +99,7 @@ in
     unstable.google-chrome
     unstable.obsidian
     unstable.nekoray
+    unstable.flclash
     thunderbird
     onlyoffice-desktopeditors
     gnome-pomodoro
@@ -157,6 +158,7 @@ in
         gs = "git status";
         ga = "git add .";
         gf = "git fetch";
+        gp = "git push";
         gft = ''git commit -m "feat: "'';
         gfx = ''git commit -m "fix: "'';
         gc = ''git commit -m "chore: "'';
