@@ -21,19 +21,19 @@
       modules = [
         ./nixos/configuration.nix
         
-        #{
-        #  networking.proxy = {
-        #    httpProxy = "http://127.0.0.1:7897";
-        #    httpsProxy = "http://127.0.0.1:7897";
-        #    noProxy = "127.0.0.1,localhost,::1";
-        #  };
+        {
+          networking.proxy = {
+            httpProxy = "http://127.0.0.1:7897";
+            httpsProxy = "http://127.0.0.1:7897";
+            noProxy = "127.0.0.1,localhost,::1";
+          };
 
-        #  environment.sessionVariables = {
-        #    http_proxy = "http://127.0.0.1:7897";
-        #    https_proxy = "http://127.0.0.1:7897";
-        #    no_proxy = "127.0.0.1,localhost,::1";
-        #  };
-        #}
+          environment.sessionVariables = {
+            http_proxy = "http://127.0.0.1:7897";
+            https_proxy = "http://127.0.0.1:7897";
+            no_proxy = "127.0.0.1,localhost,::1";
+          };
+        }
 
         home-manager.nixosModules.home-manager
         {
