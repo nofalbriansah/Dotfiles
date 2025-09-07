@@ -77,7 +77,6 @@
       alsa.support32Bit = true;
       pulse.enable = true;
     };
-    resolved.enable = true;
   };
 
   ######################
@@ -98,7 +97,6 @@
     isNormalUser = true;
     description = "nbs";
     extraGroups = [
-      "network"
       "networkmanager"
       "wheel"
       "adbusers"
@@ -134,11 +132,6 @@
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
-    };
-
-    nekoray = {
-      enable = true;
-      tunMode.enable = true;
     };
 
     nix-ld = {

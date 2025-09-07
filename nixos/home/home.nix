@@ -98,7 +98,6 @@ in
     unstable.firefox
     unstable.google-chrome
     unstable.obsidian
-    unstable.nekoray
     unstable.flclash
     thunderbird
     onlyoffice-desktopeditors
