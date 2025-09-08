@@ -43,7 +43,6 @@
     ######################
     colloid-icon-theme
     marble-shell-theme
-    reversal-icon-theme
 
     ######################
     # GUI Apps (stable)
@@ -60,7 +59,6 @@
     localsend
     obs-studio
     onlyoffice-desktopeditors
-    thunderbird
     vlc
     zoom-us
     slack
@@ -79,6 +77,7 @@
     ######################
     android-tools
     bun
+    cargo
     clang
     cmake
     curl
@@ -89,15 +88,16 @@
     mesa-demos
     pkg-config
     python3
+    rustc
     scrcpy
     
-    unstable.android-studio
+    #unstable.android-studio
     unstable.code-cursor-fhs
     unstable.flutter
     unstable.gemini-cli
     unstable.godot
     unstable.hugo
-    unstable.jetbrains.goland
+    #unstable.jetbrains.goland
     unstable.vscode
     unstable.zed-editor
   ];
