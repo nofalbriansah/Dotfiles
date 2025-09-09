@@ -72,9 +72,9 @@
     unstable.google-chrome
     unstable.obsidian
 
-    ######################
+    #######################
     # Dev / SDK / IDE Tools
-    ######################
+    #######################
     android-tools
     bun
     cargo
