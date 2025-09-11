@@ -37,6 +37,8 @@
     wget
     zip
     nixpkgs-fmt
+    asciinema
+    asciinema-agg
     
     ######################
     # Themes
@@ -49,6 +51,7 @@
     ######################
     abdownloadmanager
     discord
+    calibre
     gimp3-with-plugins
     ghostty
     gnome-disk-utility
@@ -123,6 +126,7 @@
       '';
       shellAbbrs = {
         dot = "cd ~/Dotfiles";
+        as = "asciinema rec NAME-(date +%d-%b-%y-%H%M%S).cast";
 
         # Git shortcuts
         ga  = "git add .";
