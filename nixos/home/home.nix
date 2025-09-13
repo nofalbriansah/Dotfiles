@@ -13,8 +13,8 @@
   # Environment Variables
   ######################
   home.sessionVariables = {
-    ANDROID_HOME = "$HOME/Developments/android/Sdk";
-    ANDROID_SDK_ROOT = "$HOME/Developments/android/Sdk";
+    ANDROID_HOME = "$HOME/Developments/android-sdk";
+    ANDROID_SDK_ROOT = "$HOME/Developments/android-sdk";
     JAVA_HOME          = "${pkgs.jdk21}";
     CHROME_EXECUTABLE  = "${unstable.google-chrome}/bin/google-chrome-stable";
     TERMINAL           = "ghostty";

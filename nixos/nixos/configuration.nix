@@ -71,6 +71,7 @@
       desktopManager.gnome.enable = true;
       xkb.layout = "us";
     };
+    desktopManager.cosmic.enable = true;
     printing.enable = false;
     pulseaudio.enable = false;
     pipewire = {
