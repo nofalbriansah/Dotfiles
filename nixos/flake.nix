@@ -16,7 +16,7 @@
       (final: prev: {
         abdownloadmanager = prev.stdenv.mkDerivation rec {
           pname = "abdownloadmanager";
-          version = "1.6.10";
+          version = "1.6.13";
 
           # Source tarball from GitHub releases
           src = prev.fetchurl {

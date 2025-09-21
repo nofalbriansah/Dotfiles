@@ -15,7 +15,7 @@
   home.sessionVariables = {
     ANDROID_HOME = "$HOME/Developments/android-sdk";
     ANDROID_SDK_ROOT = "$HOME/Developments/android-sdk";
-    JAVA_HOME          = "${pkgs.jdk21}";
+    JAVA_HOME          = "${pkgs.jdk21_headless}";
     CHROME_EXECUTABLE  = "${unstable.google-chrome}/bin/google-chrome-stable";
     TERMINAL           = "ghostty";
   };
@@ -59,12 +59,12 @@
     gnome-system-monitor
     heroic-unwrapped
     kdePackages.kdenlive
-    localsend
+    #localsend
     obs-studio
     onlyoffice-desktopeditors
     vlc
     zoom-us
-    slack
+    #slack
     zotero
 
     ######################
@@ -86,7 +86,7 @@
     curl
     git
     go
-    jdk
+    jdk21_headless
     ninja
     mesa-demos
     pkg-config
@@ -97,12 +97,12 @@
     #unstable.android-studio
     unstable.code-cursor-fhs
     unstable.flutter
-    unstable.gemini-cli
+    #unstable.gemini-cli
     unstable.godot
     unstable.hugo
     #unstable.jetbrains.goland
     unstable.vscode
-    unstable.zed-editor
+    #unstable.zed-editor
   ];
 
   ######################
@@ -141,6 +141,7 @@
 
         # NixOS shortcuts
         ng = "sudo nixos-rebuild list-generations";
+        nu = "nix flake update --flake /home/nbs/Dotfiles/nixos";
         ns = "sudo nixos-rebuild switch --flake ~/Dotfiles/nixos";
         nr = "sudo nixos-rebuild switch --rollback";
         nd = "sudo nix-collect-garbage -d";
