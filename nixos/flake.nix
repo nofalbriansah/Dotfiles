@@ -21,7 +21,7 @@
           # Source tarball from GitHub releases
           src = prev.fetchurl {
             url = "https://github.com/amir1376/ab-download-manager/releases/download/v${version}/ABDownloadManager_${version}_linux_x64.tar.gz";
-            sha256 = "D0ZwRwdXr+Y+xnC2ZWjSTSHeUAkmgM3mOCRWcZOc7Is=";
+            sha256 = "sha256-bqKcOpTLiiplBJavjX8JIL92XAlxDSPXt9hvQbPDIAs=";
           };
 
           nativeBuildInputs = [ prev.makeWrapper ];
