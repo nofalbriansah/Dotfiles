@@ -141,8 +141,8 @@
 
         # NixOS shortcuts
         ng = "sudo nixos-rebuild list-generations";
-        nu = "nix flake update --flake /home/nbs/Dotfiles/nixos";
-        ns = "sudo nixos-rebuild switch --flake ~/Dotfiles/nixos";
+        nu = "nix flake update --flake /home/nbs/Dotfiles/nix";
+        ns = "sudo nixos-rebuild switch --flake ~/Dotfiles/nix";
         nr = "sudo nixos-rebuild switch --rollback";
         nd = "sudo nix-collect-garbage -d";
 
