@@ -147,9 +147,9 @@
         nd = "sudo nix-collect-garbage -d";
 
         # Edit config shortcuts
-        nc = "nano ~/Dotfiles/nixos/nixos/configuration.nix";
-        nf = "nano ~/Dotfiles/nixos/flake.nix";
-        nh = "nano ~/Dotfiles/nixos/home/home.nix";
+        nc = "nano ~/Dotfiles/nix/nixos/configuration.nix";
+        nf = "nano ~/Dotfiles/nix/flake.nix";
+        nh = "nano ~/Dotfiles/nix/home/home.nix";
       };
     };
   };

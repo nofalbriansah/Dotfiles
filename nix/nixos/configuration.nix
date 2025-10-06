@@ -117,7 +117,7 @@
     libvirtd.enable = true;
     spiceUSBRedirection.enable = true;
     docker = {
-      enable = true;
+      enable = false;
       storageDriver = "btrfs";
     };
   };
@@ -127,62 +127,19 @@
   ######################
   programs = {
     virt-manager.enable = true;
-    dconf.enable = true;
-    mtr.enable = true;
     adb.enable = true;
 
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
     };
-
-    nix-ld = {
+    
+    programs.steam = {
       enable = true;
-      libraries = with pkgs; [
-        stdenv.cc.cc
-        vulkan-loader
-        libGL
-        libglvnd
-        mesa
-        libdrm
-        wayland
-        cairo
-        pango
-        harfbuzz
-        xorg.libX11
-        xorg.libXcursor
-        xorg.libXext
-        xorg.libXrandr
-        xorg.libXrender
-        xorg.libXi
-        xorg.libXinerama
-        xorg.libXxf86vm
-        xorg.libXScrnSaver
-        libxkbcommon
-        systemd
-        libudev-zero
-        alsa-lib
-        pulseaudio
-        pipewire
-        openal
-        SDL2
-        freetype
-        fontconfig
-        zlib
-        libpng
-        libjpeg
-        curl
-        dbus
-        expat
-        glib
-        nss
-        nspr
-        openssl
-        libffi
-        libuuid
-      ];
+      remotePlay.openFirewall = true;
+      dedicatedServer.openFirewall = true;
+      localNetworkGameTransfers.openFirewall = true;
     };
-  };
 
   ######################
   # Security

@@ -30,7 +30,7 @@
 │   │               ├── Orchis-Dark-Compact
 │   │               └── Orchis-Light-Compact
 │   └── toolbox
-├── nixos
+├── nix
 │   ├── flake.lock
 │   ├── flake.nix
 │   ├── home
