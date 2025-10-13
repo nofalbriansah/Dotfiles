@@ -1,8 +1,0 @@
-[user]
-    name = nofalbriansah
-    email = nofalbriansah@gmail.com
-
-[core]
-    excludesfile = "$HOME/.gitignore_global"
-    
-
