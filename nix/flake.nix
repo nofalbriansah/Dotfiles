@@ -1,5 +1,4 @@
-{
-  inputs = {
+{ inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
@@ -10,10 +9,16 @@
   outputs = { self, nixpkgs, unstable, home-manager, ... }:
     let
       system = "x86_64-linux";
-
+      
+      # Function to import the unstable channel with 'allowUnfree' set.
+      importUnstable = args: (import unstable {
+        inherit (args) system;
+        config.allowUnfree = true;
+      });
+      
       # Overlay for custom packages
       overlays = [
-        # ABDownloadManager as a custom package
+        # ABDownloadManager as a custom package definition
         (final: prev: {
           abdownloadmanager = prev.stdenv.mkDerivation rec {
             name = "abdownloadmanager";
@@ -49,39 +54,29 @@
                 --set LD_LIBRARY_PATH "${prev.lib.makeLibraryPath buildInputs}"
             '';
           };
-
         })
       ];
+      
     in
     {
-      # NixOS system configuration
+      ## NIXOS SYSTEM CONFIGURATION (FULL DESKTOP)
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
         inherit system;
+        specialArgs = { unstable = importUnstable { inherit system; }; };
 
-        # Special arguments for unstable packages
-        specialArgs = {
-          unstable = import unstable {
-            inherit system;
-            config.allowUnfree = true;
-          };
-        };
-
-        # NixOS modules
         modules = [
           ./nixos/configuration.nix
-
+          
           {
             # Apply overlays (custom packages)
             nixpkgs.overlays = overlays;
-
-            # Proxy for GUI apps and system networking
+            
+            # System-level proxy configuration
             networking.proxy = {
               httpProxy = "http://127.0.0.1:7890";
               httpsProxy = "http://127.0.0.1:7890";
               noProxy = "127.0.0.1,localhost,::1";
             };
-
-            # Environment variables for shell and user applications
             environment.sessionVariables = {
               http_proxy = "http://127.0.0.1:7890";
               https_proxy = "http://127.0.0.1:7890";
@@ -89,29 +84,43 @@
             };
           }
 
-          # Home Manager integration
+          # Home Manager integration as a NixOS module (for 'nixos-rebuild switch')
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.backupFileExtension = "backup";
+            home-manager.extraSpecialArgs = { unstable = importUnstable { inherit system; }; };
 
-            # Special args for unstable packages
-            home-manager.extraSpecialArgs = {
-              unstable = import unstable {
-                inherit system;
-                config.allowUnfree = true;
-              };
+            home-manager.users.nbs = {
+              # Import all user modules (base, CLI, GUI) for the NixOS environment
+              imports = [ 
+                ./home/home.nix 
+                ./home/gui.nix  
+                ./home/gnome.nix
+              ];
             };
-
-            # Import user home configuration
-            home-manager.users.nbs = import ./home/home.nix;
           }
         ];
       };
 
-      # Formatter for flake (nixpkgs-fmt)
+      ## STANDALONE HOME MANAGER (CLI ONLY DEFAULT)
+      # This configuration is used when running 'home-manager switch --flake .#nbs'
+      homeConfigurations.nbs = home-manager.lib.homeManagerConfiguration {
+        extraSpecialArgs = { unstable = importUnstable { inherit system; }; };
+        pkgs = import nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+          overlays = overlays; 
+        };
+
+        modules = [
+          # Only import CLI configuration for standalone use on non-NixOS (or for minimal deployment)
+          ./home/home.nix 
+          # Apply overlay so custom packages are available
+          { nixpkgs.overlays = overlays; }
+        ];
+      };
+
+      ## FORMATTER
       formatter.${system} = nixpkgs.legacyPackages.${system}.nixpkgs-fmt;
     };
 }
-

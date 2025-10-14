@@ -87,6 +87,7 @@
   fonts = {
     fontDir.enable = true;
     packages = with pkgs; [
+      # noto-fonts noto-fonts-extra noto-fonts-emoji noto-fonts-cjk ttf-dejavu ttf-liberation
       nerd-fonts.fira-code
       fira-code-symbols
     ];
