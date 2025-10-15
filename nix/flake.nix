@@ -18,7 +18,7 @@
       
       # Overlay for custom packages
       overlays = [
-        # ABDownloadManager as a custom package definition
+        # ABDownloadManager
         (final: prev: {
           abdownloadmanager = prev.stdenv.mkDerivation rec {
             name = "abdownloadmanager";

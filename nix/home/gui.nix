@@ -11,7 +11,7 @@
     ######################
     # GUI Apps (stable)
     ######################
-    abdownloadmanager # (Custom package)
+    abdownloadmanager
     discord
     calibre
     gimp3-with-plugins
@@ -39,7 +39,6 @@
     # Dev / SDK / IDE Tools (GUI)
     #######################
     unstable.code-cursor-fhs
-    unstable.flutter
     unstable.godot
     unstable.vscode
   ];

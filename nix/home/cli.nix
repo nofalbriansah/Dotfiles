@@ -16,7 +16,7 @@
     #asciinema
     #asciinema-agg
 
-    # Dev / SDK / IDE Tools (Non-GUI)
+    # Dev / SDK / IDE
     android-tools
     bun
     cargo
@@ -32,6 +32,7 @@
     python3
     rustc
     scrcpy
+    unstable.flutter
     unstable.hugo
   ];
 
