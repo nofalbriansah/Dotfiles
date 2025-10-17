@@ -34,6 +34,16 @@ The core configuration is segregated into functional modules under the `nix/home
 
 ---
 
+## 🛠️ Prerequisites for Flakes
+
+To use Nix functionality, it is essential to enable the experimental features nix-command and flakes. 
+
+Add the following line to Nix configuration file (typically ~/.config/nix/nix.conf or /etc/nix/nix.conf):
+
+```
+experimental-features = nix-command flakes
+```
+
 ## 🚀 Workflow & Usage Summary
 
 This workflow utilizes explicit module composition in `flake.nix` for NixOS, while relying on `home.nix` for standalone Home Manager systems.
@@ -41,4 +51,4 @@ This workflow utilizes explicit module composition in `flake.nix` for NixOS, whi
 | Target | Command | Module Composition | Notes |
 | :--- | :--- | :--- | :--- |
 | **NixOS** (Full Desktop) | `sudo nixos-rebuild switch --flake .#nixos` | **CLI + GUI + GNOME** | Flake guarantees the full set.|
-| **Non-NixOS** | `home-manager switch --flake .#nbs` | **CLI ONLY** (by default) | `home.nix` imports CLI by default, maintaining a lightweight setup. **To install GUI apps:** Uncomment the `gui.nix` and `gnome.nix` imports inside `nix/home/home.nix` temporarily. |
+| **Non-NixOS** | `nix run home-manager -- switch --flake ~/Dotfiles/nix#nbs` | **CLI ONLY** (by default) | `home.nix` imports CLI by default, maintaining a lightweight setup. **To install GUI apps:** Uncomment the `gui.nix` and `gnome.nix` imports inside `nix/home/home.nix` temporarily. |
