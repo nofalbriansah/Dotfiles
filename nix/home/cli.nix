@@ -97,6 +97,10 @@
         ys = "yay -Ss "; 
         yr = "yay -Rns "; 
         yi = "yay -S "; 
+
+        # Fedora
+        fu = "sudo dnf up && sudo dnf upgrade";
+        fd = "sudo dnf autoremove";
       };
     };
   };
