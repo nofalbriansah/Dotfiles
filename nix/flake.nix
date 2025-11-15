@@ -109,14 +109,14 @@
         pkgs = import nixpkgs {
           inherit system;
           config.allowUnfree = true;
-          overlays = overlays; 
+          # overlays = overlays; 
         };
 
         modules = [
           # Only import CLI configuration for standalone use on non-NixOS (or for minimal deployment)
           ./home/home.nix 
           # Apply overlay so custom packages are available
-          { nixpkgs.overlays = overlays; }
+          # { nixpkgs.overlays = overlays; }
         ];
       };
 
