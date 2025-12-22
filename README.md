@@ -51,4 +51,4 @@ This workflow utilizes explicit module composition in `flake.nix` for NixOS, whi
 | Target | Command | Module Composition | Notes |
 | :--- | :--- | :--- | :--- |
 | **NixOS** (Full Desktop) | `sudo nixos-rebuild switch --flake .#nixos` | **CLI + GUI + GNOME** | Flake guarantees the full set.|
-| **Non-NixOS** | `nix run home-manager -- switch --flake ~/Dotfiles/nix#nbs` | **CLI ONLY** (by default) | `home.nix` imports CLI by default, maintaining a lightweight setup. **To install GUI apps:** Uncomment the `gui.nix` and `gnome.nix` imports inside `nix/home/home.nix` temporarily. |
+| **Non-NixOS** | `nix run home-manager -- switch --flake ~/Dotfiles/nix#nix` | **CLI ONLY** (by default) | `home.nix` imports CLI by default, maintaining a lightweight setup. **To install GUI apps:** Uncomment the `gui.nix` and `gnome.nix` imports inside `nix/home/home.nix` temporarily. |

@@ -74,29 +74,24 @@
         nh = "nano ~/Dotfiles/nix/home/home.nix";
         nhc = "nano ~/Dotfiles/nix/home/cli.nix";
         nhg = "nano ~/Dotfiles/nix/home/gui.nix";
-        
+
         # NixOS shortcuts
         nu = "nix flake update --flake /home/nbs/Dotfiles/nix";
         ng = "sudo nixos-rebuild list-generations";
         ns = "sudo nixos-rebuild switch --flake .#nixos";
         nr = "sudo nixos-rebuild switch --rollback";
         nd = "sudo nix-collect-garbage -d";
-        
+
         # Home-Manager shortcuts
         hs = "nix run home-manager -- switch --flake ~/Dotfiles/nix#nbs";
         hg = "nix run home-manager -- generations";
         hd = "nix-collect-garbage -d";
-        
-        # Arch (pacman + yay)
+
+        # Arch (pacman + aur)
         pu = "sudo pacman -Syu";
-        ps = "sudo pacman -Ss "; 
-        pr = "sudo pacman -Rns "; 
+        ps = "sudo pacman -Ss ";
+        pr = "sudo pacman -Rns ";
         pi = "sudo pacman -S ";
-        
-        yu = "yay -Syu"; 
-        ys = "yay -Ss "; 
-        yr = "yay -Rns "; 
-        yi = "yay -S "; 
 
         # Fedora
         fu = "sudo dnf up && sudo dnf upgrade";
