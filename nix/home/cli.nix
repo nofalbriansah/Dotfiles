@@ -49,6 +49,8 @@
     fish = {
       enable = true;
       interactiveShellInit = ''
+        set -g __done_min_cmd_duration 0
+        set -g done_enabled 0
         set -g fish_greeting " "
         starship init fish |
         source
@@ -83,7 +85,7 @@
         nd = "sudo nix-collect-garbage -d";
 
         # Home-Manager shortcuts
-        hs = "nix run home-manager -- switch --flake ~/Dotfiles/nix#nbs";
+        hs = "nix run home-manager -- switch --flake ~/Dotfiles/nix#nix";
         hg = "nix run home-manager -- generations";
         hd = "nix-collect-garbage -d";
 
