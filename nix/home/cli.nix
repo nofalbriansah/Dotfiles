@@ -90,10 +90,14 @@
         hd = "nix-collect-garbage -d";
 
         # Arch (pacman + aur)
-        pu = "sudo pacman -Syu";
-        ps = "sudo pacman -Ss ";
-        pr = "sudo pacman -Rns ";
-        pi = "sudo pacman -S ";
+        cu = "sudo -E pacman -Syu";
+        cs = "sudo -E pacman -Ss ";
+        cr = "sudo -E pacman -Rns ";
+        ci = "sudo -E pacman -S ";
+        pu = "paru -Syu";
+        ps = "paru -Ss ";
+        pr = "paru -Rns ";
+        pi = "paru -S ";
 
         # Fedora
         fu = "sudo dnf up && sudo dnf upgrade";
