@@ -19,10 +19,12 @@
   # Environment Variables
   ######################
   home.sessionVariables = {
-    ANDROID_HOME = "$HOME/Developments/android-sdk";
-    ANDROID_SDK_ROOT = "$HOME/Developments/android-sdk";
-    JAVA_HOME          = "${pkgs.jdk21_headless}";
-    #CHROME_EXECUTABLE  = "${unstable.google-chrome}/bin/google-chrome-stable";
-    #TERMINAL           = "ghostty";
+    ANDROID_HOME = "$HOME/Developments/android/Sdk";
+    JAVA_HOME = "${pkgs.jdk21_headless}";
+    PATH = "$PATH" 
+    + ":$ANDROID_HOME/emulator"
+    + ":$ANDROID_HOME/platform-tools"
+    + ":$ANDROID_HOME/cmdline-tools/latest/bin"
+    + ":$ANDROID_HOME/tools/bin";
   };
 }

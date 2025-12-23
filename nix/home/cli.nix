@@ -36,9 +36,9 @@
     golangci-lint
     delve
 
-    unstable.flutter
-    android-tools
-    scrcpy
+    #unstable.flutter
+    #android-tools
+    #scrcpy
     jdk21_headless
 
     unstable.hugo
