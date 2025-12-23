@@ -24,11 +24,16 @@
     python3Packages.pip
     mesa-demos
 
-    rustc
     cargo
+    rustc
     rustfmt
+    rust-analyzer
+    clippy
 
     go
+    gopls
+    gotools
+    golangci-lint
     delve
 
     unstable.flutter
@@ -68,6 +73,7 @@
         fd                
         lua-language-server
         stylua
+	wl-clipboard
       ];
     };    
 
