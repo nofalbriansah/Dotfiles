@@ -9,31 +9,35 @@
     tree
     unzip
     unrar
-    vim
     wget
     zip
     nixpkgs-fmt
-    #asciinema
-    #asciinema-agg
+    asciinema
+    asciinema-agg
 
     # Dev / SDK / IDE
-    android-tools
-    bun
-    cargo
     clang
     cmake
-    curl
-    git
-    go
-    jdk21_headless
     ninja
-    mesa-demos
     pkg-config
     python3
+    python3Packages.pip
+    mesa-demos
+
     rustc
-    scrcpy
+    cargo
+    rustfmt
+
+    go
+    delve
+
     unstable.flutter
+    android-tools
+    scrcpy
+    jdk21_headless
+
     unstable.hugo
+    bun
   ];
 
   # Programs configuration associated with CLI
@@ -45,6 +49,27 @@
         format      = "$all";
       };
     };
+    
+    neovim = {
+      enable = true;
+      package = pkgs.neovim-unwrapped;
+    
+      viAlias = true;
+      vimAlias = true;
+      vimdiffAlias = true;
+
+      plugins = with pkgs.vimPlugins; [
+        lazy-nvim
+        LazyVim
+      ];
+       
+      extraPackages = with pkgs; [
+        ripgrep 
+        fd                
+        lua-language-server
+        stylua
+      ];
+    };    
 
     fish = {
       enable = true;
@@ -71,11 +96,11 @@
         gr  = ''git commit -m "refactor: "'';
 
         # Edit config shortcuts
-        nc = "nano ~/Dotfiles/nix/nixos/configuration.nix";
-        nf = "nano ~/Dotfiles/nix/flake.nix";
-        nh = "nano ~/Dotfiles/nix/home/home.nix";
-        nhc = "nano ~/Dotfiles/nix/home/cli.nix";
-        nhg = "nano ~/Dotfiles/nix/home/gui.nix";
+        nc = "vi ~/Dotfiles/nix/nixos/configuration.nix";
+        nf = "vi ~/Dotfiles/nix/flake.nix";
+        nh = "vi ~/Dotfiles/nix/home/home.nix";
+        nhc = "vi ~/Dotfiles/nix/home/cli.nix";
+        nhg = "vi ~/Dotfiles/nix/home/gui.nix";
 
         # NixOS shortcuts
         nu = "nix flake update --flake /home/nbs/Dotfiles/nix";
