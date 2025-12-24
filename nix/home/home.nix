@@ -13,7 +13,7 @@
   # Basic user and state configuration
   home.username = "nbs";
   home.homeDirectory = "/home/nbs";
-  home.stateVersion = "25.05";
+  home.stateVersion = "25.11";
 
   ######################
   # Environment Variables

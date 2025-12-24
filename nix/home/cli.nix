@@ -39,6 +39,7 @@
     #unstable.flutter
     #android-tools
     #scrcpy
+    gtk3
     jdk21_headless
 
     unstable.hugo
