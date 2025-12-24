@@ -64,8 +64,8 @@
       vimdiffAlias = true;
 
       plugins = with pkgs.vimPlugins; [
-        lazy-nvim
-        LazyVim
+        #lazy-nvim
+        #LazyVim
       ];
        
       extraPackages = with pkgs; [
