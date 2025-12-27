@@ -3,6 +3,10 @@
 {
   home.packages = with pkgs; [
 
+    # Fonts
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.fira-code
+
     # CLI Tools
     neofetch
     stow
@@ -36,9 +40,9 @@
     golangci-lint
     delve
 
-    #unstable.flutter
-    #android-tools
-    #scrcpy
+    unstable.flutter
+    android-tools
+    scrcpy
     gtk3
     jdk21_headless
 
@@ -74,7 +78,7 @@
         fd                
         lua-language-server
         stylua
-	wl-clipboard
+	    wl-clipboard
       ];
     };    
 
@@ -122,12 +126,10 @@
         hd = "nix-collect-garbage -d";
 
         # Arch (pacman + aur)
-        cu = "sudo -E pacman -Syu";
-        cs = "sudo -E pacman -Ss ";
-        cr = "sudo -E pacman -Rns ";
-        ci = "sudo -E pacman -S ";
+        cu = "sudo pacman -Syu";
+        cr = "sudo pacman -Rns ";
+        ci = "sudo pacman -S ";
         pu = "paru -Syu";
-        ps = "paru -Ss ";
         pr = "paru -Rns ";
         pi = "paru -S ";
 

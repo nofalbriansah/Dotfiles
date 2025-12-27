@@ -42,6 +42,7 @@ Add the following line to Nix configuration file (typically ~/.config/nix/nix.co
 
 ```
 experimental-features = nix-command flakes
+warn-dirty = false
 ```
 
 ## 🚀 Workflow & Usage Summary

@@ -14,6 +14,7 @@
   home.username = "nbs";
   home.homeDirectory = "/home/nbs";
   home.stateVersion = "25.11";
+  fonts.fontconfig.enable = true;
 
   ######################
   # Environment Variables
@@ -21,6 +22,7 @@
   home.sessionVariables = {
     ANDROID_HOME = "$HOME/Developments/android/Sdk";
     JAVA_HOME = "${pkgs.jdk21_headless}";
+    CHROME_EXECUTABLE = "/usr/bin/firefox";
     PATH = "$PATH" 
     + ":$ANDROID_HOME/emulator"
     + ":$ANDROID_HOME/platform-tools"
