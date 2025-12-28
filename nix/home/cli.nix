@@ -40,7 +40,7 @@
     golangci-lint
     delve
 
-    unstable.flutter
+    #unstable.flutter
     android-tools
     scrcpy
     gtk3
