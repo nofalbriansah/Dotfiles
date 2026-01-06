@@ -9,12 +9,14 @@
 
     # CLI Tools
     neofetch
+    keyd
     stow
     tree
     unzip
     unrar
     wget
     zip
+    syncthing
     nixpkgs-fmt
     asciinema
     asciinema-agg
@@ -107,11 +109,11 @@
         gr  = ''git commit -m "refactor: "'';
 
         # Edit config shortcuts
-        nc = "vi ~/Dotfiles/nix/nixos/configuration.nix";
-        nf = "vi ~/Dotfiles/nix/flake.nix";
-        nh = "vi ~/Dotfiles/nix/home/home.nix";
-        nhc = "vi ~/Dotfiles/nix/home/cli.nix";
-        nhg = "vi ~/Dotfiles/nix/home/gui.nix";
+        nc = "vim ~/Dotfiles/nix/nixos/configuration.nix";
+        nf = "vim ~/Dotfiles/nix/flake.nix";
+        nh = "vim ~/Dotfiles/nix/home/home.nix";
+        nhc = "vim ~/Dotfiles/nix/home/cli.nix";
+        nhg = "vim ~/Dotfiles/nix/home/gui.nix";
 
         # NixOS shortcuts
         nu = "nix flake update --flake /home/nbs/Dotfiles/nix";
@@ -127,10 +129,8 @@
 
         # Arch (pacman + aur)
         cu = "sudo pacman -Syu";
-        cr = "sudo pacman -Rns ";
+        cr = "sudo pacman -Scc ";
         ci = "sudo pacman -S ";
-        pu = "paru -Syu";
-        pr = "paru -Rns ";
         pi = "paru -S ";
 
         # Fedora

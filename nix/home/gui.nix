@@ -20,8 +20,10 @@
     gnome-pomodoro
     gnome-system-monitor
     heroic-unwrapped
+    steam
     kdePackages.kdenlive
     obs-studio
+    converseen
     onlyoffice-desktopeditors
     vlc
     zoom-us
@@ -41,5 +43,6 @@
     unstable.code-cursor-fhs
     unstable.godot
     unstable.vscode
+    unstable.zed-editor
   ];
 }
