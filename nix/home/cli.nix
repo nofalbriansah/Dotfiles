@@ -18,6 +18,7 @@
     zip
     syncthing
     nixpkgs-fmt
+    lazygit
     asciinema
     asciinema-agg
 
@@ -80,7 +81,7 @@
         fd                
         lua-language-server
         stylua
-	    wl-clipboard
+	wl-clipboard
       ];
     };    
 
