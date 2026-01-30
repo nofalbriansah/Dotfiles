@@ -1,0 +1,33 @@
+---
+# 1. Ensure the ~/.config directory exists
+- name: "DOTFILES | Ensure .config directory"
+  ansible.builtin.file:
+    path: "{{ xdg_config_dir }}"
+    state: directory
+
+# 2. Dynamically symlink all folders inside files/configs to ~/.config/
+- name: "DOTFILES | Symlink Config Directories"
+  ansible.builtin.file:
+    src: "{{ playbook_dir }}/files/configs/{{ item }}"
+    dest: "{{ xdg_config_dir }}/{{ item }}"
+    state: link
+    force: yes
+  with_lines: "ls -1 {{ playbook_dir }}/files/configs 2>/dev/null || true"
+
+# --- BASH SPECIFIC LOGIC ---
+
+# 3. Specifically check if .bashrc exists in your repository
+- name: "DOTFILES | Check if repo .bashrc exists"
+  ansible.builtin.stat:
+    path: "{{ playbook_dir }}/files/configs/bash/.bashrc"
+  register: repo_bashrc
+
+# 4. Link .bashrc directly to the Home Directory root
+- name: "DOTFILES | Symlink .bashrc"
+  ansible.builtin.file:
+    src: "{{ playbook_dir }}/files/configs/bash/.bashrc"
+    dest: "{{ ansible_facts['user_dir'] }}/.bashrc"
+    state: link
+    force: true # Changed from 'yes' to 'true' (boolean)
+  when: repo_bashrc.stat.exists
+  ignore_errors: true # Changed from 'yes' to 'true' (boolean)

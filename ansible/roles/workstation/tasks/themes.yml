@@ -1,0 +1,79 @@
+---
+# 1. Ensure standard XDG data directories exist
+- name: "THEME | Ensure local directories exist"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - "{{ xdg_data_dir }}/icons"
+    - "{{ xdg_data_dir }}/themes"
+    - "{{ xdg_data_dir }}/backgrounds"
+
+# --- ICONS & CURSORS ---
+
+# 2. Find all icon and cursor folders in the repository
+- name: "THEME | Find icons and cursors in repo"
+  ansible.builtin.find:
+    paths:
+      - "{{ playbook_dir }}/files/themes/icons"
+      - "{{ playbook_dir }}/files/themes/cursor"
+    file_type: directory
+    recurse: false
+  register: repo_themes
+
+# 3. Check if physical directories exist in destination (to prevent blockages)
+- name: "THEME | Check for physical directories in destination"
+  ansible.builtin.stat:
+    path: "{{ xdg_data_dir }}/icons/{{ item.path | basename }}"
+  register: dest_stats
+  loop: "{{ repo_themes.files }}"
+
+# 4. Remove physical directories if they are NOT symlinks
+- name: "THEME | Remove physical directories"
+  ansible.builtin.file:
+    path: "{{ item.stat.path }}"
+    state: absent
+  when: item.stat.exists and item.stat.isdir and not item.stat.islnk
+  loop: "{{ dest_stats.results }}"
+
+# 5. Create symlinks for Icons and Cursors
+- name: "THEME | Symlink Icons and Cursors"
+  ansible.builtin.file:
+    src: "{{ item.path }}"
+    dest: "{{ xdg_data_dir }}/icons/{{ item.path | basename }}"
+    state: link
+    force: true
+  loop: "{{ repo_themes.files }}"
+
+# --- GTK THEMES ---
+
+- name: "THEME | Find GTK themes in repo"
+  ansible.builtin.find:
+    paths: "{{ playbook_dir }}/files/themes/themes"
+    file_type: directory
+  register: repo_gtk
+
+- name: "THEME | Symlink GTK Themes"
+  ansible.builtin.file:
+    src: "{{ item.path }}"
+    dest: "{{ xdg_data_dir }}/themes/{{ item.path | basename }}"
+    state: link
+    force: true
+  loop: "{{ repo_gtk.files }}"
+
+# --- BACKGROUNDS ---
+
+- name: "THEME | Find backgrounds in repo"
+  ansible.builtin.find:
+    paths: "{{ playbook_dir }}/files/themes/backgrounds"
+    file_type: file # Backgrounds are usually files (jpg/png), not directories
+  register: repo_backgrounds
+
+- name: "THEME | Symlink Backgrounds"
+  ansible.builtin.file:
+    src: "{{ item.path }}"
+    dest: "{{ xdg_data_dir }}/backgrounds/{{ item.path | basename }}"
+    state: link
+    force: true
+  loop: "{{ repo_backgrounds.files }}"
