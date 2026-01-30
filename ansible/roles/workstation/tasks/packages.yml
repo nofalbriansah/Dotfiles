@@ -54,10 +54,10 @@
     - name: "SERVICE | Manage System Services"
       become: true
       ansible.builtin.systemd:
-        name: "{{ item }}"
-        enabled: yes
-        state: started
-      loop: "{{ enabled_services | default([]) }}"
+        name: "{{ item.name }}"
+        enabled: "{{ item.enabled | default(yes) }}"
+        state: "{{ item.state | default('started') }}"
+      loop: "{{ enabled_services }}"
       when: enabled_services is defined
 
   when: ansible_facts['distribution'] in ["Archlinux", "CachyOS"]
