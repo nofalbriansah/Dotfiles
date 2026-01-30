@@ -1,4 +1,7 @@
 ---
-- hosts: local
+- name: "SETUP | Personal Workstation"
+  hosts: localhost
+  connection: local
+
   roles:
     - workstation

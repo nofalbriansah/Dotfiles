@@ -1,25 +1,21 @@
+# roles/workstation/tasks/main.yml
 ---
-# Load OS-specific variables based on distribution
+# 1. Load OS-specific variables (Daftar paket dari vars/Archlinux.yml)
 - name: "SETUP | Load OS Variables"
-  include_vars: "{{ ansible_facts['distribution'] }}.yml"
+  include_vars:
+    file: "{{ role_path }}/vars/{{ ansible_facts['distribution'] }}.yml"
 
-# Check if OS-specific task file exists
-- name: "SETUP | Check for OS-Specific Tasks"
-  stat:
-    path: "{{ role_path }}/tasks/{{ ansible_facts['distribution'] }}.yml"
-  register: distro_tasks
+# 2. Run Package Management (Menggunakan file packages.yml yang baru kamu buat)
+- name: "TASK | Package Management"
+  include_tasks: packages.yml
+  tags: ["packages"]
 
-# Execute OS-specific tasks (e.g., Pacman/AUR)
-- name: "INSTALL | Run OS-Specific Tasks"
-  include_tasks: "{{ ansible_facts['distribution'] }}.yml"
-  when: distro_tasks.stat.exists
-
-# Run Dotfiles symlinking
+# 3. Run Dotfiles symlinking
 - name: "TASK | Symlink Dotfiles"
   include_tasks: dotfiles.yml
   tags: ["dotfiles"]
 
-# Run Theme & Icon setup
+# 4. Run Theme & Icon setup
 - name: "TASK | Setup Themes"
   include_tasks: themes.yml
   tags: ["themes"]

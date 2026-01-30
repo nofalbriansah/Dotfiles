@@ -1,33 +1,65 @@
 ---
-# 1. Ensure the ~/.config directory exists
-- name: "DOTFILES | Ensure .config directory"
+# 1. Ensure XDG directories exist
+- name: "DOTFILES | Ensure XDG directories exist"
   ansible.builtin.file:
-    path: "{{ xdg_config_dir }}"
+    path: "{{ item }}"
     state: directory
+    mode: "0755"
+  loop:
+    - "{{ xdg_config_dir }}"
+    - "{{ xdg_data_dir }}"
 
-# 2. Dynamically symlink all folders inside files/configs to ~/.config/
+# 2. Identify configuration directories for ~/.config/
+- name: "DOTFILES | List config directories in repo"
+  ansible.builtin.find:
+    paths: "{{ playbook_dir }}/files/configs"
+    file_type: directory
+  register: repo_configs
+
+# --- STRATEGY: Handle ~/.config/ Directory Conflicts ---
+
+# 3a. Check target status in ~/.config/
+- name: "DOTFILES | Check target config status"
+  ansible.builtin.stat:
+    path: "{{ xdg_config_dir }}/{{ item.path | basename }}"
+  register: target_dir_stats
+  loop: "{{ repo_configs.files }}"
+
+# 3b. Remove if it's a real directory (not a symlink)
+- name: "DOTFILES | Remove real directory if it exists"
+  ansible.builtin.file:
+    path: "{{ item.stat.path }}"
+    state: absent
+  when:
+    - item.stat.exists
+    - item.stat.isdir
+    - not item.stat.islnk
+  loop: "{{ target_dir_stats.results }}"
+
+# 3c. Create symlinks for ~/.config/ subdirectories
 - name: "DOTFILES | Symlink Config Directories"
   ansible.builtin.file:
-    src: "{{ playbook_dir }}/files/configs/{{ item }}"
-    dest: "{{ xdg_config_dir }}/{{ item }}"
+    src: "{{ item.path }}"
+    dest: "{{ xdg_config_dir }}/{{ item.path | basename }}"
     state: link
-    force: yes
-  with_lines: "ls -1 {{ playbook_dir }}/files/configs 2>/dev/null || true"
+    force: true
+  loop: "{{ repo_configs.files }}"
 
-# --- BASH SPECIFIC LOGIC ---
+# --- UNIVERSAL HOME DOTFILES (Files that go directly to ~/) ---
 
-# 3. Specifically check if .bashrc exists in your repository
-- name: "DOTFILES | Check if repo .bashrc exists"
-  ansible.builtin.stat:
-    path: "{{ playbook_dir }}/files/configs/bash/.bashrc"
-  register: repo_bashrc
+# 4. Find all files in files/home/ (including hidden ones)
+- name: "DOTFILES | Find all home files in repo"
+  ansible.builtin.find:
+    paths: "{{ playbook_dir }}/files/home"
+    hidden: yes
+    file_type: any # Can be file or directory (like .gnupg)
+  register: found_home_files
 
-# 4. Link .bashrc directly to the Home Directory root
-- name: "DOTFILES | Symlink .bashrc"
+# 5. Symlink discovered files/folders directly to $HOME root
+- name: "DOTFILES | Symlink Dotfiles to Home"
   ansible.builtin.file:
-    src: "{{ playbook_dir }}/files/configs/bash/.bashrc"
-    dest: "{{ ansible_facts['user_dir'] }}/.bashrc"
+    src: "{{ item.path }}"
+    dest: "{{ user_home }}/{{ item.path | basename }}"
     state: link
-    force: true # Changed from 'yes' to 'true' (boolean)
-  when: repo_bashrc.stat.exists
-  ignore_errors: true # Changed from 'yes' to 'true' (boolean)
+    force: true
+  loop: "{{ found_home_files.files }}"

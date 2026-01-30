@@ -1,33 +1,18 @@
 #!/bin/bash
-set -e
 
-# --- 1. OS Detection ---
-if [ -f /etc/arch-release ]; then
-    DISTRO="Arch"
-    PKG_MANAGER="pacman -S --needed --noconfirm"
-elif [ -f /etc/debian_version ]; then
-    DISTRO="Debian"
-    PKG_MANAGER="apt install -y"
-    sudo apt update
-else
-    echo "❌ Unsupported OS."
-    exit 1
-fi
+# --- PROJECT DIRECTORY SETUP ---
+# Get the absolute path of the project root directory (one level up from /bin)
+# This ensures the script works regardless of where it is called from.
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
-# --- 2. Install Core Dependencies ---
-for pkg in ansible git; do
-    if ! command -v $pkg &> /dev/null; then
-        echo "📦 Installing $pkg on $DISTRO..."
-        sudo $PKG_MANAGER $pkg
-    fi
-done
+# Change working directory to the project root where site.yml is located
+cd "$PROJECT_ROOT"
 
-# --- 3. Community Requirements ---
-if command -v ansible-galaxy &> /dev/null; then
-    echo "📥 Ensuring Ansible community collections are installed..."
-    ansible-galaxy collection install community.general
-fi
+echo "🚀 Starting Dotfiles Provisioning..."
 
-# --- 4. Execute Playbook ---
-echo "🚀 Starting Ansible Magic..."
-ansible-playbook -i inventory.ini site.yml --ask-become-pass "$@"
+# --- ANSIBLE EXECUTION ---
+# Execute the main playbook.
+# -i "localhost," : Forces Ansible to target localhost without needing an external inventory file.
+# -K              : Prompts for the sudo (become) password at the start.
+# "$@"            : Forwards any additional flags passed to this script (e.g., --tags "packages").
+ansible-playbook site.yml -i "localhost," -c local -K "$@"

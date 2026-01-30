@@ -3,53 +3,61 @@
 
 ---
 sys_packages:
-  # Fonts (Standard Arch Repos)
+  # Fonts
   - { name: "ttf-jetbrains-mono-nerd", state: "present" }
-  - { name: "ttf-fira-code-nerd", state: "present" }
+  - { name: "ttf-firacode-nerd", state: "present" }
 
   # CLI Tools
   - { name: "fastfetch", state: "present" }
-  # - { name: "stow", state: "present" }
   - { name: "tree", state: "present" }
   - { name: "unzip", state: "present" }
   - { name: "unrar", state: "present" }
   - { name: "wget", state: "present" }
   - { name: "zip", state: "present" }
-  # - { name: "syncthing", state: "present" }
-  # - { name: "lazygit", state: "present" }
-  - { name: "asciinema", state: "present" }
-  # - { name: "starship", state: "present" }
   - { name: "fish", state: "present" }
   - { name: "neovim", state: "present" }
   - { name: "ripgrep", state: "present" }
   - { name: "fd", state: "present" }
   - { name: "wl-clipboard", state: "present" }
+  - { name: "asciinema", state: "present" }
+  - { name: "keyd", state: "present" }
+  - { name: "starship", state: "present" }
+  # - { name: "syncthing", state: "present" }
+  # - { name: "stow", state: "present" }
+  # - { name: "lazygit", state: "present" }
 
-  # Dev / SDK / IDE
-  # - { name: "clang", state: "present" }
+  # GUI Apps
+  - { name: "kdenlive", state: "present" }
+  - { name: "steam", state: "present" }
+  - { name: "obsidian", state: "present" }
+  - { name: "converseen", state: "present" }
+  - { name: "zed", state: "present" }
+
+  # Dev / SDK
+  - { name: "ansible", state: "present" }
+  - { name: "git", state: "present" }
+  - { name: "nodejs", state: "present" }
+  - { name: "bun", state: "present" }
+  - { name: "clang", state: "present" }
+  - { name: "pkgconf", state: "present" }
+  - { name: "python", state: "present" }
+  - { name: "python-pip", state: "present" }
+  - { name: "mesa-utils", state: "present" }
+  - { name: "go", state: "present" }
+  - { name: "delve", state: "present" }
+  - { name: "jdk-openjdk", state: "present" }
+  - { name: "android-tools", state: "present" }
+  - { name: "gtk3", state: "present" }
+  - { name: "hugo", state: "present" }
   # - { name: "cmake", state: "present" }
   # - { name: "ninja", state: "present" }
-  # - { name: "pkgconf", state: "present" }
-  # - { name: "python", state: "present" }
-  # - { name: "python-pip", state: "present" }
-  # - { name: "mesa-utils", state: "present" }
-  # - { name: "rust", state: "present" } # Includes cargo, rustc
-  # - { name: "rust-analyzer", state: "present" }
-  # - { name: "go", state: "present" }
-  # - { name: "delve", state: "present" }
-  # - { name: "jdk21-openjdk", state: "present" }
-  # - { name: "android-tools", state: "present" }
   # - { name: "scrcpy", state: "present" }
-  # - { name: "gtk3", state: "present" }
-  # - { name: "hugo", state: "present" }
 
 aur_packages:
-  - { name: "keyd", state: "present" }
-  # - { name: "asciinema-agg", state: "present" }
-  # - { name: "nixpkgs-fmt", state: "present" }
-  # - { name: "gopls", state: "present" }
-  # - { name: "golangci-lint-bin", state: "present" }
-  # - { name: "stylua", state: "present" }
-  # - { name: "lua-language-server", state: "present" }
-  # - { name: "bun-bin", state: "present" }
+  - { name: "visual-studio-code-bin", state: "present" }
+  - { name: "google-chrome", state: "present" }
   # - { name: "flutter", state: "present" }
+
+enabled_services:
+  - { name: "keyd", state: "started", enabled: yes }
+  # - { name: "syncthing@{{ ansible_facts['user_id'] }}", state: "stopped", enabled: no }

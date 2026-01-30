@@ -22,23 +22,26 @@
     recurse: false
   register: repo_themes
 
-# 3. Check if physical directories exist in destination (to prevent blockages)
-- name: "THEME | Check for physical directories in destination"
+# Task 1: Check if target icon directories are actual directories (not symlinks)
+- name: "THEME | Task 1: Check icon destination status"
   ansible.builtin.stat:
     path: "{{ xdg_data_dir }}/icons/{{ item.path | basename }}"
-  register: dest_stats
+  register: icon_dest_stats
   loop: "{{ repo_themes.files }}"
 
-# 4. Remove physical directories if they are NOT symlinks
-- name: "THEME | Remove physical directories"
+# Task 2: Remove if it is a real physical directory to prevent symlink blockages
+- name: "THEME | Task 2: Remove physical icon directories"
   ansible.builtin.file:
     path: "{{ item.stat.path }}"
     state: absent
-  when: item.stat.exists and item.stat.isdir and not item.stat.islnk
-  loop: "{{ dest_stats.results }}"
+  when:
+    - item.stat.exists
+    - item.stat.isdir
+    - not item.stat.islnk
+  loop: "{{ icon_dest_stats.results }}"
 
-# 5. Create symlinks for Icons and Cursors
-- name: "THEME | Symlink Icons and Cursors"
+# Task 3: Create the symlink for Icons and Cursors
+- name: "THEME | Task 3: Symlink Icons and Cursors"
   ansible.builtin.file:
     src: "{{ item.path }}"
     dest: "{{ xdg_data_dir }}/icons/{{ item.path | basename }}"
@@ -48,13 +51,33 @@
 
 # --- GTK THEMES ---
 
+# Find GTK themes in repo
 - name: "THEME | Find GTK themes in repo"
   ansible.builtin.find:
     paths: "{{ playbook_dir }}/files/themes/themes"
     file_type: directory
   register: repo_gtk
 
-- name: "THEME | Symlink GTK Themes"
+# Task 1: Check if target GTK theme directories are actual directories
+- name: "THEME | Task 1: Check GTK theme destination status"
+  ansible.builtin.stat:
+    path: "{{ xdg_data_dir }}/themes/{{ item.path | basename }}"
+  register: gtk_dest_stats
+  loop: "{{ repo_gtk.files }}"
+
+# Task 2: Remove physical GTK directories
+- name: "THEME | Task 2: Remove physical GTK directories"
+  ansible.builtin.file:
+    path: "{{ item.stat.path }}"
+    state: absent
+  when:
+    - item.stat.exists
+    - item.stat.isdir
+    - not item.stat.islnk
+  loop: "{{ gtk_dest_stats.results }}"
+
+# Task 3: Create symlinks for GTK Themes
+- name: "THEME | Task 3: Symlink GTK Themes"
   ansible.builtin.file:
     src: "{{ item.path }}"
     dest: "{{ xdg_data_dir }}/themes/{{ item.path | basename }}"
@@ -64,10 +87,12 @@
 
 # --- BACKGROUNDS ---
 
+# Backgrounds are usually files, so "Check-Clean" for directories is usually not needed
+# unless you previously had a folder with the same name as a wallpaper file.
 - name: "THEME | Find backgrounds in repo"
   ansible.builtin.find:
     paths: "{{ playbook_dir }}/files/themes/backgrounds"
-    file_type: file # Backgrounds are usually files (jpg/png), not directories
+    file_type: file
   register: repo_backgrounds
 
 - name: "THEME | Symlink Backgrounds"

@@ -1,6 +1,9 @@
 ---
+# User specific paths
+user_home: "{{ ansible_facts['user_dir'] }}"
+
 # Path to the user's XDG configuration directory (typically ~/.config)
-xdg_config_dir: "{{ ansible_facts['user_dir'] }}/.config"
+xdg_config_dir: "{{ user_home }}/.config"
 
 # Path to the user's local data directory (typically ~/.local/share)
-xdg_data_dir: "{{ ansible_facts['user_dir'] }}/.local/share"
+xdg_data_dir: "{{ user_home }}/.local/share"

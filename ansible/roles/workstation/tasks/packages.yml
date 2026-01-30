@@ -1,17 +1,16 @@
 ---
-# --- ARCHLINUX / CACHYOS LOGIC ---
+# roles/workstation/tasks/packages.yml
+
 - name: "ARCH | System and AUR Package Management"
   block:
-    # 1. Full System Upgrade (Equivalent to pacman -Syu)
-    # This prevents partial upgrades which are dangerous in Arch
+    # 1. Update System
     - name: "ARCH | Update Package Cache & Upgrade System"
       become: true
       ansible.builtin.pacman:
         update_cache: true
         upgrade: true
 
-    # 2. Manage System Packages (Pacman)
-    # Loops through the sys_packages list to install or remove
+    # 2. Install Official Packages
     - name: "ARCH | Sync System Packages"
       become: true
       ansible.builtin.pacman:
@@ -19,18 +18,29 @@
         state: "{{ item.state | default('present') }}"
       loop: "{{ sys_packages }}"
 
-    # 3. Install AUR Packages (Paru)
-    # Uses 'become: false' because AUR helpers shouldn't run as root
+    # 3. Privilege Escalation Fix
+    # Granting NOPASSWD for both pacman and paru to prevent sudo hangs
+    - name: "ARCH | Allow user to run paru/pacman without password"
+      become: true
+      ansible.builtin.copy:
+        content: |
+          {{ ansible_facts['user_id'] }} ALL=(ALL) NOPASSWD: /usr/bin/pacman
+          {{ ansible_facts['user_id'] }} ALL=(ALL) NOPASSWD: /usr/bin/paru
+        dest: "/etc/sudoers.d/10-ansible-paru"
+        mode: "0440"
+        validate: "/usr/sbin/visudo -cf %s"
+
+    # 4. Install AUR Packages (The Terminal Bypass Way)
+    # 'script' command fakes a TTY to satisfy paru's requirement
     - name: "ARCH | Install AUR Packages"
-      ansible.builtin.command: "paru -S --noconfirm --needed {{ item.name }}"
+      ansible.builtin.shell: "script -q -c 'paru -S --noconfirm --needed {{ item.name }}' /dev/null"
       loop: "{{ aur_packages }}"
       when: item.state == 'present'
       register: aur_inst
       changed_when: "'Installing' in aur_inst.stdout or 'Upgrading' in aur_inst.stdout"
       become: false
 
-    # 4. Remove AUR Packages
-    # Ensures packages marked 'absent' are purged with dependencies (-Rns)
+    # 5. Remove Unwanted AUR Packages
     - name: "ARCH | Remove AUR Packages"
       ansible.builtin.command: "paru -Rns --noconfirm {{ item.name }}"
       loop: "{{ aur_packages }}"
@@ -40,5 +50,14 @@
       changed_when: "aur_rem.rc == 0"
       become: false
 
-  # Block execution guard
+    # 6. Service Management
+    - name: "SERVICE | Manage System Services"
+      become: true
+      ansible.builtin.systemd:
+        name: "{{ item }}"
+        enabled: yes
+        state: started
+      loop: "{{ enabled_services | default([]) }}"
+      when: enabled_services is defined
+
   when: ansible_facts['distribution'] in ["Archlinux", "CachyOS"]
