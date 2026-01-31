@@ -1,11 +1,11 @@
 # roles/workstation/tasks/main.yml
 ---
-# 1. Load OS-specific variables (Daftar paket dari vars/Archlinux.yml)
+# 1. Load OS-specific variables
 - name: "SETUP | Load OS Variables"
   include_vars:
     file: "{{ role_path }}/vars/{{ ansible_facts['distribution'] }}.yml"
 
-# 2. Run Package Management (Menggunakan file packages.yml yang baru kamu buat)
+# 2. Run Package Management
 - name: "TASK | Package Management"
   include_tasks: packages.yml
   tags: ["packages"]
