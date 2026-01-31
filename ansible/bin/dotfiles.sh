@@ -7,5 +7,4 @@ cd "$PROJECT_ROOT"
 echo "🚀 Starting Dotfiles Provisioning..."
 
 # --- ANSIBLE EXECUTION ---
-# Pastikan tidak ada karakter aneh setelah "$@"
 ansible-playbook site.yml -i "localhost," -c local -K "$@"
