@@ -1,98 +1,62 @@
-## ❄️ Ansible Dotfiles
+# ❄️ My Ansible Dotfiles
 
-A declarative and modular dotfiles framework for Arch Linux & CachyOS.
+This is my personal setup for managing my Arch Linux (and CachyOS) environment. It uses Ansible to handle packages, configurations, and visual assets. It's not a complex framework, just a declarative way to ensure my machine stays the way I like it without running manual scripts every time.
 
-This framework manages packages, configurations, and visual assets (themes/icons) using declarative logic, allowing a system to be treated as a predictable, reproducible environment. By leveraging Ansible's idempotency, the desired state is defined in simple YAML files, and the automation ensures the machine matches that state perfectly.
+## ⚡ What it does
 
-## ✨ Features
+- **Package Management:** Installs or removes packages (Official & AUR) based on a list. It tries to handle system updates first, but if I'm offline, it skips the update and just checks installed packages.
+- **Dotfiles:** Symlinks config folders from `files/configs/` to `~/.config/`.
+- **Themes & Assets:** Places wallpapers, icons, and themes in their respective `~/.local/share/` directories.
+- **Sudo Handling:** Sets up `nopasswd` for specific package management commands so I don't get stuck at a password prompt during long updates.
 
-- ⚡ Zero-to-Hero Bootstrap: A single script detects the OS, installs Ansible, and bootstraps AUR helpers (paru) automatically.
+## 📂 Structure
 
-- 📦 Declarative Package Sync: System state is managed by defining packages as present or absent. The logic handles the installation or purging of software and unused dependencies based on the central configuration.
-
-- 🔄 System Synchronization: A full system upgrade (pacman -Syu) is performed automatically before applying changes to maintain environment stability.
-
-- 🎨 Automated Asset Deployment: Icons, Cursors, GTK Themes, and Wallpapers are managed with automatic conflict detection and cache refreshing.
-
-- 📂 Dynamic Configuration Linking: Folders within files/configs/ are mapped to ~/.config/ using real-time file-system discovery.
-
-## 📂 Directory Structure
-
-```Plaintext
-
+```plaintext
 ansible/
-├── bin/
-│ └── dotfiles.sh # The bootstrap & run script
+├── ansible.cfg       # Local execution settings (optimized for speed/offline)
+├── ansible.sh        # The main script to run everything
+├── inventory.ini     # Defines localhost
+├── site.yml          # Main playbook entry point
 ├── files/
-│ ├── configs/ # Config folders (nvim, bash, kitty, etc.)
-│ └── themes/ # Visual assets
-│ ├── icons/ # Icons -> ~/.local/share/icons
-│ ├── cursor/ # Cursors -> ~/.local/share/icons
-│ ├── themes/ # GTK Themes -> ~/.local/share/themes
-│ └── backgrounds/ # Wallpapers -> ~/.local/share/backgrounds
+│   ├── configs/      # Config folders (nvim, kitty, etc.)
+│   └── themes/       # Visual assets (backgrounds, icons, etc.)
 ├── roles/
-│ └── workstation/
-│ ├── tasks/ # The logic (Archlinux.yml, dotfiles.yml, themes.yml)
-│ └── vars/ # The state (Package lists & OS variables)
-└── site.yml # Playbook entry point
+│   └── workstation/
+│       ├── tasks/    # The logic (install packages, link files)
+│       └── vars/     # My package lists (Archlinux.yml)
 ```
 
-## 🚀 Getting Started
+## 🚀 Usage
 
-1. Cloning the Repository
-   Bash
+I run this locally on my machine.
 
-git clone https://github.com/nofalbriansah/Dotfiles
-cd Dotfiles/ansible
+1. **Clone the repo:**
+   ```bash
+   git clone https://github.com/nofalbriansah/Dotfiles
+   cd Dotfiles/ansible
+   ```
 
-2. Executing the Workflow
+2. **Run the script:**
+   ```bash
+   chmod +x ansible.sh
+   ./ansible.sh
+   ```
 
-The bootstrap script handles the initial setup. Sudo privileges are required for system upgrades and package synchronization.
-Bash
+### Tags
+If I only want to update specific parts without running the whole playbook:
 
-chmod +x bin/dotfiles.sh
-./bin/dotfiles.sh
+```bash
+./ansible.sh --tags dotfiles  # Only update config symlinks
+./ansible.sh --tags themes    # Only update wallpapers/icons
+./ansible.sh --tags packages  # Only run package management
+```
 
-## ⚙️ Customization Logic
+## ⚙️ Configuration
 
-1. Defining Package State
+- **Packages:** I define what I want installed in `roles/workstation/vars/Archlinux.yml`.
+- **Configs:** I just drop new folders into `files/configs/`, and the playbook automatically links them to `~/.config/`.
+- **Offline Mode:** The playbook is configured to ignore errors during the `pacman -Syu` step if the repositories are unreachable, so I can still sync my configs without an internet connection.
 
-The file roles/workstation/vars/Archlinux.yml serves as the source of truth for the system software.
+## 💡 Why?
 
-- Installation: State is set to present.
-
-- Removal: State is set to absent.
-
-- Exclusion: The line is commented out with #.
-
-sys_packages:
-
-- { name: 'neovim', state: 'present' }
-- { name: 'nano', state: 'absent' }
-
-2. Configuration Management
-
-Configuration folders are placed inside ansible/files/configs/. The .bashrc file is handled as a special case to link directly to the home directory. 3. Visual Assets
-
-Folders added to ansible/files/themes/ are symlinked to the appropriate XDG directories. The framework automatically refreshes the icon cache upon completion.
-🛠 Targeted Execution (Tags)
-
-Specific parts of the setup can be targeted using tags to save time:
-Command Action
-./bin/dotfiles.sh --tags dotfiles Updates only symlinks in ~/.config
-./bin/dotfiles.sh --tags themes Updates only wallpapers, icons, and themes
-./bin/dotfiles.sh --tags packages Performs system sync and package management
-
-## 💡 Why
-
-This setup was created to simplify dotfile management using declarative Ansible automation. Inspired by Nix, the framework ensures that every package and configuration is explicitly tracked in a single source of truth.
-
-The system relies on:
-
-- Declarative Clarity: Makes it easy to track installed packages and active configurations at a glance within YAML files.
-
-- dempotency: Changes are only applied if the system state deviates from the configuration, ensuring efficiency.
-
-- Predictability: Automatic system synchronization ensures package compatibility with the current environment.
-
-- Portability: The entire setup is centralized in one repository, allowing system migration with a single command.
+I wanted a single source of truth for my setup. Scripts are fine, but Ansible lets me say "I want this state" (idempotency) rather than writing "if file doesn't exist then do this" logic everywhere.

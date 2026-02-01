@@ -3,32 +3,51 @@
 
 - name: "ARCH | System and AUR Package Management"
   block:
-    # 1. Update System
+    # 1. Privilege Escalation Fix
+    # Granting NOPASSWD for pacman, paru, and systemctl to prevent sudo hangs
+    - name: "ARCH | Debug User Info"
+      debug:
+        msg: "User ID: {{ ansible_facts['user_id'] }}"
+
+    - name: "ARCH | Remove old sudoers file"
+      become: true
+      ansible.builtin.file:
+        path: "/etc/sudoers.d/10-ansible-paru"
+        state: absent
+
+    - name: "ARCH | Allow user to run paru/pacman/systemctl without password"
+      become: true
+      ansible.builtin.copy:
+        # Using 99- prefix to ensure this is loaded after other rules in /etc/sudoers.d
+        content: |
+          {{ ansible_facts['user_id'] }} ALL=(ALL) NOPASSWD: /usr/bin/pacman
+          {{ ansible_facts['user_id'] }} ALL=(ALL) NOPASSWD: /usr/bin/paru
+          {{ ansible_facts['user_id'] }} ALL=(ALL) NOPASSWD: /usr/bin/systemctl
+          {{ ansible_facts['user_id'] }} ALL=(ALL) NOPASSWD: /bin/systemctl
+        dest: "/etc/sudoers.d/99-ansible-paru"
+        mode: "0440"
+        validate: "/usr/bin/visudo -cf %s"
+
+    - name: "ARCH | Verify NOPASSWD works for pacman"
+      command: sudo -n /usr/bin/pacman --version
+      changed_when: false
+      ignore_errors: false
+
+    # 2. Update System
     - name: "ARCH | Update Package Cache & Upgrade System"
       become: true
       ansible.builtin.pacman:
         update_cache: true
         upgrade: true
+      ignore_errors: true
 
-    # 2. Install Official Packages
+    # 3. Install Official Packages
     - name: "ARCH | Sync System Packages"
       become: true
       ansible.builtin.pacman:
         name: "{{ item.name }}"
         state: "{{ item.state | default('present') }}"
       loop: "{{ sys_packages }}"
-
-    # 3. Privilege Escalation Fix
-    # Granting NOPASSWD for both pacman and paru to prevent sudo hangs
-    - name: "ARCH | Allow user to run paru/pacman without password"
-      become: true
-      ansible.builtin.copy:
-        content: |
-          {{ ansible_facts['user_id'] }} ALL=(ALL) NOPASSWD: /usr/bin/pacman
-          {{ ansible_facts['user_id'] }} ALL=(ALL) NOPASSWD: /usr/bin/paru
-        dest: "/etc/sudoers.d/10-ansible-paru"
-        mode: "0440"
-        validate: "/usr/sbin/visudo -cf %s"
 
     # 4. Install AUR Packages (The Terminal Bypass Way)
     # 'script' command fakes a TTY to satisfy paru's requirement
@@ -39,6 +58,7 @@
       register: aur_inst
       changed_when: "'Installing' in aur_inst.stdout or 'Upgrading' in aur_inst.stdout"
       become: false
+      become_method: su
 
     # 5. Remove Unwanted AUR Packages
     - name: "ARCH | Remove AUR Packages"
@@ -61,3 +81,63 @@
       when: enabled_services is defined
 
   when: ansible_facts['distribution'] in ["Archlinux", "CachyOS"]
+
+- name: "DEBIAN | System Package Management"
+  block:
+    # 1. Update System
+    - name: "DEBIAN | Update Package Cache & Upgrade System"
+      become: true
+      ansible.builtin.apt:
+        update_cache: true
+        upgrade: dist
+      ignore_errors: true
+
+    # 2. Install Official Packages
+    - name: "DEBIAN | Sync System Packages"
+      become: true
+      ansible.builtin.apt:
+        name: "{{ item.name }}"
+        state: "{{ item.state | default('present') }}"
+      loop: "{{ sys_packages }}"
+
+    # 3. Service Management
+    - name: "SERVICE | Manage System Services"
+      become: true
+      ansible.builtin.systemd:
+        name: "{{ item.name }}"
+        enabled: "{{ item.enabled | default(yes) }}"
+        state: "{{ item.state | default('started') }}"
+      loop: "{{ enabled_services }}"
+      when: enabled_services is defined
+
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: "FEDORA | System Package Management"
+  block:
+    # 1. Update System
+    - name: "FEDORA | Update Package Cache & Upgrade System"
+      become: true
+      ansible.builtin.dnf:
+        update_cache: true
+        update_only: yes
+      ignore_errors: true
+
+    # 2. Install Official Packages
+    - name: "FEDORA | Sync System Packages"
+      become: true
+      ansible.builtin.dnf:
+        name: "{{ item.name }}"
+        state: "{{ item.state | default('present') }}"
+      loop: "{{ sys_packages }}"
+
+    # 3. Service Management
+    - name: "SERVICE | Manage System Services"
+      become: true
+      ansible.builtin.systemd:
+        name: "{{ item.name }}"
+        enabled: "{{ item.enabled | default(yes) }}"
+        state: "{{ item.state | default('started') }}"
+      loop: "{{ enabled_services }}"
+      when: enabled_services is defined
+
+  when: ansible_facts['distribution'] == "Fedora"

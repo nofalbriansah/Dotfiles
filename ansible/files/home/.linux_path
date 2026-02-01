@@ -1,0 +1,7 @@
+# ~/.path
+# This file is sourced by both bash and fish.
+# Use standard POSIX shell syntax.
+
+# Bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

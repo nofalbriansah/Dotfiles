@@ -22,6 +22,7 @@ sys_packages:
   - { name: "asciinema", state: "present" }
   - { name: "keyd", state: "present" }
   - { name: "starship", state: "present" }
+  - { name: "zellij", state: "present" }
   # - { name: "syncthing", state: "present" }
   # - { name: "stow", state: "present" }
   # - { name: "lazygit", state: "present" }

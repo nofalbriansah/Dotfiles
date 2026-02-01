@@ -5,19 +5,12 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-# --- CUSTOM PROMPT ---
-PS1='[\u@\h \W]\$ '
-
-# --- MODULAR LOADER ---
-# This sources any extra files you drop into ~/.config/bash/
-if [ -d "$HOME/.config/bash" ]; then
-    for file in "$HOME/.config/bash/"*; do
-        # Avoid sourcing itself or directories
-        [ -f "$file" ] && [ "${file##*/}" != ".bashrc" ] && . "$file"
-    done
+# Source universal path settings
+if [ -f "$HOME/.linux_path" ]; then
+    . "$HOME/.linux_path"
 fi
 
-# --- ENVIRONMENT VARIABLES (PATH) ---
-BUN_INSTALL="$HOME/.bun"
-PATH="$BUN_INSTALL/bin:$PATH"
-PATH="$HOME/.local/bin:$PATH"
+# ... rest of your bashrc ...
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+PS1='[\u@\h \W]\$ '

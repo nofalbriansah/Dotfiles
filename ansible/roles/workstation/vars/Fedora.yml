@@ -4,8 +4,8 @@
 ---
 sys_packages:
   # Fonts
-  # - { name: "fonts-jetbrains-mono", state: "present" }
-  # - { name: "fonts-firacode", state: "present" }
+  # - { name: "jetbrains-mono-fonts", state: "present" }
+  # - { name: "fira-code-fonts", state: "present" }
 
   # CLI Tools
   - { name: "fastfetch", state: "present" }
@@ -20,13 +20,12 @@ sys_packages:
   - { name: "fd-find", state: "present" }
   - { name: "wl-clipboard", state: "present" }
   - { name: "asciinema", state: "present" }
-  - { name: "keyd", state: "present" }
   - { name: "starship", state: "present" }
   - { name: "zellij", state: "present" }
 
   # GUI Apps
   - { name: "kdenlive", state: "present" }
-  - { name: "steam-installer", state: "present" }
+  - { name: "steam", state: "present" }
   - { name: "converseen", state: "present" }
   - { name: "calibre", state: "present" }
 
@@ -35,14 +34,15 @@ sys_packages:
   - { name: "git", state: "present" }
   - { name: "nodejs", state: "present" }
   - { name: "clang", state: "present" }
-  - { name: "pkg-config", state: "present" }
+  - { name: "pkgconf", state: "present" }
   - { name: "python3", state: "present" }
   - { name: "python3-pip", state: "present" }
   - { name: "mesa-utils", state: "present" }
   - { name: "golang", state: "present" }
-  - { name: "default-jdk", state: "present" }
-  - { name: "adb", state: "present" }
-  - { name: "libgtk-3-dev", state: "present" }
+  - { name: "delve", state: "present" }
+  - { name: "java-latest-openjdk-devel", state: "present" }
+  - { name: "android-tools", state: "present" }
+  - { name: "gtk3-devel", state: "present" }
   - { name: "hugo", state: "present" }
 
 enabled_services:
