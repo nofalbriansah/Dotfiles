@@ -23,6 +23,8 @@ if status is-interactive
     # --- ABBREVIATIONS ---
     # Navigation
     abbr -a dot "cd ~/Dotfiles"
+    abbr -a pun "cd /mnt/Data/developments/obsidian/5-Content/punyanyanbs"
+    abbr -a ob "cd /mnt/Data/developments/obsidian"
     abbr -a as "asciinema rec NAME-(date +%d-%b-%y-%H%M%S).cast"
 
     # Git
@@ -35,13 +37,6 @@ if status is-interactive
     abbr -a gfx 'git commit -m "fix: "'
     abbr -a gc  'git commit -m "chore: "'
     abbr -a gr  'git commit -m "refactor: "'
-
-    # Config Editing
-    abbr -a nc  "vim ~/Dotfiles/nix/nixos/configuration.nix"
-    abbr -a nf  "vim ~/Dotfiles/nix/flake.nix"
-    abbr -a nh  "vim ~/Dotfiles/nix/home/home.nix"
-    abbr -a nhc "vim ~/Dotfiles/nix/home/cli.nix"
-    abbr -a nhg "vim ~/Dotfiles/nix/home/gui.nix"
 
     # NixOS Management
     abbr -a nu  "nix flake update --flake /home/nbs/Dotfiles/nix"
