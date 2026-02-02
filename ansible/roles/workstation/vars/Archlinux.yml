@@ -34,6 +34,7 @@ sys_packages:
   - { name: "converseen", state: "present" }
   - { name: "calibre", state: "present" }
   - { name: "zed", state: "present" }
+  - { name: "kitty", state: "present" }
 
   # Dev / SDK
   - { name: "ansible", state: "present" }
@@ -51,8 +52,11 @@ sys_packages:
   - { name: "android-tools", state: "present" }
   - { name: "gtk3", state: "present" }
   - { name: "hugo", state: "present" }
-  # - { name: "cmake", state: "present" }
-  # - { name: "ninja", state: "present" }
+  - { name: "docker", state: "present" }
+  - { name: "kubectl", state: "present" }
+  - { name: "terraform", state: "present" }
+  - { name: "cmake", state: "present" }
+  - { name: "ninja", state: "present" }
   # - { name: "scrcpy", state: "present" }
 
 aur_packages:
@@ -60,7 +64,8 @@ aur_packages:
   - { name: "google-chrome", state: "present" }
   - { name: "bottles", state: "present" }
   - { name: "antigravity", state: "present" }
-  # - { name: "flutter", state: "present" }
+  - { name: "kind-bin", state: "present" }
+  - { name: "flutter-bin", state: "present" }
 
 enabled_services:
   - { name: "keyd", state: "started", enabled: yes }

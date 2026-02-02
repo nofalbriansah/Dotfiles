@@ -5,3 +5,6 @@
 # Bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# Chrome
+export CHROME_EXECUTABLE="/usr/bin/google-chrome-stable"

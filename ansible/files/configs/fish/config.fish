@@ -3,9 +3,10 @@
 # --- ENVIRONMENT VARIABLES ---
 # Source POSIX shell exports from .linux_path safely
 if test -f ~/.linux_path
-    # Extract variables and paths using bash to handle POSIX syntax
-    set -gx BUN_INSTALL (bash -c 'source ~/.linux_path && echo $BUN_INSTALL')
-    # Add paths from .linux_path to fish PATH (fish_add_path handles duplicates)
+    grep '^export ' ~/.linux_path | sed 's/^export //; s/=/ /' | while read -l line
+        eval "set -gx $line"
+    end
+    
     set -l extra_paths (bash -c 'source ~/.linux_path && echo $PATH' | tr ':' '\n')
     fish_add_path $extra_paths
 end
@@ -59,4 +60,12 @@ if status is-interactive
     # Fedora
     abbr -a fu  "sudo dnf up && sudo dnf upgrade"
     abbr -a fd  "sudo dnf autoremove"
+
+    # Config
+    abbr -a ab "nvim ~/.config/fish/config.fish"
+    abbr -a pa "nvim ~/.linux_path"
+    abbr -a ina "nvim ~/Dotfiles/ansible/roles/workstation/vars/Archlinux.yml"
+
+    # Apps
+    abbr -a gem "gemini -y"
 end
