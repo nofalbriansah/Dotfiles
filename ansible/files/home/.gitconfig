@@ -1,3 +1,5 @@
 [user]
 	name = Nofal Briansah
 	email = nofalbriansah@gmail.com
+[core]
+	editor = nvim

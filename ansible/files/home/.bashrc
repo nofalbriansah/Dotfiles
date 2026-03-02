@@ -14,3 +14,7 @@ fi
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 PS1='[\u@\h \W]\$ '
+
+# OpenClaw Completion
+source "/home/nbs/Documents/Distrobox/Fedora/.openclaw/completions/openclaw.bash"
+export PATH="$HOME/.npm-global/bin:$PATH"
