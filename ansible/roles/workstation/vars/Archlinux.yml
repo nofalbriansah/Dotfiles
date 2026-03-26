@@ -23,6 +23,9 @@ sys_packages:
   - { name: "keyd", state: "present" }
   - { name: "starship", state: "present" }
   - { name: "zellij", state: "present" }
+  - { name: "mangohud", state: "present" }
+  - { name: "asusctl", state: "present" }
+  - { name: "supergfxctl", state: "present" }
   # - { name: "syncthing", state: "present" }
   # - { name: "stow", state: "present" }
   # - { name: "lazygit", state: "present" }
@@ -33,14 +36,24 @@ sys_packages:
   - { name: "obsidian", state: "present" }
   - { name: "converseen", state: "present" }
   - { name: "calibre", state: "present" }
-  - { name: "zed", state: "present" }
-  - { name: "kitty", state: "present" }
+  - { name: "davinci-resolve", state: "present" }
+  - { name: "vlc", state: "present" }
+  - { name: "vlc-plugins-all", state: "present" }
+  - { name: "ab-download-manager-bin", state: "present" }
+  - { name: "dconf-editor", state: "present" }
+  - { name: "extension-manager", state: "present" }
+  - { name: "rog-control-center", state: "present" }
+  - { name: "qemu-full", state: "present" }
+  - { name: "virt-manager", state: "present" }
+  - { name: "swtpm", state: "present" }
+  # - { name: "zed", state: "present" }
+  # - { name: "kitty", state: "present" }
 
   # Dev / SDK
   - { name: "ansible", state: "present" }
   - { name: "git", state: "present" }
   - { name: "nodejs", state: "present" }
-  - { name: "bun", state: "present" }
+  # - { name: "bun", state: "present" }
   - { name: "clang", state: "present" }
   - { name: "pkgconf", state: "present" }
   - { name: "python", state: "present" }
@@ -53,8 +66,8 @@ sys_packages:
   - { name: "gtk3", state: "present" }
   - { name: "hugo", state: "present" }
   - { name: "docker", state: "present" }
-  - { name: "kubectl", state: "present" }
-  - { name: "terraform", state: "present" }
+  # - { name: "kubectl", state: "present" }
+  # - { name: "terraform", state: "present" }
   - { name: "cmake", state: "present" }
   - { name: "ninja", state: "present" }
   # - { name: "scrcpy", state: "present" }
@@ -64,9 +77,11 @@ aur_packages:
   - { name: "google-chrome", state: "present" }
   - { name: "bottles", state: "present" }
   - { name: "antigravity", state: "present" }
-  - { name: "kind-bin", state: "present" }
+  - { name: "throne", state: "present" }
+  # - { name: "kind-bin", state: "present" }
   - { name: "flutter-bin", state: "present" }
 
 enabled_services:
-  - { name: "keyd", state: "started", enabled: yes }
+  # - { name: "supergfxctl", state: "started", enabled: yes }
+  - { name: "keyd", state: "stopped", enabled: no }
   # - { name: "syncthing@{{ ansible_facts['user_id'] }}", state: "stopped", enabled: no }
