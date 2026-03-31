@@ -40,6 +40,7 @@ sys_packages:
   - { name: "extension-manager", state: "present" }
   - { name: "gimp", state: "present" }
   - { name: "gnome-system-monitor", state: "present" }
+  - { name: "handbrake", state: "present" }
   - { name: "heroic-games-launcher-bin", state: "present" }
   - { name: "kdenlive", state: "present" }
   # - { name: "kitty", state: "present" }
