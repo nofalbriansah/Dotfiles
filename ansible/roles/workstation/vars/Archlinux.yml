@@ -30,19 +30,45 @@ sys_packages:
   - { name: "zellij", state: "present" }
   - { name: "zip", state: "present" }
 
+    # Dev / SDK
+  - { name: "android-tools", state: "present" }
+  - { name: "ansible", state: "present" }
+  # - { name: "bun", state: "present" }
+  - { name: "clang", state: "present" }
+  - { name: "cmake", state: "present" }
+  - { name: "delve", state: "present" }
+  - { name: "docker", state: "present" }
+  - { name: "docker-compose", state: "present" }
+  - { name: "git", state: "present" }
+  - { name: "go", state: "present" }
+  - { name: "gtk3", state: "present" }
+  - { name: "hugo", state: "present" }
+  - { name: "jdk-openjdk", state: "present" }
+  - { name: "kubectl", state: "present" }
+  - { name: "mesa-utils", state: "present" }
+  - { name: "ninja", state: "present" }
+  - { name: "nodejs", state: "present" }
+  - { name: "npm", state: "present" }
+  - { name: "pkgconf", state: "present" }
+  - { name: "python", state: "present" }
+  - { name: "python-pip", state: "present" }
+  # - { name: "scrcpy", state: "present" }
+  - { name: "terraform", state: "present" }
+
   # GUI Apps
-  - { name: "ab-download-manager-bin", state: "present" }
+  - { name: "ab-download-manager", state: "present" }
   - { name: "calibre", state: "present" }
   - { name: "converseen", state: "present" }
+  - { name: "blender", state: "present" }
   - { name: "davinci-resolve", state: "present" }
   - { name: "discord", state: "present" }
-  - { name: "dconf-editor", state: "present" }
-  - { name: "extension-manager", state: "present" }
+  # - { name: "dconf-editor", state: "present" }
+  # - { name: "extension-manager", state: "present" }
   - { name: "gimp", state: "present" }
-  - { name: "gnome-system-monitor", state: "present" }
+  # - { name: "gnome-system-monitor", state: "present" }
   - { name: "handbrake", state: "present" }
   - { name: "heroic-games-launcher-bin", state: "present" }
-  - { name: "kdenlive", state: "present" }
+  # - { name: "kdenlive", state: "present" }
   # - { name: "kitty", state: "present" }
   - { name: "libreoffice-fresh", state: "present" }
   - { name: "obsidian", state: "present" }
@@ -56,33 +82,9 @@ sys_packages:
   # - { name: "zed", state: "present" }
   - { name: "zotero", state: "present" }
 
-  # Dev / SDK
-  - { name: "android-tools", state: "present" }
-  - { name: "ansible", state: "present" }
-  # - { name: "bun", state: "present" }
-  - { name: "clang", state: "present" }
-  - { name: "cmake", state: "present" }
-  - { name: "delve", state: "present" }
-  - { name: "docker", state: "present" }
-  - { name: "git", state: "present" }
-  - { name: "go", state: "present" }
-  - { name: "gtk3", state: "present" }
-  - { name: "hugo", state: "present" }
-  - { name: "jdk-openjdk", state: "present" }
-  # - { name: "kubectl", state: "present" }
-  - { name: "mesa-utils", state: "present" }
-  - { name: "ninja", state: "present" }
-  - { name: "nodejs", state: "present" }
-  - { name: "npm", state: "present" }
-  - { name: "pkgconf", state: "present" }
-  - { name: "python", state: "present" }
-  - { name: "python-pip", state: "present" }
-  # - { name: "scrcpy", state: "present" }
-  # - { name: "terraform", state: "present" }
-
 aur_packages:
   - { name: "antigravity", state: "present" }
-  - { name: "bottles", state: "present" }
+  # - { name: "bottles", state: "present" }
   - { name: "flutter-bin", state: "present" }
   - { name: "google-chrome", state: "present" }
   # - { name: "kind-bin", state: "present" }
