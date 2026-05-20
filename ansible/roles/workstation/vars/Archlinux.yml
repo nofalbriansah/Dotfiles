@@ -84,7 +84,8 @@ sys_packages:
   - { name: "zotero", state: "present" }
 
 aur_packages:
-  - { name: "antigravity", state: "present" }
+  - { name: "antigravity-ide", state: "present" }
+  - { name: "antigravity-cli", state: "present" }
   # - { name: "bottles", state: "present" }
   - { name: "flutter-bin", state: "present" }
   - { name: "google-chrome", state: "present" }
