@@ -21,7 +21,6 @@ sys_packages:
   - { name: "sshfs", state: "present" }
   - { name: "starship", state: "present" }
   # - { name: "stow", state: "present" }
-  # - { name: "supergfxctl", state: "present" }
   # - { name: "syncthing", state: "present" }
   - { name: "tree", state: "present" }
   - { name: "unrar", state: "present" }
@@ -40,8 +39,10 @@ sys_packages:
   - { name: "delve", state: "present" }
   - { name: "docker", state: "present" }
   - { name: "docker-compose", state: "present" }
+  - { name: "firefox", state: "present" }
   - { name: "git", state: "present" }
   - { name: "go", state: "present" }
+  - { name: "godot", state: "present" }
   - { name: "gtk3", state: "present" }
   - { name: "hugo", state: "present" }
   - { name: "jdk-openjdk", state: "present" }
@@ -58,6 +59,7 @@ sys_packages:
 
   # GUI Apps
   - { name: "ab-download-manager", state: "present" }
+  - { name: "alacritty", state: "present" }
   - { name: "calibre", state: "present" }
   - { name: "converseen", state: "present" }
   - { name: "blender", state: "present" }
@@ -73,6 +75,7 @@ sys_packages:
   # - { name: "kitty", state: "present" }
   - { name: "libreoffice-fresh", state: "present" }
   - { name: "obsidian", state: "present" }
+  - { name: "obs-studio", state: "present" }
   - { name: "qemu-full", state: "present" }
   - { name: "rog-control-center", state: "present" }
   - { name: "steam", state: "present" }
@@ -80,17 +83,19 @@ sys_packages:
   - { name: "virt-manager", state: "present" }
   - { name: "vlc", state: "present" }
   - { name: "vlc-plugins-all", state: "present" }
-  # - { name: "zed", state: "present" }
+  - { name: "zed", state: "present" }
   - { name: "zotero", state: "present" }
 
 aur_packages:
   - { name: "antigravity-ide", state: "present" }
   - { name: "antigravity-cli", state: "present" }
+  - { name: "claude-code", state: "present" }
   # - { name: "bottles", state: "present" }
   - { name: "flutter-bin", state: "present" }
   - { name: "google-chrome", state: "present" }
   # - { name: "kind-bin", state: "present" }
   - { name: "throne", state: "present" }
+  - { name: "unity-hub", state: "present" }
   - { name: "visual-studio-code-bin", state: "present" }
   - { name: "zoom", state: "present" }
 

@@ -2,9 +2,6 @@
 # This file is sourced by both bash and fish.
 # Use standard POSIX shell syntax.
 
-# Java
-export JAVA_HOME="/usr/sbin/java"
-
 # Bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
@@ -14,3 +11,6 @@ export PATH="/home/nbs/.npm-global/bin:$PATH"
 
 # Chrome
 export CHROME_EXECUTABLE="/usr/bin/google-chrome-stable"
+
+# Goland
+export GOLAND_JDK=/usr/lib/jvm/java-26-openjdk
