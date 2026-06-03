@@ -52,6 +52,9 @@ sys_packages:
   - { name: "nodejs", state: "present" }
   - { name: "npm", state: "present" }
   - { name: "pkgconf", state: "present" }
+  - { name: "podman", state: "present" }
+  - { name: "podman-compose", state: "present" }
+  - { name: "podman-desktop", state: "present" }
   - { name: "python", state: "present" }
   - { name: "python-pip", state: "present" }
   # - { name: "scrcpy", state: "present" }
@@ -95,8 +98,8 @@ aur_packages:
   - { name: "google-chrome", state: "present" }
   # - { name: "kind-bin", state: "present" }
   - { name: "throne", state: "present" }
-  - { name: "unity-hub", state: "present" }
-  - { name: "visual-studio-code-bin", state: "present" }
+  # - { name: "unity-hub", state: "present" }
+  # - { name: "visual-studio-code-bin", state: "present" }
   - { name: "zoom", state: "present" }
 
 enabled_services:

@@ -44,6 +44,7 @@ sys_packages:
   - { name: "hugo", state: "present" }
   - { name: "java-latest-openjdk-devel", state: "present" }
   - { name: "mesa-utils", state: "present" }
+  - { name: "nvidia-container-toolkit", state: "present" }
   - { name: "ninja-build", state: "present" }
   - { name: "nodejs", state: "present" }
   - { name: "npm", state: "present" }
