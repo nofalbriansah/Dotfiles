@@ -74,4 +74,7 @@ if status is-interactive
     abbr -a ab "nvim ~/.config/fish/config.fish"
     abbr -a pa "nvim ~/.linux_path"
     abbr -a ina "nvim ~/Dotfiles/ansible/roles/workstation/vars/Archlinux.yml"
+
+    # App
+    abbr -a agy "agy --dangerously-skip-permissions"
 end
