@@ -14,3 +14,7 @@ export CHROME_EXECUTABLE="/usr/bin/google-chrome-stable"
 
 # Goland
 export GOLAND_JDK=/usr/lib/jvm/java-26-openjdk
+
+# Local bin (includes Antigravity CLI)
+export PATH="$HOME/.local/bin:$PATH"
+

@@ -277,12 +277,13 @@ web_client {
 //   - true
 //   - false (Default)
 // 
-simplified_ui true
+simplified_ui false
  
 // Choose the theme that is specified in the themes section.
 // Default: default
 // 
 // theme "dracula"
+theme "ayu_mirage"
  
 // Choose the base input mode of zellij.
 // Default: normal
@@ -301,7 +302,7 @@ simplified_ui true
 // The name of the default layout to load on startup
 // Default: "default"
 // 
-default_layout "compact"
+default_layout "default"
  
 // The folder in which Zellij will look for layouts
 // (Requires restart)
@@ -503,12 +504,12 @@ default_layout "compact"
 // Whether to show tips on startup
 // Default: true
 // 
-// show_startup_tips false
+show_startup_tips false
  
 // Whether to show release notes on first version run
 // Default: true
 // 
-// show_release_notes false
+show_release_notes false
  
 // Whether to enable mouse hover effects and pane grouping functionality
 // default is true

@@ -36,6 +36,7 @@ sys_packages:
   # - { name: "bun", state: "present" }
   - { name: "clang", state: "present" }
   - { name: "cmake", state: "present" }
+  - { name: "dbeaver", state: "present" }
   - { name: "delve", state: "present" }
   - { name: "docker", state: "present" }
   - { name: "docker-compose", state: "present" }

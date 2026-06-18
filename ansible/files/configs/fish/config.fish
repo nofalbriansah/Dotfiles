@@ -11,6 +11,15 @@ if test -f ~/.linux_path
     fish_add_path $extra_paths
 end
 if status is-interactive
+    # Auto-start Zellij (bypass in IDE integrated terminals)
+    if not set -q ZELLIJ
+        and type -q zellij
+        and not set -q VSCODE_SHELL_INTEGRATION
+        and not string match -q "vscode" "$TERM_PROGRAM"
+        and not string match -q "*JetBrains*" "$TERMINAL_EMULATOR"
+        exec zellij
+    end
+
     # Remove greeting
     set -g fish_greeting " "
 
@@ -65,7 +74,4 @@ if status is-interactive
     abbr -a ab "nvim ~/.config/fish/config.fish"
     abbr -a pa "nvim ~/.linux_path"
     abbr -a ina "nvim ~/Dotfiles/ansible/roles/workstation/vars/Archlinux.yml"
-
-    # Apps
-    abbr -a gem "gemini -y"
 end
