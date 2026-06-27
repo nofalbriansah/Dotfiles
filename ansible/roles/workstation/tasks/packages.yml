@@ -53,7 +53,7 @@
     # 'script' command fakes a TTY to satisfy paru's requirement
     - name: "ARCH | Install AUR Packages"
       ansible.builtin.shell: "script -q -c 'paru -S --noconfirm --needed {{ item.name }}' /dev/null"
-      loop: "{{ aur_packages }}"
+      loop: "{{ aur_packages | default([]) }}"
       when: item.state == 'present'
       register: aur_inst
       changed_when: "'Installing' in aur_inst.stdout or 'Upgrading' in aur_inst.stdout"
@@ -63,7 +63,7 @@
     # 5. Remove Unwanted AUR Packages
     - name: "ARCH | Remove AUR Packages"
       ansible.builtin.command: "paru -Rns --noconfirm {{ item.name }}"
-      loop: "{{ aur_packages }}"
+      loop: "{{ aur_packages | default([]) }}"
       when: item.state == 'absent'
       register: aur_rem
       failed_when: false
@@ -77,7 +77,7 @@
         name: "{{ item.name }}"
         enabled: "{{ item.enabled | default(yes) }}"
         state: "{{ item.state | default('started') }}"
-      loop: "{{ enabled_services }}"
+      loop: "{{ enabled_services | default([]) }}"
       when: enabled_services is defined
 
   when: ansible_facts['distribution'] in ["Archlinux", "CachyOS"]
@@ -141,3 +141,26 @@
       when: enabled_services is defined
 
   when: ansible_facts['distribution'] == "Fedora"
+
+- name: "ANDROID | System Package Management"
+  block:
+    - name: "ANDROID | Update package cache"
+      ansible.builtin.command: pkg update -y
+      changed_when: false
+      ignore_errors: true
+
+    - name: "ANDROID | Install packages"
+      ansible.builtin.command: "pkg install -y {{ item.name }}"
+      loop: "{{ sys_packages }}"
+      when: item.state | default('present') == 'present'
+      register: pkg_install_out
+      changed_when: "'0 upgraded, 0 newly installed' not in pkg_install_out.stdout"
+
+    - name: "ANDROID | Remove packages"
+      ansible.builtin.command: "pkg uninstall -y {{ item.name }}"
+      loop: "{{ sys_packages }}"
+      when: item.state | default('present') == 'absent'
+      register: pkg_remove_out
+      changed_when: "'0 upgraded, 0 newly installed' not in pkg_remove_out.stdout"
+  when: ansible_facts['os_family'] == "Android" or ansible_facts['distribution'] == "Android"
+

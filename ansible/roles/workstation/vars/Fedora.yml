@@ -2,6 +2,8 @@
 # To Uninstall: Set state to absent.
 
 ---
+os_category: "linux"
+
 sys_packages:
   # Fonts
   - { name: "fira-code-fonts", state: "present" }

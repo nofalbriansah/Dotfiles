@@ -12,7 +12,8 @@
 # 2. Identify configuration directories for ~/.config/
 - name: "DOTFILES | List config directories in repo"
   ansible.builtin.find:
-    paths: "{{ playbook_dir }}/files/configs"
+    paths:
+      - "{{ playbook_dir }}/files/{{ os_category }}/configs"
     file_type: directory
   register: repo_configs
 
@@ -47,13 +48,32 @@
 
 # --- UNIVERSAL HOME DOTFILES (Files that go directly to ~/) ---
 
-# 4. Find all files in files/home/ (including hidden ones)
+# 4. Find all files/folders in files/{{ os_category }}/home
 - name: "DOTFILES | Find all home files in repo"
   ansible.builtin.find:
-    paths: "{{ playbook_dir }}/files/home"
+    paths:
+      - "{{ playbook_dir }}/files/{{ os_category }}/home"
     hidden: yes
-    file_type: any # Can be file or directory (like .gnupg)
+    file_type: any # Can be file or directory
   register: found_home_files
+
+# 4a. Check target status in $HOME root
+- name: "DOTFILES | Check target home file status"
+  ansible.builtin.stat:
+    path: "{{ user_home }}/{{ item.path | basename }}"
+  register: target_home_stats
+  loop: "{{ found_home_files.files }}"
+
+# 4b. Remove if it's a real directory (not a symlink)
+- name: "DOTFILES | Remove real home directory if it exists"
+  ansible.builtin.file:
+    path: "{{ item.stat.path }}"
+    state: absent
+  when:
+    - item.stat.exists
+    - item.stat.isdir
+    - not item.stat.islnk
+  loop: "{{ target_home_stats.results }}"
 
 # 5. Symlink discovered files/folders directly to $HOME root
 - name: "DOTFILES | Symlink Dotfiles to Home"
@@ -63,3 +83,13 @@
     state: link
     force: true
   loop: "{{ found_home_files.files }}"
+  register: symlink_home_status
+
+# 6. Reload Termux settings if ~/.termux config changes (Android only)
+- name: "DOTFILES | Reload Termux settings"
+  ansible.builtin.command: termux-reload-settings
+  changed_when: true
+  ignore_errors: true
+  when:
+    - ansible_facts['distribution'] == 'Android' or ansible_facts['os_family'] == 'Android'
+    - symlink_home_status is changed

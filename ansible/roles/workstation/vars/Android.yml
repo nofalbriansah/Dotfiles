@@ -1,0 +1,15 @@
+# To Install: Set state to present.
+# To Uninstall: Set state to absent.
+
+---
+os_category: "termux"
+
+sys_packages:
+  # Core CLI Tools
+  - { name: "neovim", state: "present" }
+  - { name: "git", state: "present" }
+  - { name: "unzip", state: "present" }
+  - { name: "zip", state: "present" }
+  - { name: "tar", state: "present" }
+  - { name: "curl", state: "present" }
+  - { name: "wget", state: "present" }

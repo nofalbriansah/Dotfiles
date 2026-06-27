@@ -2,6 +2,8 @@
 # To Uninstall: Set state to absent.
 
 ---
+os_category: "linux"
+
 sys_packages:
   # Fonts
   - { name: "ttf-firacode-nerd", state: "present" }

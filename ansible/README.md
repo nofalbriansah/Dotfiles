@@ -1,13 +1,13 @@
 # ❄️ My Ansible Dotfiles
 
-This is my personal setup for managing my Arch Linux (and CachyOS) environment. It uses Ansible to handle packages, configurations, and visual assets. It's not a complex framework, just a declarative way to ensure my machine stays the way I like it without running manual scripts every time.
+This is my personal setup for managing my Linux (Arch Linux, CachyOS, Debian, Fedora) and Android (Termux) environments. It uses Ansible to handle packages, configurations, and visual assets. It's not a complex framework, just a declarative way to ensure my machine stays the way I like it without running manual scripts every time.
 
 ## ⚡ What it does
 
-- **Package Management:** Installs or removes packages (Official & AUR) based on a list. It tries to handle system updates first, but if I'm offline, it skips the update and just checks installed packages.
-- **Dotfiles:** Symlinks config folders from `files/configs/` to `~/.config/`.
-- **Themes & Assets:** Places wallpapers, icons, and themes in their respective `~/.local/share/` directories.
-- **Sudo Handling:** Sets up `nopasswd` for specific package management commands so I don't get stuck at a password prompt during long updates.
+- **Package Management:** Installs or removes packages based on the operating system list. On Termux, it uses `pkg`, while on Linux it uses the native package managers (`pacman`, `apt`, `dnf`) and supports AUR packages on Arch.
+- **Dotfiles:** Symlinks config and home files from `files/linux/` (for Linux desktop) or `files/termux/` (for Android) to the target directories.
+- **Themes & Assets:** Places wallpapers, icons, and themes in their respective directories (Linux only).
+- **Sudo & Android Handling:** Automatically detects Android to skip password capture and run non-root operations. On Linux, it sets up `nopasswd` for specific package management commands to avoid terminal hangs.
 
 ## 📂 Structure
 
@@ -18,16 +18,25 @@ ansible/
 ├── inventory.ini     # Defines localhost
 ├── site.yml          # Main playbook entry point
 ├── files/
-│   ├── configs/      # Config folders (nvim, kitty, etc.)
-│   └── themes/       # Visual assets (backgrounds, icons, etc.)
+│   ├── linux/        # Linux-specific configs and home files
+│   ├── termux/       # Termux-specific configs and home files
+│   └── themes/       # Visual assets (backgrounds, icons, etc.) (Linux only)
 ├── roles/
 │   └── workstation/
 │       ├── tasks/    # The logic (install packages, link files)
-│       └── vars/     # My package lists (Archlinux.yml)
+│       └── vars/     # Package lists and OS-specific variables (Archlinux.yml, Android.yml, etc.)
 ```
 
 ## 🚀 Usage
 
+### Prerequisites for Termux (Android)
+Before running the playbook on Android, ensure python and ansible are installed:
+```bash
+pkg install python -y
+pip install ansible
+```
+
+### Running the Playbook
 I run this locally on my machine.
 
 1. **Clone the repo:**
@@ -47,14 +56,14 @@ If I only want to update specific parts without running the whole playbook:
 
 ```bash
 ./ansible.sh --tags dotfiles  # Only update config symlinks
-./ansible.sh --tags themes    # Only update wallpapers/icons
+./ansible.sh --tags themes    # Only update wallpapers/icons (Linux only)
 ./ansible.sh --tags packages  # Only run package management
 ```
 
 ## ⚙️ Configuration
 
-- **Packages:** I define what I want installed in `roles/workstation/vars/Archlinux.yml`.
-- **Configs:** I just drop new folders into `files/configs/`, and the playbook automatically links them to `~/.config/`.
+- **Packages:** Defined in `roles/workstation/vars/<OS>.yml` (e.g., `Archlinux.yml` or `Android.yml` for Termux).
+- **Configs:** Placed in `files/linux/` (Linux desktop only) or `files/termux/` (Termux only). Inside each, there are `configs/` (linked to `~/.config/`) and `home/` (linked to `~/` root, including `~/.termux/` for Termux settings).
 - **Offline Mode:** The playbook is configured to ignore errors during the `pacman -Syu` step if the repositories are unreachable, so I can still sync my configs without an internet connection.
 
 ## 💡 Why?
