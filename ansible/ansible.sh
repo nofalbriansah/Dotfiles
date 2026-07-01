@@ -31,11 +31,7 @@ fi
 # --- AUTO-INSTALL ANSIBLE IF NOT FOUND ---
 if ! command -v ansible-playbook &>/dev/null; then
     echo "⚙️  Ansible not found. Installing..."
-    if [ "$IS_ANDROID" = true ]; then
-        # Termux (Android) — install via pkg + pip
-        pkg install python -y
-        pip install ansible
-    elif command -v pacman &>/dev/null; then
+    if command -v pacman &>/dev/null; then
         # Arch Linux / CachyOS
         echo "$SUDO_PASS" | sudo -S pacman -S --noconfirm ansible
     elif command -v apt &>/dev/null; then
