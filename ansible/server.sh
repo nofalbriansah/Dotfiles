@@ -33,9 +33,9 @@ if [[ "$1" == "--local" ]]; then
             echo "$SUDO_PASS" | sudo -S apt update -y
             echo "$SUDO_PASS" | sudo -S apt install ansible -y
         elif command -v dnf &>/dev/null; then
-            # CentOS / RHEL / Fedora — EPEL required for ansible on CentOS/RHEL
-            echo "$SUDO_PASS" | sudo -S dnf install epel-release -y
-            echo "$SUDO_PASS" | sudo -S dnf install ansible -y
+            # CentOS / RHEL / Fedora
+            # ansible-core is available in AppStream on CentOS 10+ (no EPEL needed)
+            echo "$SUDO_PASS" | sudo -S dnf install ansible-core -y
         else
             echo "❌ Unsupported package manager. Please install Ansible manually."
             exit 1

@@ -40,7 +40,8 @@ if ! command -v ansible-playbook &>/dev/null; then
         echo "$SUDO_PASS" | sudo -S apt install ansible -y
     elif command -v dnf &>/dev/null; then
         # Fedora / CentOS / RHEL
-        echo "$SUDO_PASS" | sudo -S dnf install ansible -y
+        # ansible-core is available in AppStream on CentOS 10+ (no EPEL needed)
+        echo "$SUDO_PASS" | sudo -S dnf install ansible-core -y
     else
         echo "❌ Unsupported package manager. Please install Ansible manually."
         exit 1

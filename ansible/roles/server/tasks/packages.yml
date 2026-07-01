@@ -1,15 +1,7 @@
 ---
 # roles/server/tasks/packages.yml
 
-# 1. Enable EPEL for RedHat/CentOS family (needed for neofetch, neovim, ansible)
-- name: "REDHAT | Install EPEL Repository"
-  become: true
-  ansible.builtin.dnf:
-    name: epel-release
-    state: present
-  when: ansible_facts['os_family'] == "RedHat"
-
-# 2. Update and Install System Packages on Debian/Ubuntu
+# 1. Update and Install System Packages on Debian/Ubuntu
 - name: "DEBIAN | Sync System Packages"
   block:
     - name: "DEBIAN | Update Package Cache"
@@ -26,7 +18,7 @@
       loop: "{{ sys_packages }}"
   when: ansible_facts['os_family'] == "Debian"
 
-# 3. Update and Install System Packages on RedHat/CentOS
+# 2. Update and Install System Packages on RedHat/CentOS
 - name: "REDHAT | Sync System Packages"
   block:
     - name: "REDHAT | Update Package Cache"
@@ -43,7 +35,7 @@
       loop: "{{ sys_packages }}"
   when: ansible_facts['os_family'] == "RedHat"
 
-# 4. Install Zellij via GitHub Releases (Universal Linux)
+# 3. Install Zellij via GitHub Releases (Universal Linux)
 - name: "ZELLIJ | Check if Zellij is installed"
   ansible.builtin.command: which zellij
   register: zellij_check

@@ -7,4 +7,4 @@ sys_packages:
   - { name: "openssh-server", state: "present" }
   - { name: "openssh-clients", state: "present" }
   - { name: "neovim", state: "present" }
-  - { name: "ansible", state: "present" }
+  - { name: "ansible-core", state: "present" }
