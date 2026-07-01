@@ -28,6 +28,29 @@ if [ "$IS_ANDROID" = false ]; then
     export ANSIBLE_BECOME_PASS="$SUDO_PASS"
 fi
 
+# --- AUTO-INSTALL ANSIBLE IF NOT FOUND ---
+if ! command -v ansible-playbook &>/dev/null; then
+    echo "⚙️  Ansible not found. Installing..."
+    if [ "$IS_ANDROID" = true ]; then
+        # Termux (Android) — install via pkg + pip
+        pkg install python -y
+        pip install ansible
+    elif command -v pacman &>/dev/null; then
+        # Arch Linux / CachyOS
+        echo "$SUDO_PASS" | sudo -S pacman -S --noconfirm ansible
+    elif command -v apt &>/dev/null; then
+        # Debian / Ubuntu
+        echo "$SUDO_PASS" | sudo -S apt update -y
+        echo "$SUDO_PASS" | sudo -S apt install ansible -y
+    elif command -v dnf &>/dev/null; then
+        # Fedora / CentOS / RHEL
+        echo "$SUDO_PASS" | sudo -S dnf install ansible -y
+    else
+        echo "❌ Unsupported package manager. Please install Ansible manually."
+        exit 1
+    fi
+fi
+
 # --- ANSIBLE EXECUTION ---
 ansible-playbook site.yml -i "localhost," -c local "$@"
 
