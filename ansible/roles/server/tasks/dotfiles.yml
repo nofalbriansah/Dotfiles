@@ -1,0 +1,43 @@
+---
+# roles/server/tasks/dotfiles.yml
+
+# 1. Ensure XDG directories exist
+- name: "DOTFILES | Ensure XDG directories exist"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - "{{ xdg_config_dir }}"
+    - "{{ xdg_data_dir }}"
+
+# 2. Check target status in ~/.config/ for nvim and zellij
+- name: "DOTFILES | Check target config status"
+  ansible.builtin.stat:
+    path: "{{ xdg_config_dir }}/{{ item }}"
+  register: target_dir_stats
+  loop:
+    - nvim
+    - zellij
+
+# 3. Remove if it's a real directory (not a symlink)
+- name: "DOTFILES | Remove real directory if it exists"
+  ansible.builtin.file:
+    path: "{{ item.stat.path }}"
+    state: absent
+  when:
+    - item.stat.exists
+    - item.stat.isdir
+    - not item.stat.islnk
+  loop: "{{ target_dir_stats.results }}"
+
+# 4. Create symlinks for ~/.config/nvim and ~/.config/zellij
+- name: "DOTFILES | Symlink Config Directories"
+  ansible.builtin.file:
+    src: "{{ playbook_dir }}/files/linux/configs/{{ item }}"
+    dest: "{{ xdg_config_dir }}/{{ item }}"
+    state: link
+    force: true
+  loop:
+    - nvim
+    - zellij

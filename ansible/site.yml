@@ -5,3 +5,9 @@
 
   roles:
     - workstation
+
+- name: "SETUP | Personal Server"
+  hosts: servers
+
+  roles:
+    - server

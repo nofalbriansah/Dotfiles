@@ -1,0 +1,79 @@
+---
+# roles/server/tasks/packages.yml
+
+# 1. Enable EPEL for RedHat/CentOS family (needed for neofetch, neovim, ansible)
+- name: "REDHAT | Install EPEL Repository"
+  become: true
+  ansible.builtin.dnf:
+    name: epel-release
+    state: present
+  when: ansible_facts['os_family'] == "RedHat"
+
+# 2. Update and Install System Packages on Debian/Ubuntu
+- name: "DEBIAN | Sync System Packages"
+  block:
+    - name: "DEBIAN | Update Package Cache"
+      become: true
+      ansible.builtin.apt:
+        update_cache: true
+      ignore_errors: true
+
+    - name: "DEBIAN | Install Packages"
+      become: true
+      ansible.builtin.apt:
+        name: "{{ item.name }}"
+        state: "{{ item.state | default('present') }}"
+      loop: "{{ sys_packages }}"
+  when: ansible_facts['os_family'] == "Debian"
+
+# 3. Update and Install System Packages on RedHat/CentOS
+- name: "REDHAT | Sync System Packages"
+  block:
+    - name: "REDHAT | Update Package Cache"
+      become: true
+      ansible.builtin.dnf:
+        update_cache: true
+      ignore_errors: true
+
+    - name: "REDHAT | Install Packages"
+      become: true
+      ansible.builtin.dnf:
+        name: "{{ item.name }}"
+        state: "{{ item.state | default('present') }}"
+      loop: "{{ sys_packages }}"
+  when: ansible_facts['os_family'] == "RedHat"
+
+# 4. Install Zellij via GitHub Releases (Universal Linux)
+- name: "ZELLIJ | Check if Zellij is installed"
+  ansible.builtin.command: which zellij
+  register: zellij_check
+  ignore_errors: true
+  changed_when: false
+
+- name: "ZELLIJ | Install Zellij via GitHub Release"
+  block:
+    - name: "ZELLIJ | Create temp directory"
+      ansible.builtin.file:
+        path: "/tmp/zellij_install"
+        state: directory
+        mode: "0755"
+
+    - name: "ZELLIJ | Download and extract Zellij"
+      ansible.builtin.unarchive:
+        src: "https://github.com/zellij-org/zellij/releases/latest/download/zellij-{{ ansible_facts['architecture'] }}-unknown-linux-musl.tar.gz"
+        dest: "/tmp/zellij_install"
+        remote_src: true
+
+    - name: "ZELLIJ | Move binary to /usr/local/bin"
+      become: true
+      ansible.builtin.copy:
+        src: "/tmp/zellij_install/zellij"
+        dest: "/usr/local/bin/zellij"
+        mode: "0755"
+        remote_src: true
+
+    - name: "ZELLIJ | Cleanup temp directory"
+      ansible.builtin.file:
+        path: "/tmp/zellij_install"
+        state: absent
+  when: zellij_check.rc != 0

@@ -14,58 +14,73 @@ This is my personal setup for managing my Linux (Arch Linux, CachyOS, Debian, Fe
 ```plaintext
 ansible/
 ├── ansible.cfg       # Local execution settings (optimized for speed/offline)
-├── ansible.sh        # The main script to run everything
-├── inventory.ini     # Defines localhost
-├── site.yml          # Main playbook entry point
+├── ansible.sh        # The script to run workstation provisioning
+├── server.sh         # The script to run remote server provisioning
+├── inventory.ini     # Defines localhost (workstation) and remote hosts (server)
+├── site.yml          # Main unified playbook (workstation & server)
 ├── files/
 │   ├── linux/        # Linux-specific configs and home files
 │   ├── termux/       # Termux-specific configs and home files
 │   └── themes/       # Visual assets (backgrounds, icons, etc.) (Linux only)
 ├── roles/
-│   └── workstation/
-│       ├── tasks/    # The logic (install packages, link files)
-│       └── vars/     # Package lists and OS-specific variables (Archlinux.yml, Android.yml, etc.)
+│   ├── workstation/
+│   │   ├── tasks/    # Workstation tasks (install packages, link files)
+│   │   └── vars/     # Workstation package lists (Archlinux.yml, Android.yml, etc.)
+│   └── server/
+│       ├── tasks/    # Server tasks (install packages, link configs, install Zellij)
+│       └── vars/     # Server variables (Debian.yml, RedHat.yml)
 ```
 
 ## 🚀 Usage
 
-### Prerequisites for Termux (Android)
-Before running the playbook on Android, ensure python and ansible are installed:
-```bash
-pkg install python -y
-pip install ansible
-```
+### 💻 Running Workstation Playbook (Local)
+I run this locally on my machine (Arch Linux, Debian, Fedora, or Android Termux).
 
-### Running the Playbook
-I run this locally on my machine.
+1.  **Clone the repo:**
+    ```bash
+    git clone https://github.com/nofalbriansah/Dotfiles
+    cd Dotfiles/ansible
+    ```
 
-1. **Clone the repo:**
-   ```bash
-   git clone https://github.com/nofalbriansah/Dotfiles
-   cd Dotfiles/ansible
-   ```
+2.  **Run the script:**
+    ```bash
+    chmod +x ansible.sh
+    ./ansible.sh
+    ```
 
-2. **Run the script:**
-   ```bash
-   chmod +x ansible.sh
-   ./ansible.sh
-   ```
-
-### Tags
-If I only want to update specific parts without running the whole playbook:
-
+#### Tags
+If I only want to update specific parts:
 ```bash
 ./ansible.sh --tags dotfiles  # Only update config symlinks
-./ansible.sh --tags themes    # Only update wallpapers/icons (Linux only)
+./ansible.sh --tags themes    # Only update wallpapers/icons
 ./ansible.sh --tags packages  # Only run package management
+```
+
+### ☁️ Running Server Playbook (Remote)
+Used to provision remote Ubuntu/Debian or CentOS/RHEL/Rocky/AlmaLinux servers via SSH.
+
+1.  **Configure remote SSH hosts** in `~/.ssh/config` (IP, ports, keys, users).
+2.  **List target hosts** in `inventory.ini` under the `[servers]` group using their SSH aliases.
+3.  **Run the server provisioning script:**
+    ```bash
+    chmod +x server.sh
+    ./server.sh
+    ```
+    *This will prompt you for the sudo (`become`) password of the remote servers.*
+
+#### Tags
+```bash
+./server.sh --tags packages  # Only install server system packages and Zellij
+./server.sh --tags dotfiles  # Only symlink nvim and zellij configurations
 ```
 
 ## ⚙️ Configuration
 
-- **Packages:** Defined in `roles/workstation/vars/<OS>.yml` (e.g., `Archlinux.yml` or `Android.yml` for Termux).
-- **Configs:** Placed in `files/linux/` (Linux desktop only) or `files/termux/` (Termux only). Inside each, there are `configs/` (linked to `~/.config/`) and `home/` (linked to `~/` root, including `~/.termux/` for Termux settings).
-- **Offline Mode:** The playbook is configured to ignore errors during the `pacman -Syu` step if the repositories are unreachable, so I can still sync my configs without an internet connection.
+- **Workstation Packages**: Defined in `roles/workstation/vars/<OS>.yml` (e.g. `Archlinux.yml` or `Android.yml`).
+- **Server Packages**: Defined in `roles/server/vars/<OS_Family>.yml` (e.g. `Debian.yml` for Ubuntu/Debian, `RedHat.yml` for CentOS/RHEL).
+- **Configs**: Placed in `files/linux/` (Linux desktop/server) or `files/termux/` (Termux). Inside each, there are `configs/` (linked to `~/.config/`) and `home/` (linked to `~/` root).
+- **Offline Mode**: The workstation playbook ignores package upgrade failures if repositories are unreachable, allowing config sync without active internet.
 
 ## 💡 Why?
 
-I wanted a single source of truth for my setup. Scripts are fine, but Ansible lets me say "I want this state" (idempotency) rather than writing "if file doesn't exist then do this" logic everywhere.
+I wanted a single source of truth for my setups. Scripts are fine, but Ansible lets me declare the target state (idempotency) rather than writing "if file doesn't exist then do this" logic everywhere.

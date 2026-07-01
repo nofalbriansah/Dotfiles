@@ -1,0 +1,23 @@
+---
+# roles/server/tasks/main.yml
+
+# 1. Load OS-specific variables (looks for distribution.yml, then os_family.yml, then default.yml)
+- name: "SETUP | Load OS Variables"
+  ansible.builtin.include_vars: "{{ item }}"
+  with_first_found:
+    - files:
+        - "{{ ansible_facts['distribution'] }}.yml"
+        - "{{ ansible_facts['os_family'] }}.yml"
+        - "default.yml"
+      paths:
+        - "{{ role_path }}/vars"
+
+# 2. Run Package Management
+- name: "TASK | Package Management"
+  ansible.builtin.include_tasks: packages.yml
+  tags: ["packages"]
+
+# 3. Run Dotfiles symlinking
+- name: "TASK | Symlink Dotfiles"
+  ansible.builtin.include_tasks: dotfiles.yml
+  tags: ["dotfiles"]
