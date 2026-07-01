@@ -25,6 +25,23 @@ if [[ "$1" == "--local" ]]; then
         exit 1
     fi
 
+    # --- AUTO-INSTALL ANSIBLE IF NOT FOUND ---
+    if ! command -v ansible-playbook &>/dev/null; then
+        echo "⚙️  Ansible not found. Installing..."
+        if command -v apt &>/dev/null; then
+            # Debian / Ubuntu
+            echo "$SUDO_PASS" | sudo -S apt update -y
+            echo "$SUDO_PASS" | sudo -S apt install ansible -y
+        elif command -v dnf &>/dev/null; then
+            # CentOS / RHEL / Fedora — EPEL required for ansible on CentOS/RHEL
+            echo "$SUDO_PASS" | sudo -S dnf install epel-release -y
+            echo "$SUDO_PASS" | sudo -S dnf install ansible -y
+        else
+            echo "❌ Unsupported package manager. Please install Ansible manually."
+            exit 1
+        fi
+    fi
+
     export ANSIBLE_BECOME_PASS="$SUDO_PASS"
     ansible-playbook server.yml -i "localhost," -c local "$@"
     unset ANSIBLE_BECOME_PASS
