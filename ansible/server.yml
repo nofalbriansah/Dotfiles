@@ -1,0 +1,9 @@
+---
+# server.yml - Used when running Ansible locally ON the server itself.
+# Usage: ./server.sh --local
+- name: "SETUP | Personal Server (Local)"
+  hosts: localhost
+  connection: local
+
+  roles:
+    - server

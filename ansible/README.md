@@ -18,6 +18,7 @@ ansible/
 ├── server.sh         # The script to run remote server provisioning
 ├── inventory.ini     # Defines localhost (workstation) and remote hosts (server)
 ├── site.yml          # Main unified playbook (workstation & server)
+├── server.yml        # Local server playbook (run directly ON the server)
 ├── files/
 │   ├── linux/        # Linux-specific configs and home files
 │   ├── termux/       # Termux-specific configs and home files
@@ -56,7 +57,7 @@ If I only want to update specific parts:
 ./ansible.sh --tags packages  # Only run package management
 ```
 
-### ☁️ Running Server Playbook (Remote)
+### ☁️ Running Server Playbook (Remote — from Termux/Laptop)
 Used to provision remote Ubuntu/Debian or CentOS/RHEL/Rocky/AlmaLinux servers via SSH.
 
 1.  **Configure remote SSH hosts** in `~/.ssh/config` (IP, ports, keys, users).
@@ -72,6 +73,32 @@ Used to provision remote Ubuntu/Debian or CentOS/RHEL/Rocky/AlmaLinux servers vi
 ```bash
 ./server.sh --tags packages  # Only install server system packages and Zellij
 ./server.sh --tags dotfiles  # Only symlink nvim and zellij configurations
+```
+
+### 🖥️ Running Server Playbook (Local — directly ON the server)
+Use this when you have logged into the server manually and want to run Ansible locally.
+
+1.  **Install prerequisites on the server:**
+    ```bash
+    # Ubuntu/Debian
+    sudo apt install ansible -y
+
+    # CentOS/RHEL (requires EPEL)
+    sudo dnf install epel-release -y && sudo dnf install ansible -y
+    ```
+
+2.  **Clone the repo and run:**
+    ```bash
+    git clone https://github.com/nofalbriansah/Dotfiles
+    cd Dotfiles/ansible
+    chmod +x server.sh
+    ./server.sh --local
+    ```
+
+#### Tags
+```bash
+./server.sh --local --tags packages  # Only install server system packages and Zellij
+./server.sh --local --tags dotfiles  # Only symlink nvim and zellij configurations
 ```
 
 ## ⚙️ Configuration
