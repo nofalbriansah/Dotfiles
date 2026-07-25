@@ -1,55 +1,53 @@
-# My Nix and Home Manager Dotfiles 🚀
+# Nix and Home Manager Dotfiles
 
-This repository manages my system configurations for **NixOS** and other Linux distributions (like Arch/Fedora) using **Nix Flakes** and **Home Manager**.
+System configurations for **NixOS** and standalone Linux distributions (such as Arch Linux or Fedora) managed using **Nix Flakes** and **Home Manager**.
 
-## 📁 Repository Structure
-```
+## Repository structure
+
+```text
 .
 ├── nix
-│   ├── flake.lock
-│   ├── flake.nix
-│   ├── home
-│   │   ├── cli.nix
-│   │   ├── gnome.nix
-│   │   ├── gui.nix
-│   │   └── home.nix
-│   └── nixos
-│       ├── configuration.nix
-│       └── hardware-configuration.nix
+│   ├── flake.lock
+│   ├── flake.nix
+│   ├── home
+│   │   ├── cli.nix
+│   │   ├── gnome.nix
+│   │   ├── gui.nix
+│   │   └── home.nix
+│   └── nixos
+│       ├── configuration.nix
+│       └── hardware-configuration.nix
 ├── README.md
 └── themes
 ```
 
-The core configuration is segregated into functional modules under the `nix/home/` directory:
+The core configuration is organized into functional modules in `nix/home/`:
 
 | Path | Purpose |
 | :--- | :--- |
-| `nix/home/home.nix` | Universal **Base Config** (User/Env Vars) and **CLI Default** entry point. |
-| `nix/home/cli.nix` | All Command Line Interface (CLI) packages and shell configuration. |
-| `nix/home/gui.nix` | All Graphical User Interface (GUI) applications. |
-| `nix/home/gnome.nix` | GNOME-specific configurations. |
+| `nix/home/home.nix` | Base configuration for user settings, environment variables, and CLI default entry points. |
+| `nix/home/cli.nix` | Command-line interface (CLI) packages and shell configurations. |
+| `nix/home/gui.nix` | Graphical user interface (GUI) applications. |
+| `nix/home/gnome.nix` | GNOME desktop environment configurations. |
 | `nix/flake.nix` | Defines system outputs and composes modules. |
-| `nix/nixos/` | NixOS system configuration files. |
-| `themes/` | Custom themes, icons, and backgrounds. |
+| `nix/nixos/` | NixOS system-level configuration files. |
+| `themes/` | Custom themes, icons, and background assets. |
 
----
+## Before you begin
 
-## 🛠️ Prerequisites for Flakes
+To use Nix Flakes features, enable experimental flags in your Nix configuration file (typically `~/.config/nix/nix.conf` or `/etc/nix/nix.conf`):
 
-To use Nix functionality, it is essential to enable the experimental features nix-command and flakes. 
-
-Add the following line to Nix configuration file (typically ~/.config/nix/nix.conf or /etc/nix/nix.conf):
-
-```
+```text
 experimental-features = nix-command flakes
 warn-dirty = false
 ```
 
-## 🚀 Workflow & Usage Summary
+## Usage and workflow
 
-This workflow utilizes explicit module composition in `flake.nix` for NixOS, while relying on `home.nix` for standalone Home Manager systems.
+The workflow uses explicit module composition in `flake.nix` for NixOS systems, and relies on `home.nix` for standalone Home Manager setups.
 
-| Target | Command | Module Composition | Notes |
+| Target | Command | Module composition | Notes |
 | :--- | :--- | :--- | :--- |
-| **NixOS** (Full Desktop) | `sudo nixos-rebuild switch --flake .#nixos` | **CLI + GUI + GNOME** | Flake guarantees the full set.|
-| **Non-NixOS** | `nix run home-manager -- switch --flake ~/Dotfiles/nix#nix` | **CLI ONLY** (by default) | `home.nix` imports CLI by default, maintaining a lightweight setup. **To install GUI apps:** Uncomment the `gui.nix` and `gnome.nix` imports inside `nix/home/home.nix` temporarily. |
+| **NixOS** (Desktop) | `sudo nixos-rebuild switch --flake .#nixos` | **CLI + GUI + GNOME** | Flakes enforce the complete system module set. |
+| **Non-NixOS** | `nix run home-manager -- switch --flake ~/Dotfiles/nix#nix` | **CLI ONLY** (Default) | `home.nix` imports CLI configurations by default. To include GUI applications, uncomment `gui.nix` and `gnome.nix` in `nix/home/home.nix`. |
+

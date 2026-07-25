@@ -1,113 +1,126 @@
-# ❄️ My Ansible Dotfiles
+# Ansible Dotfiles
 
-This is my personal setup for managing my Linux (Arch Linux, CachyOS, Debian, Fedora) and Android (Termux) environments. It uses Ansible to handle packages, configurations, and visual assets. It's not a complex framework, just a declarative way to ensure my machine stays the way I like it without running manual scripts every time.
+Automated provisioning for Linux (Arch Linux, CachyOS, Debian, Fedora) and Android (Termux) environments using Ansible to manage packages, system configurations, and visual assets.
 
-## ⚡ What it does
+## Features
 
-- **Package Management:** Installs or removes packages based on the operating system list. On Termux, it uses `pkg`, while on Linux it uses the native package managers (`pacman`, `apt`, `dnf`) and supports AUR packages on Arch.
-- **Dotfiles:** Symlinks config and home files from `files/linux/` (for Linux desktop) or `files/termux/` (for Android) to the target directories.
-- **Themes & Assets:** Places wallpapers, icons, and themes in their respective directories (Linux only).
-- **Sudo & Android Handling:** Automatically detects Android to skip password capture and run non-root operations. On Linux, it sets up `nopasswd` for specific package management commands to avoid terminal hangs.
+* **Package management:** Installs or removes packages based on the target operating system. Uses `pkg` on Termux, native package managers (`pacman`, `apt`, `dnf`) on Linux, and supports AUR packages on Arch Linux.
+* **Configuration symlinking:** Links configuration and home directory files from `files/linux/` or `files/termux/` to their target locations.
+* **Theme assets:** Places wallpapers, icons, and themes in their respective system directories on Linux desktop environments.
+* **Environment handling:** Automatically detects Termux to run non-root operations without password prompts. Configures `nopasswd` rules for specific package management tasks on Linux to prevent terminal hangs.
 
-## 📂 Structure
+## Repository structure
 
-```plaintext
+```text
 ansible/
 ├── ansible.cfg       # Local execution settings (optimized for speed/offline)
-├── ansible.sh        # The script to run workstation provisioning
-├── server.sh         # The script to run remote server provisioning
-├── inventory.ini     # Defines localhost (workstation) and remote hosts (server)
+├── ansible.sh        # Provisioning script for local workstations
+├── server.sh         # Provisioning script for remote servers
+├── inventory.ini     # Defines localhost (workstation) and remote hosts (servers)
 ├── site.yml          # Main unified playbook (workstation & server)
 ├── server.yml        # Local server playbook (run directly ON the server)
 ├── files/
-│   ├── linux/        # Linux-specific configs and home files
-│   ├── termux/       # Termux-specific configs and home files
+│   ├── linux/        # Linux-specific configurations and home files
+│   ├── termux/       # Termux-specific configurations and home files
 │   └── themes/       # Visual assets (backgrounds, icons, etc.) (Linux only)
-├── roles/
-│   ├── workstation/
-│   │   ├── tasks/    # Workstation tasks (install packages, link files)
-│   │   └── vars/     # Workstation package lists (Archlinux.yml, Android.yml, etc.)
-│   └── server/
-│       ├── tasks/    # Server tasks (install packages, link configs, install Zellij)
-│       └── vars/     # Server variables (Debian.yml, RedHat.yml)
+└── roles/
+    ├── workstation/
+    │   ├── tasks/    # Workstation tasks (package management, file symlinks)
+    │   └── vars/     # Workstation package lists (Archlinux.yml, Android.yml, etc.)
+    └── server/
+        ├── tasks/    # Server tasks (package management, config links, Zellij setup)
+        └── vars/     # Server variables (Debian.yml, RedHat.yml)
 ```
 
-## 🚀 Usage
+## Before you begin
 
-### 💻 Running Workstation Playbook (Local)
-I run this locally on my machine (Arch Linux, Debian, Fedora, or Android Termux).
+Before running the playbooks, ensure your environment meets the following requirements:
 
-1.  **Clone the repo:**
-    ```bash
-    git clone https://github.com/nofalbriansah/Dotfiles
-    cd Dotfiles/ansible
-    ```
+* **Git and Ansible:** Verify that `git` and `ansible` are installed.
+* **SSH configuration (for remote servers):** Define remote hosts in `~/.ssh/config` and list their hostnames under the `[servers]` group in `inventory.ini`.
 
-2.  **Run the script:**
-    ```bash
-    chmod +x ansible.sh
-    ./ansible.sh
-    ```
+## Usage
 
-#### Tags
-If I only want to update specific parts:
+### Run the workstation playbook (Local)
+
+Run this playbook locally on your workstation (Arch Linux, Debian, Fedora, or Android Termux):
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/nofalbriansah/Dotfiles
+   cd Dotfiles/ansible
+   ```
+
+2. **Run the provisioning script:**
+   ```bash
+   chmod +x ansible.sh
+   ./ansible.sh
+   ```
+
+#### Target specific components using tags
+
+To run specific parts of the playbook, pass the `--tags` flag:
+
 ```bash
-./ansible.sh --tags dotfiles  # Only update config symlinks
-./ansible.sh --tags themes    # Only update wallpapers/icons
-./ansible.sh --tags packages  # Only run package management
+./ansible.sh --tags dotfiles  # Symlink configuration files only
+./ansible.sh --tags themes    # Apply wallpapers and icons only
+./ansible.sh --tags packages  # Run package management only
 ```
 
-### ☁️ Running Server Playbook (Remote — from Termux/Laptop)
-Used to provision remote Ubuntu/Debian or CentOS/RHEL/Rocky/AlmaLinux servers via SSH.
+### Run the server playbook (Remote)
 
-1.  **Configure remote SSH hosts** in `~/.ssh/config` (IP, ports, keys, users).
-2.  **List target hosts** in `inventory.ini` under the `[servers]` group using their SSH aliases.
-3.  **Run the server provisioning script:**
-    ```bash
-    chmod +x server.sh
-    ./server.sh
-    ```
-    *This will prompt you for the sudo (`become`) password of the remote servers.*
+Provision remote Ubuntu/Debian or RHEL/CentOS servers over SSH from your local machine:
 
-#### Tags
+1. **Configure remote hosts** in `~/.ssh/config` and list them in `inventory.ini`.
+2. **Execute the server script:**
+   ```bash
+   chmod +x server.sh
+   ./server.sh
+   ```
+   *The script prompts for the remote `sudo` (`become`) password.*
+
+#### Target specific server components
+
 ```bash
-./server.sh --tags packages  # Only install server system packages and Zellij
-./server.sh --tags dotfiles  # Only symlink nvim and zellij configurations
+./server.sh --tags packages  # Install system packages and Zellij only
+./server.sh --tags dotfiles  # Symlink Neovim and Zellij configurations only
 ```
 
-### 🖥️ Running Server Playbook (Local — directly ON the server)
-Use this when you have logged into the server manually and want to run Ansible locally.
+### Run the server playbook (Local on server)
 
-1.  **Install prerequisites on the server:**
-    ```bash
-    # Ubuntu/Debian
-    sudo apt install ansible -y
+If you are logged into the remote server directly, run Ansible in local mode:
 
-    # CentOS/RHEL (requires EPEL)
-    sudo dnf install epel-release -y && sudo dnf install ansible -y
-    ```
+1. **Install Ansible on the server:**
+   ```bash
+   # Ubuntu/Debian
+   sudo apt update && sudo apt install ansible -y
 
-2.  **Clone the repo and run:**
-    ```bash
-    git clone https://github.com/nofalbriansah/Dotfiles
-    cd Dotfiles/ansible
-    chmod +x server.sh
-    ./server.sh --local
-    ```
+   # RHEL/CentOS (requires EPEL)
+   sudo dnf install epel-release -y && sudo dnf install ansible -y
+   ```
 
-#### Tags
+2. **Clone the repository and run the local flag:**
+   ```bash
+   git clone https://github.com/nofalbriansah/Dotfiles
+   cd Dotfiles/ansible
+   chmod +x server.sh
+   ./server.sh --local
+   ```
+
+#### Target specific local server components
+
 ```bash
-./server.sh --local --tags packages  # Only install server system packages and Zellij
-./server.sh --local --tags dotfiles  # Only symlink nvim and zellij configurations
+./server.sh --local --tags packages  # Install server packages only
+./server.sh --local --tags dotfiles  # Symlink configurations only
 ```
 
-## ⚙️ Configuration
+## Configuration
 
-- **Workstation Packages**: Defined in `roles/workstation/vars/<OS>.yml` (e.g. `Archlinux.yml` or `Android.yml`).
-- **Server Packages**: Defined in `roles/server/vars/<OS_Family>.yml` (e.g. `Debian.yml` for Ubuntu/Debian, `RedHat.yml` for CentOS/RHEL).
-- **Configs**: Placed in `files/linux/` (Linux desktop/server) or `files/termux/` (Termux). Inside each, there are `configs/` (linked to `~/.config/`) and `home/` (linked to `~/` root).
-- **Offline Mode**: The workstation playbook ignores package upgrade failures if repositories are unreachable, allowing config sync without active internet.
+* **Workstation package lists:** Defined in `roles/workstation/vars/<OS>.yml` (such as `Archlinux.yml` or `Android.yml`).
+* **Server package lists:** Defined in `roles/server/vars/<OS_Family>.yml` (such as `Debian.yml` or `RedHat.yml`).
+* **Configuration files:** Stored in `files/linux/` (Linux desktop/server) or `files/termux/` (Termux). Subdirectories include `configs/` (linked to `~/.config/`) and `home/` (linked to `~/`).
+* **Offline execution:** The workstation playbook ignores package upgrade failures if repositories are unreachable, enabling configuration synchronization without an active internet connection.
 
-## 💡 Why?
+## Architecture decisions
 
-I wanted a single source of truth for my setups. Scripts are fine, but Ansible lets me declare the target state (idempotency) rather than writing "if file doesn't exist then do this" logic everywhere.
+Using Ansible ensures a single source of truth for workstation configurations. Declarative playbooks maintain idempotency by enforcing the desired state without requiring manual conditional logic in shell scripts.
