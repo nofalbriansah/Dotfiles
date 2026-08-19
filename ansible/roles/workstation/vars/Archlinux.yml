@@ -11,16 +11,18 @@ sys_packages:
 
   # CLI Tools
   - { name: "asciinema", state: "present" }
-  - { name: "asusctl", state: "present" }
+  # - { name: "asusctl", state: "present" }
   - { name: "fastfetch", state: "present" }
   - { name: "fd", state: "present" }
   - { name: "fish", state: "present" }
   - { name: "keyd", state: "present" }
+  - { name: "gvfs-mtp", state: "present" }
+  - { name: "libmtp", state: "present" }
   # - { name: "lazygit", state: "present" }
   - { name: "mangohud", state: "present" }
   - { name: "neovim", state: "present" }
   - { name: "ripgrep", state: "present" }
-  - { name: "sshfs", state: "present" }
+  # - { name: "sshfs", state: "present" }
   - { name: "starship", state: "present" }
   # - { name: "stow", state: "present" }
   # - { name: "syncthing", state: "present" }
@@ -38,34 +40,34 @@ sys_packages:
   # - { name: "bun", state: "present" }
   - { name: "clang", state: "present" }
   - { name: "cmake", state: "present" }
-  - { name: "dbeaver", state: "present" }
+  # - { name: "dbeaver", state: "present" }
   - { name: "delve", state: "present" }
   - { name: "docker", state: "present" }
   - { name: "docker-compose", state: "present" }
   - { name: "firefox", state: "present" }
   - { name: "git", state: "present" }
   - { name: "go", state: "present" }
-  - { name: "godot", state: "present" }
-  - { name: "gtk3", state: "present" }
+  # - { name: "godot", state: "present" }
+  # - { name: "gtk3", state: "present" }
   - { name: "hugo", state: "present" }
   - { name: "jdk-openjdk", state: "present" }
   # - { name: "kubectl", state: "present" }
-  - { name: "mesa-utils", state: "present" }
+  # - { name: "mesa-utils", state: "present" }
   - { name: "ninja", state: "present" }
   - { name: "nodejs", state: "present" }
   - { name: "npm", state: "present" }
-  - { name: "pkgconf", state: "present" }
-  - { name: "podman", state: "present" }
-  - { name: "podman-compose", state: "present" }
-  - { name: "podman-desktop", state: "present" }
+  # - { name: "pkgconf", state: "present" }
+  # - { name: "podman", state: "present" }
+  # - { name: "podman-compose", state: "present" }
+  # - { name: "podman-desktop", state: "present" }
   - { name: "python", state: "present" }
   - { name: "python-pip", state: "present" }
   # - { name: "scrcpy", state: "present" }
-  - { name: "terraform", state: "present" }
+  # - { name: "terraform", state: "present" }
 
   # GUI Apps
   - { name: "ab-download-manager", state: "present" }
-  - { name: "alacritty", state: "present" }
+  # - { name: "alacritty", state: "present" }
   - { name: "calibre", state: "present" }
   - { name: "converseen", state: "present" }
   - { name: "blender", state: "present" }
@@ -75,13 +77,14 @@ sys_packages:
   # - { name: "extension-manager", state: "present" }
   - { name: "gimp", state: "present" }
   # - { name: "gnome-system-monitor", state: "present" }
-  - { name: "handbrake", state: "present" }
-  - { name: "heroic-games-launcher-bin", state: "present" }
+  # - { name: "handbrake", state: "present" }
+  # - { name: "heroic-games-launcher-bin", state: "present" }
   # - { name: "kdenlive", state: "present" }
   # - { name: "kitty", state: "present" }
-  - { name: "libreoffice-fresh", state: "present" }
+  # - { name: "libreoffice-fresh", state: "present" }
   - { name: "obsidian", state: "present" }
   - { name: "obs-studio", state: "present" }
+  - { name: "papers", state: "present" }
   - { name: "qemu-full", state: "present" }
   - { name: "rog-control-center", state: "present" }
   - { name: "steam", state: "present" }
@@ -90,17 +93,18 @@ sys_packages:
   - { name: "vlc", state: "present" }
   - { name: "vlc-plugins-all", state: "present" }
   - { name: "zed", state: "present" }
-  - { name: "zotero", state: "present" }
+  # - { name: "zotero", state: "present" }
 
 aur_packages:
   - { name: "antigravity-ide", state: "present" }
-  - { name: "antigravity-cli", state: "present" }
-  - { name: "claude-code", state: "present" }
+  # - { name: "antigravity-cli", state: "present" }
+  # - { name: "claude-code", state: "present" }
   # - { name: "bottles", state: "present" }
   - { name: "flutter-bin", state: "present" }
   - { name: "google-chrome", state: "present" }
   # - { name: "kind-bin", state: "present" }
-  - { name: "throne", state: "present" }
+  - { name: "opencode", state: "present" }
+  # - { name: "throne", state: "present" }
   # - { name: "unity-hub", state: "present" }
   # - { name: "visual-studio-code-bin", state: "present" }
   - { name: "zoom", state: "present" }
