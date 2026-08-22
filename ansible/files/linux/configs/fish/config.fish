@@ -47,6 +47,8 @@ if status is-interactive
     abbr -a gfx 'git commit -m "fix: "'
     abbr -a gc 'git commit -m "chore: "'
     abbr -a gr 'git commit -m "refactor: "'
+    abbr -a gl 'git log --oneline -n 1'
+
 
     # NixOS Management
     abbr -a nu "nix flake update --flake /home/nbs/Dotfiles/nix"

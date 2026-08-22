@@ -63,7 +63,7 @@ sys_packages:
   - { name: "python", state: "present" }
   - { name: "python-pip", state: "present" }
   # - { name: "scrcpy", state: "present" }
-  # - { name: "terraform", state: "present" }
+  - { name: "terraform", state: "present" }
 
   # GUI Apps
   - { name: "ab-download-manager", state: "present" }
@@ -89,6 +89,7 @@ sys_packages:
   - { name: "rog-control-center", state: "present" }
   - { name: "steam", state: "present" }
   - { name: "swtpm", state: "present" }
+  - { name: "telegram-desktop", state: "present" }
   - { name: "virt-manager", state: "present" }
   - { name: "vlc", state: "present" }
   - { name: "vlc-plugins-all", state: "present" }
@@ -104,6 +105,7 @@ aur_packages:
   - { name: "google-chrome", state: "present" }
   # - { name: "kind-bin", state: "present" }
   - { name: "opencode", state: "present" }
+  - { name: "slack-desktop", state: "present" }
   # - { name: "throne", state: "present" }
   # - { name: "unity-hub", state: "present" }
   # - { name: "visual-studio-code-bin", state: "present" }
