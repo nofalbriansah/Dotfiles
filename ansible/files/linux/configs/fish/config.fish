@@ -34,10 +34,9 @@ if status is-interactive
     starship init fish | source
 
     # --- ABBREVIATIONS ---
-    # Navigation
-    abbr -a dot "cd ~/Dotfiles"
-    abbr -a pun "cd /mnt/Data/01_Projects/obsidian/05_Content/punyanyanbs/"
-    abbr -a ob "cd /mnt/Data/01_Projects/obsidian/"
+    # App
+    abbr -a agy "agy --dangerously-skip-permissions"
+    abbr -a lai "~/Data/code/sandbox/ai/run-localai.sh"
     abbr -a as "asciinema rec NAME-(date +%d-%b-%y-%H%M%S).cast"
 
     # Git
@@ -67,20 +66,9 @@ if status is-interactive
 
     # Arch Linux (Pacman + yay)
     abbr -a cu "sudo pacman -Syu"
-    abbr -a cr "sudo pacman -Scc "
     abbr -a ci "sudo pacman -S "
-    abbr -a pi "yay -S "
 
     # Fedora
     abbr -a fu "sudo dnf up && sudo dnf upgrade"
     abbr -a fd "sudo dnf autoremove"
-
-    # Config
-    abbr -a ab "nvim ~/.config/fish/config.fish"
-    abbr -a pa "nvim ~/.linux_path"
-    abbr -a ina "nvim ~/Dotfiles/ansible/roles/workstation/vars/Archlinux.yml"
-
-    # App
-    abbr -a agy "agy --dangerously-skip-permissions"
-    abbr -a lai "~/Data/code/sandbox/ai/run-localai.sh"
 end

@@ -38,6 +38,7 @@ dev_packages:
   - docker
   - docker-compose
   - git
+  - github-cli
   - go
   - gopls
   - godot
