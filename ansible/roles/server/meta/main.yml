@@ -1,0 +1,26 @@
+---
+galaxy_info:
+  author: Nofal Briansah
+  description: Server base configuration and dotfiles provisioning
+  company: ""
+  license: MIT
+  min_ansible_version: "2.12"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
+    - name: EL
+      versions:
+        - all
+    - name: Fedora
+      versions:
+        - all
+  galaxy_tags:
+    - server
+    - dotfiles
+    - provisioning
+
+dependencies: []

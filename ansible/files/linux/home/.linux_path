@@ -7,13 +7,24 @@ export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
 # Npm
-export PATH="/home/nbs/.npm-global/bin:$PATH"
+export PATH="$HOME/.npm-global/bin:$PATH"
 
 # Chrome
-export CHROME_EXECUTABLE="/usr/bin/google-chrome-stable"
+export CHROME_EXECUTABLE="/usr/bin/google-chrome-beta"
 
 # Goland
 export GOLAND_JDK=/usr/lib/jvm/java-26-openjdk
 
-# Local bin (includes Antigravity CLI)
+# Local bin
 export PATH="$HOME/.local/bin:$PATH"
+
+# Godot Mono
+export GODOT="/usr/sbin/godot-mono"
+
+# Android SDK
+export ANDROID_HOME="$HOME/Android/Sdk"
+export PATH="$ANDROID_HOME/platform-tools:$PATH"
+
+# Flutter
+export PATH="/opt/flutter/bin:$PATH"
+

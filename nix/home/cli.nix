@@ -62,11 +62,11 @@
         format      = "$all";
       };
     };
-    
+
     neovim = {
       enable = true;
       package = pkgs.neovim-unwrapped;
-    
+
       viAlias = true;
       vimAlias = true;
       vimdiffAlias = true;
@@ -75,15 +75,15 @@
         #lazy-nvim
         #LazyVim
       ];
-       
+
       extraPackages = with pkgs; [
-        ripgrep 
-        fd                
+        ripgrep
+        fd
         lua-language-server
         stylua
 	wl-clipboard
       ];
-    };    
+    };
 
     fish = {
       enable = true;
@@ -132,7 +132,7 @@
         cu = "sudo pacman -Syu";
         cr = "sudo pacman -Scc ";
         ci = "sudo pacman -S ";
-        pi = "paru -S ";
+        pi = "yay -S ";
 
         # Fedora
         fu = "sudo dnf up && sudo dnf upgrade";

@@ -1,166 +1,135 @@
 ---
 # roles/workstation/tasks/packages.yml
+# Manages system, user, and AUR packages across supported distributions.
 
-- name: "ARCH | System and AUR Package Management"
+# Arch Linux and derivative distributions (CachyOS, EndeavourOS, Manjaro).
+- name: "ARCH | Manage Arch Linux packages and AUR"
   block:
-    # 1. Privilege Escalation Fix
-    # Granting NOPASSWD for pacman, paru, and systemctl to prevent sudo hangs
-    - name: "ARCH | Debug User Info"
-      debug:
+    - name: "ARCH | Display user identifier"
+      ansible.builtin.debug:
         msg: "User ID: {{ ansible_facts['user_id'] }}"
 
-    - name: "ARCH | Remove old sudoers file"
+    - name: "ARCH | Remove legacy sudoers drop-in file"
       become: true
       ansible.builtin.file:
-        path: "/etc/sudoers.d/10-ansible-paru"
+        path: "/etc/sudoers.d/10-ansible-yay"
         state: absent
 
-    - name: "ARCH | Allow user to run paru/pacman/systemctl without password"
+    # Allow non-interactive package operations for pacman, yay, and systemctl.
+    - name: "ARCH | Configure passwordless permissions for package tools"
       become: true
       ansible.builtin.copy:
-        # Using 99- prefix to ensure this is loaded after other rules in /etc/sudoers.d
         content: |
           {{ ansible_facts['user_id'] }} ALL=(ALL) NOPASSWD: /usr/bin/pacman
-          {{ ansible_facts['user_id'] }} ALL=(ALL) NOPASSWD: /usr/bin/paru
+          {{ ansible_facts['user_id'] }} ALL=(ALL) NOPASSWD: /usr/bin/yay
           {{ ansible_facts['user_id'] }} ALL=(ALL) NOPASSWD: /usr/bin/systemctl
           {{ ansible_facts['user_id'] }} ALL=(ALL) NOPASSWD: /bin/systemctl
-        dest: "/etc/sudoers.d/99-ansible-paru"
+        dest: "/etc/sudoers.d/99-ansible-yay"
         mode: "0440"
         validate: "/usr/bin/visudo -cf %s"
 
-    - name: "ARCH | Verify NOPASSWD works for pacman"
-      command: sudo -n /usr/bin/pacman --version
+    - name: "ARCH | Verify passwordless pacman execution"
+      ansible.builtin.command: sudo -n /usr/bin/pacman --version
       changed_when: false
       ignore_errors: false
 
-    # 2. Update System
-    - name: "ARCH | Update Package Cache & Upgrade System"
+    - name: "ARCH | Update package database and upgrade system"
       become: true
       ansible.builtin.pacman:
         update_cache: true
         upgrade: true
       ignore_errors: true
 
-    # 3. Install Official Packages
-    - name: "ARCH | Sync System Packages"
+    - name: "ARCH | Install official repository packages (batch)"
       become: true
       ansible.builtin.pacman:
-        name: "{{ item.name }}"
-        state: "{{ item.state | default('present') }}"
-      loop: "{{ sys_packages }}"
+        name: "{{ sys_packages }}"
+        state: present
 
-    # 4. Install AUR Packages (The Terminal Bypass Way)
-    # 'script' command fakes a TTY to satisfy paru's requirement
-    - name: "ARCH | Install AUR Packages"
-      ansible.builtin.shell: "script -q -c 'paru -S --noconfirm --needed {{ item.name }}' /dev/null"
+    - name: "ARCH | Install AUR packages via kewlfft.aur collection"
+      kewlfft.aur.aur:
+        name: "{{ item }}"
+        use: yay
+        state: present
       loop: "{{ aur_packages | default([]) }}"
-      when: item.state == 'present'
-      register: aur_inst
-      changed_when: "'Installing' in aur_inst.stdout or 'Upgrading' in aur_inst.stdout"
-      become: false
-      become_method: su
-
-    # 5. Remove Unwanted AUR Packages
-    - name: "ARCH | Remove AUR Packages"
-      ansible.builtin.command: "paru -Rns --noconfirm {{ item.name }}"
-      loop: "{{ aur_packages | default([]) }}"
-      when: item.state == 'absent'
-      register: aur_rem
-      failed_when: false
-      changed_when: "aur_rem.rc == 0"
       become: false
 
-    # 6. Service Management
-    - name: "SERVICE | Manage System Services"
+    - name: "SERVICE | Manage system services"
       become: true
       ansible.builtin.systemd:
         name: "{{ item.name }}"
-        enabled: "{{ item.enabled | default(yes) }}"
+        enabled: "{{ item.enabled | default(true) }}"
         state: "{{ item.state | default('started') }}"
       loop: "{{ enabled_services | default([]) }}"
       when: enabled_services is defined
 
-  when: ansible_facts['distribution'] in ["Archlinux", "CachyOS"]
+  when: ansible_facts['os_family'] == "Archlinux"
 
-- name: "DEBIAN | System Package Management"
+# Debian and Ubuntu family distributions.
+- name: "DEBIAN | Manage Debian and Ubuntu packages"
   block:
-    # 1. Update System
-    - name: "DEBIAN | Update Package Cache & Upgrade System"
+    - name: "DEBIAN | Update package cache and upgrade system"
       become: true
       ansible.builtin.apt:
         update_cache: true
         upgrade: dist
       ignore_errors: true
 
-    # 2. Install Official Packages
-    - name: "DEBIAN | Sync System Packages"
+    - name: "DEBIAN | Install system packages (batch)"
       become: true
       ansible.builtin.apt:
-        name: "{{ item.name }}"
-        state: "{{ item.state | default('present') }}"
-      loop: "{{ sys_packages }}"
+        name: "{{ sys_packages }}"
+        state: present
 
-    # 3. Service Management
-    - name: "SERVICE | Manage System Services"
+    - name: "SERVICE | Manage system services"
       become: true
       ansible.builtin.systemd:
         name: "{{ item.name }}"
-        enabled: "{{ item.enabled | default(yes) }}"
+        enabled: "{{ item.enabled | default(true) }}"
         state: "{{ item.state | default('started') }}"
       loop: "{{ enabled_services }}"
       when: enabled_services is defined
 
   when: ansible_facts['os_family'] == "Debian"
 
-- name: "FEDORA | System Package Management"
+# Red Hat family distributions (Fedora, RHEL, CentOS).
+- name: "FEDORA | Manage Red Hat family packages"
   block:
-    # 1. Update System
-    - name: "FEDORA | Update Package Cache & Upgrade System"
+    - name: "FEDORA | Update package cache and upgrade system"
       become: true
       ansible.builtin.dnf:
         update_cache: true
         update_only: yes
       ignore_errors: true
 
-    # 2. Install Official Packages
-    - name: "FEDORA | Sync System Packages"
+    - name: "FEDORA | Install system packages (batch)"
       become: true
       ansible.builtin.dnf:
-        name: "{{ item.name }}"
-        state: "{{ item.state | default('present') }}"
-      loop: "{{ sys_packages }}"
+        name: "{{ sys_packages }}"
+        state: present
 
-    # 3. Service Management
-    - name: "SERVICE | Manage System Services"
+    - name: "SERVICE | Manage system services"
       become: true
       ansible.builtin.systemd:
         name: "{{ item.name }}"
-        enabled: "{{ item.enabled | default(yes) }}"
+        enabled: "{{ item.enabled | default(true) }}"
         state: "{{ item.state | default('started') }}"
       loop: "{{ enabled_services }}"
       when: enabled_services is defined
 
-  when: ansible_facts['distribution'] == "Fedora"
+  when: ansible_facts['os_family'] == "RedHat"
 
-- name: "ANDROID | System Package Management"
+# Android Termux environment.
+- name: "ANDROID | Manage Android Termux packages"
   block:
     - name: "ANDROID | Update package cache"
       ansible.builtin.command: pkg update -y
       changed_when: false
       ignore_errors: true
 
-    - name: "ANDROID | Install packages"
-      ansible.builtin.command: "pkg install -y {{ item.name }}"
-      loop: "{{ sys_packages }}"
-      when: item.state | default('present') == 'present'
+    - name: "ANDROID | Install packages (batch)"
+      ansible.builtin.command: "pkg install -y {{ sys_packages | join(' ') }}"
       register: pkg_install_out
       changed_when: "'0 upgraded, 0 newly installed' not in pkg_install_out.stdout"
 
-    - name: "ANDROID | Remove packages"
-      ansible.builtin.command: "pkg uninstall -y {{ item.name }}"
-      loop: "{{ sys_packages }}"
-      when: item.state | default('present') == 'absent'
-      register: pkg_remove_out
-      changed_when: "'0 upgraded, 0 newly installed' not in pkg_remove_out.stdout"
   when: ansible_facts['os_family'] == "Android" or ansible_facts['distribution'] == "Android"
-

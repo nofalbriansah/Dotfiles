@@ -1,6 +1,9 @@
 ---
-# 1. Ensure XDG directories exist
-- name: "DOTFILES | Ensure XDG directories exist"
+# roles/workstation/tasks/dotfiles.yml
+# Symlinks user configuration directories and dotfiles into target locations.
+
+# Ensure standard XDG base directories exist before linking files.
+- name: "DOTFILES | Ensure standard XDG directories exist"
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
@@ -9,25 +12,24 @@
     - "{{ xdg_config_dir }}"
     - "{{ xdg_data_dir }}"
 
-# 2. Identify configuration directories for ~/.config/
-- name: "DOTFILES | List config directories in repo"
+# Discover configuration directories from common and platform-specific sources.
+- name: "DOTFILES | Discover configuration directories"
   ansible.builtin.find:
     paths:
+      - "{{ playbook_dir }}/files/common/configs"
       - "{{ playbook_dir }}/files/{{ os_category }}/configs"
     file_type: directory
   register: repo_configs
 
-# --- STRATEGY: Handle ~/.config/ Directory Conflicts ---
-
-# 3a. Check target status in ~/.config/
-- name: "DOTFILES | Check target config status"
+# Inspect target paths in ~/.config/ to identify directory conflicts.
+- name: "DOTFILES | Inspect target configuration paths"
   ansible.builtin.stat:
     path: "{{ xdg_config_dir }}/{{ item.path | basename }}"
   register: target_dir_stats
   loop: "{{ repo_configs.files }}"
 
-# 3b. Remove if it's a real directory (not a symlink)
-- name: "DOTFILES | Remove real directory if it exists"
+# Remove physical directories to allow clean symlink creation.
+- name: "DOTFILES | Remove physical directory to resolve symlink conflict"
   ansible.builtin.file:
     path: "{{ item.stat.path }}"
     state: absent
@@ -37,8 +39,8 @@
     - not item.stat.islnk
   loop: "{{ target_dir_stats.results }}"
 
-# 3c. Create symlinks for ~/.config/ subdirectories
-- name: "DOTFILES | Symlink Config Directories"
+# Symlink discovered configuration directories to ~/.config/.
+- name: "DOTFILES | Symlink configuration directories to ~/.config"
   ansible.builtin.file:
     src: "{{ item.path }}"
     dest: "{{ xdg_config_dir }}/{{ item.path | basename }}"
@@ -46,26 +48,24 @@
     force: true
   loop: "{{ repo_configs.files }}"
 
-# --- UNIVERSAL HOME DOTFILES (Files that go directly to ~/) ---
-
-# 4. Find all files/folders in files/{{ os_category }}/home
-- name: "DOTFILES | Find all home files in repo"
+# Discover home-level dotfiles (files intended for $HOME root).
+- name: "DOTFILES | Discover home dotfiles in repository"
   ansible.builtin.find:
     paths:
       - "{{ playbook_dir }}/files/{{ os_category }}/home"
-    hidden: yes
-    file_type: any # Can be file or directory
+    hidden: true
+    file_type: any
   register: found_home_files
 
-# 4a. Check target status in $HOME root
-- name: "DOTFILES | Check target home file status"
+# Inspect target paths in $HOME.
+- name: "DOTFILES | Inspect target home paths"
   ansible.builtin.stat:
     path: "{{ user_home }}/{{ item.path | basename }}"
   register: target_home_stats
   loop: "{{ found_home_files.files }}"
 
-# 4b. Remove if it's a real directory (not a symlink)
-- name: "DOTFILES | Remove real home directory if it exists"
+# Remove physical directories in $HOME to allow symlink creation.
+- name: "DOTFILES | Remove physical home directory to resolve symlink conflict"
   ansible.builtin.file:
     path: "{{ item.stat.path }}"
     state: absent
@@ -75,8 +75,8 @@
     - not item.stat.islnk
   loop: "{{ target_home_stats.results }}"
 
-# 5. Symlink discovered files/folders directly to $HOME root
-- name: "DOTFILES | Symlink Dotfiles to Home"
+# Symlink discovered home dotfiles to $HOME root.
+- name: "DOTFILES | Symlink dotfiles to $HOME root"
   ansible.builtin.file:
     src: "{{ item.path }}"
     dest: "{{ user_home }}/{{ item.path | basename }}"
@@ -85,8 +85,8 @@
   loop: "{{ found_home_files.files }}"
   register: symlink_home_status
 
-# 6. Reload Termux settings if ~/.termux config changes (Android only)
-- name: "DOTFILES | Reload Termux settings"
+# Reload Termux user settings when configuration changes on Android.
+- name: "DOTFILES | Reload Termux user configuration"
   ansible.builtin.command: termux-reload-settings
   changed_when: true
   ignore_errors: true

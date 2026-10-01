@@ -1,0 +1,91 @@
+[
+  // --- GODOT (.NET / C#) ---
+  {
+    "label": "  godot: build",
+    "command": "dotnet build /property:GenerateFullPaths=true /consoleloggerparameters:NoSummary",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide": "on_success"
+  },
+  {
+    "label": "   godot: run",
+    "command": "dotnet build /property:GenerateFullPaths=true /consoleloggerparameters:NoSummary && \"${GODOT:-/usr/sbin/godot-mono}\" --path \"$ZED_WORKTREE_ROOT\"",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always"
+  },
+
+  // --- FLUTTER / DART ---
+  {
+    "label": "   flutter: run (linux)",
+    "command": "flutter run -d linux",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always"
+  },
+  {
+    "label": "   flutter: pub get",
+    "command": "flutter pub get",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide": "on_success"
+  },
+
+  // --- GOLANG ---
+  {
+    "label": "   go: run",
+    "command": "go run .",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always"
+  },
+  {
+    "label": "   go: build",
+    "command": "go build -v .",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide": "on_success"
+  },
+  {
+    "label": "   go: test",
+    "command": "go test ./...",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always"
+  },
+
+  // --- RUST ---
+  {
+    "label": "   rust: run",
+    "command": "cargo run",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always"
+  },
+  {
+    "label": "   rust: build",
+    "command": "cargo build",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide": "on_success"
+  },
+  {
+    "label": "   rust: check",
+    "command": "cargo check",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always",
+    "hide": "on_success"
+  },
+  {
+    "label": "   rust: test",
+    "command": "cargo test",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always"
+  }
+]

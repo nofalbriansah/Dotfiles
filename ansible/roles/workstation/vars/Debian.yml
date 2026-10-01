@@ -1,82 +1,67 @@
-# To Install: Set state to present.
-# To Uninstall: Set state to absent.
-
 ---
 os_category: "linux"
 
-sys_packages:
+base_packages:
   # Fonts
-  - { name: "fonts-firacode", state: "present" }
-  - { name: "fonts-jetbrains-mono", state: "present" }
-
+  - fonts-firacode
+  - fonts-jetbrains-mono
   # CLI Tools
-  - { name: "asciinema", state: "present" }
-  # - { name: "asusctl", state: "present" }
-  - { name: "fastfetch", state: "present" }
-  - { name: "fd-find", state: "present" }
-  - { name: "fish", state: "present" }
-  - { name: "keyd", state: "present" }
-  # - { name: "lazygit", state: "present" }
-  - { name: "mangohud", state: "present" }
-  - { name: "neovim", state: "present" }
-  - { name: "ripgrep", state: "present" }
-  - { name: "sshfs", state: "present" }
-  # - { name: "starship", state: "present" }
-  - { name: "tree", state: "present" }
-  - { name: "unrar", state: "present" }
-  - { name: "unzip", state: "present" }
-  - { name: "wget", state: "present" }
-  - { name: "wl-clipboard", state: "present" }
-  # - { name: "zellij", state: "present" }
-  - { name: "zip", state: "present" }
+  - asciinema
+  - fastfetch
+  - fd-find
+  - fish
+  - keyd
+  - mangohud
+  - neovim
+  - ripgrep
+  - sshfs
+  - tree
+  - unrar
+  - unzip
+  - wget
+  - wl-clipboard
+  - zip
 
-  # Dev / SDK
-  - { name: "adb", state: "present" }
-  - { name: "ansible", state: "present" }
-  - { name: "clang", state: "present" }
-  - { name: "cmake", state: "present" }
-  - { name: "golang-github-go-delve-delve", state: "present" }
-  - { name: "docker.io", state: "present" }
-  - { name: "docker-compose", state: "present" }
-  - { name: "firefox-esr", state: "present" }
-  - { name: "git", state: "present" }
-  - { name: "golang", state: "present" }
-  - { name: "godot3", state: "present" }
-  - { name: "libgtk-3-dev", state: "present" }
-  - { name: "hugo", state: "present" }
-  - { name: "default-jdk", state: "present" }
-  - { name: "mesa-utils", state: "present" }
-  - { name: "ninja-build", state: "present" }
-  - { name: "nodejs", state: "present" }
-  - { name: "npm", state: "present" }
-  - { name: "pkgconf", state: "present" }
-  - { name: "python3", state: "present" }
-  - { name: "python3-pip", state: "present" }
-  # - { name: "terraform", state: "present" }
+dev_packages:
+  - adb
+  - ansible
+  - clang
+  - cmake
+  - default-jdk
+  - docker.io
+  - docker-compose
+  - firefox-esr
+  - git
+  - godot3
+  - golang
+  - golang-github-go-delve-delve
+  - hugo
+  - libgtk-3-dev
+  - mesa-utils
+  - ninja-build
+  - nodejs
+  - npm
+  - pkgconf
+  - python3
+  - python3-pip
 
-  # GUI Apps
-  # - { name: "ab-download-manager", state: "present" }
-  - { name: "alacritty", state: "present" }
-  - { name: "calibre", state: "present" }
-  - { name: "converseen", state: "present" }
-  - { name: "blender", state: "present" }
-  # - { name: "davinci-resolve", state: "present" }
-  # - { name: "discord", state: "present" }
-  - { name: "gimp", state: "present" }
-  - { name: "handbrake", state: "present" }
-  # - { name: "heroic-games-launcher-bin", state: "present" }
-  - { name: "libreoffice", state: "present" }
-  # - { name: "obsidian", state: "present" }
-  - { name: "obs-studio", state: "present" }
-  - { name: "qemu-kvm", state: "present" }
-  # - { name: "rog-control-center", state: "present" }
-  - { name: "steam-installer", state: "present" }
-  - { name: "swtpm", state: "present" }
-  - { name: "virt-manager", state: "present" }
-  - { name: "vlc", state: "present" }
-  - { name: "vlc-plugin-all", state: "present" }
-  # - { name: "zed", state: "present" }
-  # - { name: "zotero", state: "present" }
+gui_packages:
+  - alacritty
+  - blender
+  - calibre
+  - converseen
+  - gimp
+  - handbrake
+  - libreoffice
+  - obs-studio
+  - qemu-kvm
+  - steam-installer
+  - swtpm
+  - virt-manager
+  - vlc
+  - vlc-plugin-all
+
+sys_packages: "{{ base_packages + dev_packages + gui_packages }}"
 
 enabled_services:
-  - { name: "keyd", state: "stopped", enabled: no }
+  - { name: "keyd", state: "stopped", enabled: false }

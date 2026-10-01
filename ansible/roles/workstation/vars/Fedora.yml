@@ -1,83 +1,55 @@
-# To Install: Set state to present.
-# To Uninstall: Set state to absent.
-
 ---
 os_category: "linux"
 
-sys_packages:
+base_packages:
   # Fonts
-  - { name: "fira-code-fonts", state: "present" }
-  - { name: "jetbrains-mono-fonts", state: "present" }
-
+  - fira-code-fonts
+  - jetbrains-mono-fonts
   # CLI Tools
-  - { name: "asciinema", state: "present" }
-  # - { name: "asusctl", state: "present" }
-  - { name: "fastfetch", state: "present" }
-  - { name: "fd-find", state: "present" }
-  - { name: "fish", state: "present" }
-  - { name: "keyd", state: "present" }
-  # - { name: "lazygit", state: "present" }
-  - { name: "mangohud", state: "present" }
-  - { name: "neovim", state: "present" }
-  - { name: "ripgrep", state: "present" }
-  - { name: "fuse-sshfs", state: "present" }
-  # - { name: "starship", state: "present" }
-  - { name: "tree", state: "present" }
-  - { name: "unrar", state: "present" }
-  - { name: "unzip", state: "present" }
-  - { name: "wget", state: "present" }
-  - { name: "wl-clipboard", state: "present" }
-  # - { name: "zellij", state: "present" }
-  - { name: "zip", state: "present" }
+  - asciinema
+  - fastfetch
+  - fd-find
+  - fish
+  - fuse-sshfs
+  - keyd
+  - mangohud
+  - neovim
+  - ripgrep
+  - tree
+  - unrar
+  - unzip
+  - wget
+  - wl-clipboard
+  - zip
 
-  # Dev / SDK
-  - { name: "android-tools", state: "present" }
-  - { name: "ansible", state: "present" }
-  - { name: "clang", state: "present" }
-  - { name: "cmake", state: "present" }
-  - { name: "delve", state: "present" }
-  - { name: "docker", state: "present" }
-  - { name: "docker-compose", state: "present" }
-  - { name: "firefox", state: "present" }
-  - { name: "git", state: "present" }
-  - { name: "golang", state: "present" }
-  - { name: "godot", state: "present" }
-  - { name: "gtk3-devel", state: "present" }
-  - { name: "hugo", state: "present" }
-  - { name: "java-latest-openjdk-devel", state: "present" }
-  - { name: "mesa-utils", state: "present" }
-  - { name: "nvidia-container-toolkit", state: "present" }
-  - { name: "ninja-build", state: "present" }
-  - { name: "nodejs", state: "present" }
-  - { name: "npm", state: "present" }
-  - { name: "pkgconf", state: "present" }
-  - { name: "python3", state: "present" }
-  - { name: "python3-pip", state: "present" }
-  # - { name: "terraform", state: "present" }
+dev_packages:
+  - android-tools
+  - ansible
+  - clang
+  - cmake
+  - delve
+  - docker
+  - docker-compose
+  - firefox
+  - git
+  - golang
+  - godot
+  - gtk3-devel
+  - hugo
+  - java-latest-openjdk-devel
+  - mesa-utils
+  - ninja-build
+  - nodejs
+  - npm
+  - nvidia-container-toolkit
+  - pkgconf
+  - python3
+  - python3-pip
 
-  # GUI Apps
-  # - { name: "ab-download-manager", state: "present" }
-  - { name: "alacritty", state: "present" }
-  - { name: "calibre", state: "present" }
-  - { name: "converseen", state: "present" }
-  - { name: "blender", state: "present" }
-  # - { name: "davinci-resolve", state: "present" }
-  # - { name: "discord", state: "present" }
-  - { name: "gimp", state: "present" }
-  - { name: "handbrake", state: "present" }
-  # - { name: "heroic-games-launcher-bin", state: "present" }
-  - { name: "libreoffice", state: "present" }
-  # - { name: "obsidian", state: "present" }
-  - { name: "obs-studio", state: "present" }
-  - { name: "qemu", state: "present" }
-  # - { name: "rog-control-center", state: "present" }
-  - { name: "steam", state: "present" }
-  - { name: "swtpm", state: "present" }
-  - { name: "virt-manager", state: "present" }
-  - { name: "vlc", state: "present" }
-  # - { name: "vlc-plugins-all", state: "present" }
-  # - { name: "zed", state: "present" }
-  # - { name: "zotero", state: "present" }
+gui_packages:
+  - alacritty
+
+sys_packages: "{{ base_packages + dev_packages + gui_packages }}"
 
 enabled_services:
-  - { name: "keyd", state: "stopped", enabled: no }
+  - { name: "keyd", state: "stopped", enabled: false }
