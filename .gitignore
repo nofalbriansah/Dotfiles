@@ -1,0 +1,13 @@
+# Ansible Galaxy dependencies
+ansible/collections/
+ansible/roles/galaxy/
+ansible/.ansible/
+*.retry
+
+# Shell and editor runtime state
+**/fish_variables
+
+# OS and Editor artifacts
+.DS_Store
+*.swp
+*~

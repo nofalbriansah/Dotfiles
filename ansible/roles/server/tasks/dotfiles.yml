@@ -1,7 +1,8 @@
 ---
 # roles/server/tasks/dotfiles.yml
+# Deploys Neovim and Zellij configurations on server instances.
 
-# 1. Ensure XDG directories exist
+# Ensure standard XDG directories exist on the target host.
 - name: "DOTFILES | Ensure XDG directories exist"
   ansible.builtin.file:
     path: "{{ item }}"
@@ -11,8 +12,8 @@
     - "{{ xdg_config_dir }}"
     - "{{ xdg_data_dir }}"
 
-# 2. Check target status in ~/.config/ for nvim and zellij
-- name: "DOTFILES | Check target config status"
+# Verify target directory states in ~/.config/ to resolve conflicts.
+- name: "DOTFILES | Inspect target configuration directories"
   ansible.builtin.stat:
     path: "{{ xdg_config_dir }}/{{ item }}"
   register: target_dir_stats
@@ -20,8 +21,8 @@
     - nvim
     - zellij
 
-# 3. Remove if it's a real directory (not a symlink)
-- name: "DOTFILES | Remove real directory if it exists"
+# Remove physical directories if present to allow symlink creation.
+- name: "DOTFILES | Remove physical directory if it exists"
   ansible.builtin.file:
     path: "{{ item.stat.path }}"
     state: absent
@@ -31,13 +32,25 @@
     - not item.stat.islnk
   loop: "{{ target_dir_stats.results }}"
 
-# 4. Create symlinks for ~/.config/nvim and ~/.config/zellij
-- name: "DOTFILES | Symlink Config Directories"
+# Deploy configurations via symlink when executing locally on the server.
+- name: "DOTFILES | Symlink configuration directories (local mode)"
   ansible.builtin.file:
-    src: "{{ playbook_dir }}/files/linux/configs/{{ item }}"
-    dest: "{{ xdg_config_dir }}/{{ item }}"
+    src: "{{ item.src }}"
+    dest: "{{ xdg_config_dir }}/{{ item.dest }}"
     state: link
     force: true
   loop:
-    - nvim
-    - zellij
+    - { src: "{{ playbook_dir }}/files/common/configs/nvim", dest: "nvim" }
+    - { src: "{{ playbook_dir }}/files/linux/configs/zellij", dest: "zellij" }
+  when: ansible_connection == 'local'
+
+# Deploy configurations via file copy when provisioning remotely over SSH.
+- name: "DOTFILES | Copy configuration directories (remote mode)"
+  ansible.builtin.copy:
+    src: "{{ item.src }}/"
+    dest: "{{ xdg_config_dir }}/{{ item.dest }}"
+    mode: "0755"
+  loop:
+    - { src: "{{ playbook_dir }}/files/common/configs/nvim", dest: "nvim" }
+    - { src: "{{ playbook_dir }}/files/linux/configs/zellij", dest: "zellij" }
+  when: ansible_connection != 'local'

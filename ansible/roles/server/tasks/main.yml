@@ -11,6 +11,8 @@
         - "default.yml"
       paths:
         - "{{ role_path }}/vars"
+      skip: true
+  tags: ["always"]
 
 # 2. Run Package Management
 - name: "TASK | Package Management"

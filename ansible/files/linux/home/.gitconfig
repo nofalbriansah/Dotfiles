@@ -1,7 +1,3 @@
 [user]
-	name = Nofal Briansah
-	email = nofalbriansah@gmail.com
-[core]
-	editor = nvim
-[credential]
-	helper = /usr/lib/git-core/git-credential-libsecret
+	name = =
+	email = =

@@ -1,24 +1,33 @@
-# roles/workstation/tasks/main.yml
 ---
-# 1. Load OS-specific variables
-- name: "SETUP | Load OS Variables"
-  include_vars:
-    file: "{{ role_path }}/vars/{{ ansible_facts['distribution'] }}.yml"
+# roles/workstation/tasks/main.yml
 
-# 2. Run Package Management
-- name: "TASK | Package Management"
-  include_tasks: packages.yml
+# Load OS-specific variables.
+# Looks for distribution.yml (e.g., Fedora.yml), then os_family.yml (e.g., Archlinux.yml, Debian.yml),
+# and falls back to default.yml.
+- name: "SETUP | Load OS variables"
+  ansible.builtin.include_vars: "{{ item }}"
+  with_first_found:
+    - files:
+        - "{{ ansible_facts['distribution'] }}.yml"
+        - "{{ ansible_facts['os_family'] }}.yml"
+        - "default.yml"
+      paths:
+        - "{{ role_path }}/vars"
+      skip: true
+  tags: ["always"]
+
+# Execute system and user package management tasks.
+- name: "TASK | Manage system packages"
+  ansible.builtin.include_tasks: packages.yml
   tags: ["packages"]
 
-# 3. Run Dotfiles symlinking
-- name: "TASK | Symlink Dotfiles"
-  include_tasks: dotfiles.yml
+# Symlink dotfiles and configuration directories into XDG paths.
+- name: "TASK | Symlink configuration files"
+  ansible.builtin.include_tasks: dotfiles.yml
   tags: ["dotfiles"]
 
-# 4. Run Theme & Icon setup
-- name: "TASK | Setup Themes"
-  include_tasks: themes.yml
+# Deploy visual themes, icons, and wallpapers on Linux desktops.
+- name: "TASK | Configure themes and assets"
+  ansible.builtin.include_tasks: themes.yml
   tags: ["themes"]
   when: os_category == 'linux'
-
-

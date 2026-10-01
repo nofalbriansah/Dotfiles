@@ -1,55 +1,61 @@
 #!/bin/bash
+# Provisions remote servers or local server instances using Ansible.
+#
+# Usage:
+#   ./server.sh          Remote mode: provisions hosts listed in inventory.ini via SSH
+#   ./server.sh --local  Local mode: provisions the current machine directly (no SSH)
 
-# --- PROJECT DIRECTORY SETUP ---
+set -euo pipefail
+
+# Ensure working directory is the script root.
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$PROJECT_ROOT"
 
-# --- MODE DETECTION ---
-# Usage:
-#   ./server.sh          → Remote mode: provisions servers listed in inventory.ini via SSH
-#   ./server.sh --local  → Local mode:  provisions the current machine (run this ON the server)
+if [[ "${1:-}" == "--local" ]]; then
+    # Local mode: provisions the current server host directly.
+    echo "🚀 Starting local server provisioning..."
+    shift
 
-if [[ "$1" == "--local" ]]; then
-    # --- LOCAL MODE ---
-    # Run server.yml directly on the current machine (no SSH needed).
-    # Use this when you have cloned the repo and are running Ansible on the server itself.
-    echo "🚀 Starting Local Server Provisioning..."
-    shift # Remove --local from args before passing remaining args to ansible-playbook
-
-    # Capture sudo password once to avoid repeated prompts
+    # Capture sudo credentials once to prevent interactive prompt collisions.
     read -s -p "[sudo] password for $USER: " SUDO_PASS
     echo ""
 
     if ! echo "$SUDO_PASS" | sudo -S -v 2>/dev/null; then
-        echo "❌ Sudo authentication failed. Please check your password."
+        echo "❌ Sudo authentication failed. Check your password."
         exit 1
     fi
 
-    # --- AUTO-INSTALL ANSIBLE IF NOT FOUND ---
+    # Automatically install Ansible if not present on the host system.
     if ! command -v ansible-playbook &>/dev/null; then
         echo "⚙️  Ansible not found. Installing..."
         if command -v apt &>/dev/null; then
-            # Debian / Ubuntu
             echo "$SUDO_PASS" | sudo -S apt update -y
             echo "$SUDO_PASS" | sudo -S apt install ansible -y
         elif command -v dnf &>/dev/null; then
-            # CentOS / RHEL / Fedora
-            # ansible-core is available in AppStream on CentOS 10+ (no EPEL needed)
             echo "$SUDO_PASS" | sudo -S dnf install ansible-core -y
         else
-            echo "❌ Unsupported package manager. Please install Ansible manually."
+            echo "❌ Unsupported package manager. Install Ansible manually."
             exit 1
         fi
     fi
 
+    # Install dependencies defined in requirements.yml.
+    if [ -f "requirements.yml" ]; then
+        echo "📦 Installing Ansible Galaxy dependencies..."
+        ansible-galaxy install -r requirements.yml
+    fi
+
     export ANSIBLE_BECOME_PASS="$SUDO_PASS"
-    ansible-playbook server.yml -i "localhost," -c local "$@"
+    ansible-playbook server.yml -i "localhost," -c local -e "target_hosts=localhost" "$@"
     unset ANSIBLE_BECOME_PASS
 
 else
-    # --- REMOTE MODE ---
-    # Run site.yml against remote servers listed in inventory.ini via SSH.
-    # Use this from your local machine (e.g. Termux or laptop) to provision remote servers.
-    echo "🚀 Starting Remote Server Provisioning..."
-    ansible-playbook site.yml -i inventory.ini --limit servers --ask-become-pass "$@"
+    # Remote mode: provisions remote hosts defined in inventory.ini via SSH.
+    echo "🚀 Starting remote server provisioning..."
+    if [ -f "requirements.yml" ]; then
+        echo "📦 Installing Ansible Galaxy dependencies..."
+        ansible-galaxy install -r requirements.yml
+    fi
+
+    ansible-playbook server.yml -i inventory.ini --ask-become-pass "$@"
 fi

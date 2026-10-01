@@ -1,49 +1,57 @@
 # Ansible Dotfiles
 
-Automated provisioning for Linux (Arch Linux, CachyOS, Debian, Fedora) and Android (Termux) environments using Ansible to manage packages, system configurations, and visual assets.
+Automated system provisioning for Linux (Arch Linux, CachyOS, Debian, Fedora) and Android (Termux) environments using Ansible to manage packages, user configurations, and desktop assets.
 
 ## Features
 
-* **Package management:** Installs or removes packages based on the target operating system. Uses `pkg` on Termux, native package managers (`pacman`, `apt`, `dnf`) on Linux, and supports AUR packages on Arch Linux.
-* **Configuration symlinking:** Links configuration and home directory files from `files/linux/` or `files/termux/` to their target locations.
-* **Theme assets:** Places wallpapers, icons, and themes in their respective system directories on Linux desktop environments.
-* **Environment handling:** Automatically detects Termux to run non-root operations without password prompts. Configures `nopasswd` rules for specific package management tasks on Linux to prevent terminal hangs.
+* **Consolidated batch package management:** Synchronizes official packages via `pacman`, `apt`, `dnf`, or `pkg` in single-transaction batch executions for maximum speed.
+* **Ansible Galaxy integration:** Uses curated collections (such as `kewlfft.aur` for Arch User Repository management) managed through a declarative `requirements.yml` file.
+* **XDG-compliant configuration management:** Deploys configurations into `$XDG_CONFIG_HOME` (`~/.config/`) using symlinks locally or file synchronization remotely.
+* **Single source of truth:** Shares universal configurations (such as Neovim and Git) across Linux, Server, and Termux environments from a unified `files/common/` directory.
+* **Compressed visual assets:** Packs desktop themes, icons, and cursors into an optimized archive (`theme-assets.tar.xz`), minimizing repository size while maintaining idempotent unpacking.
+* **Non-root privilege escalation:** Configures targeted `sudoers` rules for package managers on Linux workstations to prevent terminal hangs during non-interactive runs.
 
 ## Repository structure
 
 ```text
 ansible/
-├── ansible.cfg       # Local execution settings (optimized for speed/offline)
-├── ansible.sh        # Provisioning script for local workstations
-├── server.sh         # Provisioning script for remote servers
-├── inventory.ini     # Defines localhost (workstation) and remote hosts (servers)
-├── site.yml          # Main unified playbook (workstation & server)
-├── server.yml        # Local server playbook (run directly ON the server)
+├── ansible.cfg        # Ansible execution settings, paths, and output formatting
+├── ansible.sh         # Bootstrap script for local workstation provisioning
+├── server.sh          # Bootstrap script for remote or local server provisioning
+├── inventory.ini      # Inventory file defining remote server endpoints
+├── requirements.yml   # Ansible Galaxy collections and roles manifest
+├── site.yml           # Master orchestrator playbook importing sub-playbooks
+├── workstation.yml    # Dedicated playbook for local workstation provisioning
+├── server.yml         # Dedicated playbook for server provisioning
 ├── files/
-│   ├── linux/        # Linux-specific configurations and home files
-│   ├── termux/       # Termux-specific configurations and home files
-│   └── themes/       # Visual assets (backgrounds, icons, etc.) (Linux only)
+│   ├── common/        # Cross-platform configurations (Neovim, Git)
+│   ├── linux/         # Linux desktop configurations (Fish, Alacritty, Kitty, Zed)
+│   ├── termux/        # Android Termux configurations (Zellij)
+│   └── themes/        # Wallpapers and compressed theme assets
 └── roles/
     ├── workstation/
-    │   ├── tasks/    # Workstation tasks (package management, file symlinks)
-    │   └── vars/     # Workstation package lists (Archlinux.yml, Android.yml, etc.)
+    │   ├── meta/      # Ansible Galaxy metadata for the workstation role
+    │   ├── tasks/     # Workstation tasks (packages, dotfiles, themes)
+    │   └── vars/      # Categorized package lists (Archlinux.yml, Debian.yml, etc.)
     └── server/
-        ├── tasks/    # Server tasks (package management, config links, Zellij setup)
-        └── vars/     # Server variables (Debian.yml, RedHat.yml)
+        ├── meta/      # Ansible Galaxy metadata for the server role
+        ├── tasks/     # Server tasks (system packages, dotfiles, Zellij)
+        └── vars/      # Server package lists (Debian.yml, RedHat.yml)
 ```
 
-## Before you begin
+## Prerequisites
 
-Before running the playbooks, ensure your environment meets the following requirements:
+Before executing playbooks, verify that your host meets the following requirements:
 
-* **Git and Ansible:** Verify that `git` and `ansible` are installed.
-* **SSH configuration (for remote servers):** Define remote hosts in `~/.ssh/config` and list their hostnames under the `[servers]` group in `inventory.ini`.
+* **Git:** Required to clone the repository.
+* **Ansible:** Version 2.12 or later. The bootstrap scripts automatically attempt to install Ansible if missing.
+* **SSH configuration (remote servers):** Configure target hosts in `~/.ssh/config` and verify they match the hostnames in `inventory.ini`.
 
 ## Usage
 
-### Run the workstation playbook (Local)
+### Provision a local workstation
 
-Run this playbook locally on your workstation (Arch Linux, Debian, Fedora, or Android Termux):
+Run the workstation provisioning script on your local machine:
 
 1. **Clone the repository:**
    ```bash
@@ -51,7 +59,7 @@ Run this playbook locally on your workstation (Arch Linux, Debian, Fedora, or An
    cd Dotfiles/ansible
    ```
 
-2. **Run the provisioning script:**
+2. **Execute the provisioning script:**
    ```bash
    chmod +x ansible.sh
    ./ansible.sh
@@ -59,68 +67,51 @@ Run this playbook locally on your workstation (Arch Linux, Debian, Fedora, or An
 
 #### Target specific components using tags
 
-To run specific parts of the playbook, pass the `--tags` flag:
+To limit playbook execution to specific subsystems, pass the `--tags` argument:
 
 ```bash
-./ansible.sh --tags dotfiles  # Symlink configuration files only
-./ansible.sh --tags themes    # Apply wallpapers and icons only
-./ansible.sh --tags packages  # Run package management only
+./ansible.sh --tags dotfiles   # Link configuration directories only
+./ansible.sh --tags packages   # Run package synchronization only
+./ansible.sh --tags themes     # Unpack theme assets and wallpapers only
 ```
 
-### Run the server playbook (Remote)
+### Provision a remote server (over SSH)
 
-Provision remote Ubuntu/Debian or RHEL/CentOS servers over SSH from your local machine:
+Provision remote Debian, Ubuntu, RHEL, or CentOS instances from your local machine:
 
-1. **Configure remote hosts** in `~/.ssh/config` and list them in `inventory.ini`.
+1. **Add remote hosts** to `~/.ssh/config` and list them under the `[servers]` group in `inventory.ini`.
 2. **Execute the server script:**
    ```bash
    chmod +x server.sh
    ./server.sh
    ```
-   *The script prompts for the remote `sudo` (`become`) password.*
+   *The script prompts for the remote sudo password before starting execution.*
 
-#### Target specific server components
-
-```bash
-./server.sh --tags packages  # Install system packages and Zellij only
-./server.sh --tags dotfiles  # Symlink Neovim and Zellij configurations only
-```
-
-### Run the server playbook (Local on server)
-
-If you are logged into the remote server directly, run Ansible in local mode:
-
-1. **Install Ansible on the server:**
-   ```bash
-   # Ubuntu/Debian
-   sudo apt update && sudo apt install ansible -y
-
-   # RHEL/CentOS (requires EPEL)
-   sudo dnf install epel-release -y && sudo dnf install ansible -y
-   ```
-
-2. **Clone the repository and run the local flag:**
-   ```bash
-   git clone https://github.com/nofalbriansah/Dotfiles
-   cd Dotfiles/ansible
-   chmod +x server.sh
-   ./server.sh --local
-   ```
-
-#### Target specific local server components
+#### Target specific remote components
 
 ```bash
-./server.sh --local --tags packages  # Install server packages only
-./server.sh --local --tags dotfiles  # Symlink configurations only
+./server.sh --tags packages    # Install server packages and Zellij binary only
+./server.sh --tags dotfiles    # Synchronize server configurations only
 ```
 
-## Configuration
+### Provision a server locally
 
-* **Workstation package lists:** Defined in `roles/workstation/vars/<OS>.yml` (such as `Archlinux.yml` or `Android.yml`).
-* **Server package lists:** Defined in `roles/server/vars/<OS_Family>.yml` (such as `Debian.yml` or `RedHat.yml`).
-* **Configuration files:** Stored in `files/linux/` (Linux desktop/server) or `files/termux/` (Termux). Subdirectories include `configs/` (linked to `~/.config/`) and `home/` (linked to `~/`).
-* **Offline execution:** The workstation playbook ignores package upgrade failures if repositories are unreachable, enabling configuration synchronization without an active internet connection.
+When running directly on the server instance:
 
-## Architecture decisions
+```bash
+chmod +x server.sh
+./server.sh --local
+```
 
-Using Ansible ensures a single source of truth for workstation configurations. Declarative playbooks maintain idempotency by enforcing the desired state without requiring manual conditional logic in shell scripts.
+You can append tags to local executions as well:
+
+```bash
+./server.sh --local --tags packages
+```
+
+## Configuration and customization
+
+* **Package definitions:** Package lists are modularized into `base_packages`, `dev_packages`, and `gui_packages` within `roles/workstation/vars/<OS>.yml`.
+* **Galaxy dependencies:** Add new Ansible Galaxy roles or collections to `requirements.yml`. The bootstrap scripts automatically run `ansible-galaxy install` before invoking playbooks.
+* **Distro fallback:** Workstation variable loading dynamically checks `{{ distribution }}.yml`, falls back to `{{ os_family }}.yml`, and then defaults to `default.yml`.
+* **Offline resilience:** System package update tasks specify `ignore_errors: true` on cache refreshes, allowing offline configuration runs when remote mirrors are unreachable.

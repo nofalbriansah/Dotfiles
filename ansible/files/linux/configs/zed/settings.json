@@ -1,20 +1,26 @@
-// Zed settings
-//
-// For information on how to configure Zed, see the Zed
-// documentation: https://zed.dev/docs/configuring-zed
-//
-// To see all of Zed's default settings without changing your
-// custom settings, run `zed: open default settings` from the
-// command palette (cmd-shift-p / ctrl-shift-p)
 {
   "agent": {
     "dock": "right",
     "favorite_models": [],
     "model_parameters": []
   },
+  "markdown_preview": {
+    "code_font_family": "FiraCode Nerd Font"
+  },
+  "agent_ui_font_family": "JetBrainsMono Nerd Font",
+  "agent_ui_font_size": 18.0,
   "proxy": "",
+  "disable_ai": false,
+  "agent_servers": {
+    "antigravity-acp": {
+      "default_config_options": {
+        "model": "gemini-3.8-flash-medium"
+      },
+      "type": "registry"
+    }
+  },
   "terminal": {
-    "font_size": 14.0,
+    "font_size": 16.0,
     "font_family": "JetBrainsMono Nerd Font Mono"
   },
   "soft_wrap": "editor_width",
@@ -31,11 +37,36 @@
   "project_panel": {
     "dock": "left"
   },
-  "ui_font_size": 16,
-  "buffer_font_size": 15,
+  "ui_font_size": 18,
+  "buffer_font_size": 16,
   "theme": {
     "mode": "system",
     "light": "One Light",
-    "dark": "Ayu Dark",
+    "dark": "Ayu Dark"
   },
+  "languages": {
+    "C#": {
+      "format_on_save": "on"
+    },
+    "Dart": {
+      "format_on_save": "on"
+    },
+    "Go": {
+      "format_on_save": "on"
+    },
+    "Rust": {
+      "format_on_save": "on"
+    }
+  },
+  "lsp": {
+    "omnisharp": {
+      "initialization_options": {
+        "enableRoslynAnalyzers": true,
+        "enableEditorConfigSupport": true
+      }
+    },
+    "csharp-language-server": {
+      "initialization_options": {}
+    }
+  }
 }

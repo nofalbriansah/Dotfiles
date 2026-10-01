@@ -2,9 +2,9 @@
 os_category: "linux"
 
 sys_packages:
-  - { name: "neofetch", state: "present" }
-  - { name: "git", state: "present" }
-  - { name: "openssh-server", state: "present" }
-  - { name: "openssh-client", state: "present" }
-  - { name: "neovim", state: "present" }
-  - { name: "ansible", state: "present" }
+  - neofetch
+  - git
+  - openssh-server
+  - openssh-client
+  - neovim
+  - ansible

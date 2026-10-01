@@ -1,0 +1,10 @@
+---
+# workstation.yml
+# Primary playbook for local workstation provisioning (Arch Linux, Debian, Fedora, Android Termux).
+
+- name: "SETUP | Personal Workstation"
+  hosts: localhost
+  connection: local
+
+  roles:
+    - workstation

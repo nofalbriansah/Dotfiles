@@ -1,13 +1,9 @@
 ---
-- name: "SETUP | Personal Workstation"
-  hosts: localhost
-  connection: local
+# site.yml
+# Top-level orchestration playbook that imports workstation and server playbooks.
 
-  roles:
-    - workstation
+- name: "Import workstation playbook"
+  ansible.builtin.import_playbook: workstation.yml
 
-- name: "SETUP | Personal Server"
-  hosts: servers
-
-  roles:
-    - server
+- name: "Import server playbook"
+  ansible.builtin.import_playbook: server.yml

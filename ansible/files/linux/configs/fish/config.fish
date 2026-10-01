@@ -11,12 +11,15 @@ if test -f ~/.linux_path
     fish_add_path $extra_paths
 end
 if status is-interactive
-    # Auto-start Zellij (bypass in IDE integrated terminals)
+    # Auto-start Zellij (bypass in IDE integrated terminals and headless environments)
     if not set -q ZELLIJ
         and type -q zellij
         and not set -q VSCODE_SHELL_INTEGRATION
+        and not set -q ZED_TERM
         and not string match -q "vscode" "$TERM_PROGRAM"
+        and not string match -q "zed" "$TERM_PROGRAM"
         and not string match -q "*JetBrains*" "$TERMINAL_EMULATOR"
+        and isatty stdin
         exec zellij
     end
 
@@ -31,10 +34,9 @@ if status is-interactive
     starship init fish | source
 
     # --- ABBREVIATIONS ---
-    # Navigation
-    abbr -a dot "cd ~/Dotfiles"
-    abbr -a pun "cd /mnt/Data/01_Projects/obsidian/05_Content/punyanyanbs/"
-    abbr -a ob "cd /mnt/Data/01_Projects/obsidian/"
+    # App
+    abbr -a agy "agy --dangerously-skip-permissions"
+    abbr -a lai "~/Data/code/sandbox/ai/run-localai.sh"
     abbr -a as "asciinema rec NAME-(date +%d-%b-%y-%H%M%S).cast"
 
     # Git
@@ -51,7 +53,7 @@ if status is-interactive
 
 
     # NixOS Management
-    abbr -a nu "nix flake update --flake /home/nbs/Dotfiles/nix"
+    abbr -a nu "nix flake update --flake $HOME/Dotfiles/nix"
     abbr -a ng "sudo nixos-rebuild list-generations"
     abbr -a ns "sudo nixos-rebuild switch --flake .#nixos"
     abbr -a nr "sudo nixos-rebuild switch --rollback"
@@ -62,21 +64,11 @@ if status is-interactive
     abbr -a hg "nix run home-manager -- generations"
     abbr -a hd "nix-collect-garbage -d"
 
-    # Arch Linux (Pacman + Paru)
+    # Arch Linux (Pacman + yay)
     abbr -a cu "sudo pacman -Syu"
-    abbr -a cr "sudo pacman -Scc "
     abbr -a ci "sudo pacman -S "
-    abbr -a pi "paru -S "
 
     # Fedora
     abbr -a fu "sudo dnf up && sudo dnf upgrade"
     abbr -a fd "sudo dnf autoremove"
-
-    # Config
-    abbr -a ab "nvim ~/.config/fish/config.fish"
-    abbr -a pa "nvim ~/.linux_path"
-    abbr -a ina "nvim ~/Dotfiles/ansible/roles/workstation/vars/Archlinux.yml"
-
-    # App
-    abbr -a agy "agy --dangerously-skip-permissions"
 end
